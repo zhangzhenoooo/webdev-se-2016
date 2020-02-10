@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.edu.nxu.it</groupId>
+    <artifactId>jfinal-starter</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>model-generator</module>
+        <module>web-app</module>
+    </modules>
+    <properties>
+        <jfinal.version>3.6</jfinal.version>
+        <jetty-server.version>2019.1</jetty-server.version>
+        <jfinal-undertow.version>1.5</jfinal-undertow.version>
+
+        <compiler.version>1.8</compiler.version>
+        <jetty-plugin.version>9.4.9.v20180320</jetty-plugin.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <package-type>war</package-type>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>jetty</id>
+            <properties>
+                <jetty-scope>compile</jetty-scope>
+                <undertow-scope>provided</undertow-scope>
+                <jetty-port>8080</jetty-port>
+                <jetty-contextpath>/</jetty-contextpath>
+                <package-type>war</package-type>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>tomcat</id>
+            <properties>
+                <jetty-scope>provided</jetty-scope>
+                <undertow-scope>provided</undertow-scope>
+                <jetty-port>8080</jetty-port>
+                <jetty-contextpath>/</jetty-contextpath>
+                <package-type>war</package-type>
+            </properties>
+            <activation>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>undertow</id>
+            <properties>
+                <jetty-scope>provided</jetty-scope>
+                <undertow-scope>compile</undertow-scope>
+                <jetty-port>8080</jetty-port>
+                <jetty-contextpath>/</jetty-contextpath>
+                <package-type>jar</package-type>
+            </properties>
+            <activation>
+            </activation>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty-server.version}</version>
+            <scope>${jetty-scope}</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal-undertow</artifactId>
+            <version>${jfinal-undertow.version}</version>
+            <scope>${undertow-scope}</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal</artifactId>
+            <version>${jfinal.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>cos</artifactId>
+            <version>2017.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>cn.edu.nxu.mjl</groupId>-->
+            <!--<artifactId>jfinal-freemarker-helper</artifactId>-->
+            <!--<version>0.1</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>cn.edu.nxu.mjl</groupId>-->
+            <!--<artifactId>jfinal-ext-test</artifactId>-->
+            <!--<version>0.1</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>RELEASE</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>${compiler.version}</source>
+                    <target>${compiler.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+
+        <repository>
+            <id>mjl</id>
+            <name>mjl</name>
+            <url>https://gitee.com/mjl/maven/raw/master/repository/</url>
+
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/central/</url>
+
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+
+
+    </repositories>
+
+
+</project>

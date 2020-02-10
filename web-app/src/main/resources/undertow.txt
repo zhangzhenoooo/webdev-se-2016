@@ -1,0 +1,11 @@
+undertow.devMode=false
+undertow.port=8080
+undertow.host=0.0.0.0
+
+# 开启 gzip 压缩
+undertow.gzip.enable=true
+
+#undertow.hotSwapClassPrefix=cn.edu.nxu.it.controller
+
+
+undertow.resourcePath=web-app/src/main/webapp, src/main/webapp

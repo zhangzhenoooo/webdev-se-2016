@@ -1,0 +1,96 @@
+Table: t_cast
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ id           | INT(10)      | NO   | PRI |         |         
+ chinese_name | VARCHAR(50)  | YES  |     |         |         
+ english_name | VARCHAR(50)  | YES  |     |         |         
+ gender       | CHAR(10)     | YES  |     |         |         
+ avatar       | VARCHAR(255) | YES  |     |         |         
+ birthday     | DATE(10)     | YES  |     |         |         
+ region       | VARCHAR(255) | YES  |     |         |         
+ summary      | TEXT(65535)  | YES  |     |         |         
+ douban_id    | INT(10)      | YES  |     |         |         
+ avatar_url   | VARCHAR(255) | YES  |     |         |         
+ deleted      | TINYINT(3)   | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: t_cast_role
+--------+-------------+------+-----+---------+---------
+ Field  | Type        | Null | Key | Default | Remarks 
+--------+-------------+------+-----+---------+---------
+ id     | INT(10)     | NO   | PRI |         |         
+ name   | VARCHAR(30) | YES  |     |         |         
+ remark | VARCHAR(30) | YES  |     |         |         
+--------+-------------+------+-----+---------+---------
+
+Table: t_genre
+-------+-------------+------+-----+---------+---------
+ Field | Type        | Null | Key | Default | Remarks 
+-------+-------------+------+-----+---------+---------
+ id    | INT(10)     | NO   | PRI |         |         
+ name  | VARCHAR(20) | YES  |     |         |         
+-------+-------------+------+-----+---------+---------
+
+Table: t_movie
+----------------+---------------+------+-----+---------+---------
+ Field          | Type          | Null | Key | Default | Remarks 
+----------------+---------------+------+-----+---------+---------
+ id             | INT(10)       | NO   | PRI |         |         
+ original_title | VARCHAR(255)  | YES  |     |         |         
+ chinese_title  | VARCHAR(255)  | YES  |     |         |         
+ aka            | VARCHAR(255)  | YES  |     |         |         
+ year           | VARCHAR(11)   | YES  |     |         |         
+ region         | VARCHAR(255)  | YES  |     |         |         
+ duration       | DOUBLE(11)    | YES  |     |         |         
+ language       | VARCHAR(255)  | YES  |     |         |         
+ pub_date       | TIMESTAMP(19) | YES  |     |         |         
+ poster         | VARCHAR(255)  | YES  |     |         |         
+ summary        | TEXT(65535)   | YES  |     |         |         
+ douban_id      | DOUBLE(22)    | YES  |     |         |         
+ rating         | DOUBLE(22)    | YES  |     |         |         
+ poster_url     | VARCHAR(255)  | YES  |     |         |         
+----------------+---------------+------+-----+---------+---------
+
+Table: t_movie_cast
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         |         
+ movie_id | INT(10)      | NO   | PRI |         |         
+ role_id  | INT(10)      | YES  |     |         |         
+ cast_id  | INT(10)      | YES  |     |         |         
+ act_as   | VARCHAR(255) | YES  |     |         |         
+----------+--------------+------+-----+---------+---------
+
+Table: t_movie_genre
+----------+---------+------+-----+---------+---------
+ Field    | Type    | Null | Key | Default | Remarks 
+----------+---------+------+-----+---------+---------
+ id       | INT(10) | NO   | PRI |         |         
+ movie_id | INT(10) | NO   | PRI |         |         
+ genre_id | INT(10) | YES  |     |         |         
+----------+---------+------+-----+---------+---------
+
+Table: t_user
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         |         
+ username | VARCHAR(50)  | NO   |     |         |         
+ password | VARCHAR(100) | NO   |     |         |         
+ email    | VARCHAR(50)  | YES  |     |         |         
+ head_url | VARCHAR(255) | YES  |     |         | 图像URL   
+ gender   | BIT(1)       | YES  |     |         |         
+ status   | BIT(1)       | YES  |     |         | 用户状态    
+ admin    | BIT(1)       | YES  |     |         |         
+ role     | BIT(1)       | YES  |     |         | 用户角色    
+----------+--------------+------+-----+---------+---------
+
+Table: test
+-------+---------+------+-----+---------+---------
+ Field | Type    | Null | Key | Default | Remarks 
+-------+---------+------+-----+---------+---------
+ id    | INT(10) | NO   | PRI |         |         
+-------+---------+------+-----+---------+---------
+
