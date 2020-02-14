@@ -13,10 +13,10 @@ import com.jfinal.template.Engine;
 
 public class MainConfig extends JFinalConfig {
     @Override
-    public void configConstant(Constants constants) {
+    public void configConstant(Constants me) {
         //配置JFInal的开发模式
-        constants.setDevMode(true);
-        constants.setBaseUploadPath("upload/");
+        me.setDevMode(true);
+        me.setBaseUploadPath("upload/");
     }
 
     @Override
@@ -28,6 +28,7 @@ public class MainConfig extends JFinalConfig {
         routes.add("/movie", MovieController.class);
         routes.add("/cast", CastController.class);
         routes.add("/movie/cast", MovieCastController.class);
+        routes.add("/class",ClassController.class);
 
 
     }

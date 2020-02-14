@@ -16,16 +16,19 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("t_cast", "id", Cast.class);
-		arp.addMapping("t_cast_role", "id", CastRole.class);
-		arp.addMapping("t_genre", "id", Genre.class);
-		arp.addMapping("t_movie", "id", Movie.class);
-		// Composite Primary Key order: id,movie_id
-		arp.addMapping("t_movie_cast", "id,movie_id", MovieCast.class);
-		// Composite Primary Key order: id,movie_id
-		arp.addMapping("t_movie_genre", "id,movie_id", MovieGenre.class);
-		arp.addMapping("t_user", "id", User.class);
-		arp.addMapping("test", "id", Test.class);
+		arp.addMapping("t_catalogue", "CATALOUGEID", Catalogue.class);
+		arp.addMapping("t_catalogueline", "CATALOUGEINEID", Catalogueline.class);
+		arp.addMapping("t_comment", "COMMENTID", Comment.class);
+		arp.addMapping("t_course", "CLASSID", Course.class);
+		arp.addMapping("t_courseline", "CLASSLINEID", Courseline.class);
+		arp.addMapping("t_favorite", "FAVORITEID", Favorite.class);
+		arp.addMapping("t_major", "MAJORID", Major.class);
+		arp.addMapping("t_notification", "NOTIFICATIONID", Notification.class);
+		arp.addMapping("t_question", "QUESTIONID", Question.class);
+		arp.addMapping("t_test", "TESTID", Test.class);
+		arp.addMapping("t_testline", "TESTLINEID", Testline.class);
+		arp.addMapping("t_user", "USERID", User.class);
+		arp.addMapping("t_user_class", "USER_CLASSID", UserClass.class);
 	}
 }
 

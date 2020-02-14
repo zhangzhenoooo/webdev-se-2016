@@ -10,7 +10,7 @@ public class NeedAdmin extends NeedLogin {
     public void intercept(Invocation invocation) {
         Controller controller = invocation.getController();
         User user = (User) controller.getSessionAttr("user");
-        if (user != null && user.isAdmin()) {//是否是管理员
+        if (user != null) {//是否是管理员
             invocation.invoke();
         } else if (user == null){//用户未登录
             processUnlogin(controller);

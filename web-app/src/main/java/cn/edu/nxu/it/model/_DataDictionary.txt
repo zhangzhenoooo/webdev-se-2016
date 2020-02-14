@@ -1,96 +1,156 @@
-Table: t_cast
+Table: t_catalogue
 --------------+--------------+------+-----+---------+---------
  Field        | Type         | Null | Key | Default | Remarks 
 --------------+--------------+------+-----+---------+---------
- id           | INT(10)      | NO   | PRI |         |         
- chinese_name | VARCHAR(50)  | YES  |     |         |         
- english_name | VARCHAR(50)  | YES  |     |         |         
- gender       | CHAR(10)     | YES  |     |         |         
- avatar       | VARCHAR(255) | YES  |     |         |         
- birthday     | DATE(10)     | YES  |     |         |         
- region       | VARCHAR(255) | YES  |     |         |         
- summary      | TEXT(65535)  | YES  |     |         |         
- douban_id    | INT(10)      | YES  |     |         |         
- avatar_url   | VARCHAR(255) | YES  |     |         |         
- deleted      | TINYINT(3)   | YES  |     |         |         
+ CATALOUGEID  | BIGINT(19)   | NO   | PRI |         |         
+ PARENTID     | BIGINT(19)   | YES  |     |         | 父目录id   
+ CLASSID      | BIGINT(19)   | YES  |     |         |         
+ TITLE        | VARCHAR(255) | YES  |     |         |         
+ GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
+ GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
+ IS_DELETED   | BIGINT(19)   | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 
-Table: t_cast_role
---------+-------------+------+-----+---------+---------
- Field  | Type        | Null | Key | Default | Remarks 
---------+-------------+------+-----+---------+---------
- id     | INT(10)     | NO   | PRI |         |         
- name   | VARCHAR(30) | YES  |     |         |         
- remark | VARCHAR(30) | YES  |     |         |         
---------+-------------+------+-----+---------+---------
+Table: t_catalogueline
+----------------+--------------+------+-----+---------+---------
+ Field          | Type         | Null | Key | Default | Remarks 
+----------------+--------------+------+-----+---------+---------
+ CATALOUGEINEID | BIGINT(19)   | NO   | PRI |         |         
+ CATALOUGEID    | BIGINT(19)   | YES  |     |         |         
+ TYPE           | TINYINT(3)   | NO   |     | 0       | PDF:0;视频：1
+ URL            | VARCHAR(255) | YES  |     |         | 资源地址    
+----------------+--------------+------+-----+---------+---------
 
-Table: t_genre
--------+-------------+------+-----+---------+---------
- Field | Type        | Null | Key | Default | Remarks 
--------+-------------+------+-----+---------+---------
- id    | INT(10)     | NO   | PRI |         |         
- name  | VARCHAR(20) | YES  |     |         |         
--------+-------------+------+-----+---------+---------
+Table: t_comment
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ COMMENTID  | BIGINT(19)   | NO   | PRI |         |         
+ PARENTID   | BIGINT(19)   | YES  |     |         |         
+ CONTENT    | VARCHAR(255) | YES  |     |         |         
+ LEVEL      | INT(10)      | NO   |     | 0       | 评论的等级   
+ IS_DELETED | BIGINT(19)   | YES  |     |         |         
+------------+--------------+------+-----+---------+---------
 
-Table: t_movie
+Table: t_course
+--------------+---------------+------+-----+---------+---------
+ Field        | Type          | Null | Key | Default | Remarks 
+--------------+---------------+------+-----+---------+---------
+ CLASSID      | BIGINT(19)    | NO   | PRI |         |         
+ TITLE        | VARCHAR(255)  | YES  |     |         |         
+ DESCRIPTION  | VARCHAR(1000) | YES  |     |         |         
+ CREATOR      | BIGINT(19)    | NO   |     |         | 创建课程的人  
+ GMT_CREATED  | BIGINT(19)    | YES  |     |         | 创建时间    
+ GMT_MODIFIED | BIGINT(19)    | YES  |     |         | 修改时间    
+ HEAD         | VARCHAR(255)  | YES  |     |         | 课程封面地址  
+ IS_DELETE    | BIGINT(19)    | YES  |     |         | 删除时间    
+--------------+---------------+------+-----+---------+---------
+
+Table: t_courseline
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ CLASSLINEID | BIGINT(19)   | NO   | PRI |         |         
+ CLASSID     | BIGINT(19)   | YES  |     |         |         
+ TYPE        | TINYINT(3)   | NO   |     | 0       | PDF:0;视频：1
+ URL         | VARCHAR(255) | YES  |     |         | 资源地址    
+-------------+--------------+------+-----+---------+---------
+
+Table: t_favorite
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ FAVORITEID  | BIGINT(19)   | NO   | PRI |         |         
+ CLASSID     | BIGINT(19)   | YES  |     |         |         
+ CREATEOR    | BIGINT(19)   | YES  |     |         |         
+ GMT_CREATED | VARCHAR(255) | YES  |     |         |         
+ DESCRIPTION | VARCHAR(255) | YES  |     |         |         
+ IS_DELETED  | BIGINT(19)   | YES  |     |         |         
+-------------+--------------+------+-----+---------+---------
+
+Table: t_major
+-------------+---------------+------+-----+---------+---------
+ Field       | Type          | Null | Key | Default | Remarks 
+-------------+---------------+------+-----+---------+---------
+ MAJORID     | BIGINT(19)    | NO   | PRI |         |         
+ NAME        | VARCHAR(255)  | YES  |     |         |         
+ DESCRIPTION | VARCHAR(1000) | YES  |     |         |         
+ IS_DELETED  | BIGINT(19)    | YES  |     |         |         
+-------------+---------------+------+-----+---------+---------
+
+Table: t_notification
 ----------------+---------------+------+-----+---------+---------
  Field          | Type          | Null | Key | Default | Remarks 
 ----------------+---------------+------+-----+---------+---------
- id             | INT(10)       | NO   | PRI |         |         
- original_title | VARCHAR(255)  | YES  |     |         |         
- chinese_title  | VARCHAR(255)  | YES  |     |         |         
- aka            | VARCHAR(255)  | YES  |     |         |         
- year           | VARCHAR(11)   | YES  |     |         |         
- region         | VARCHAR(255)  | YES  |     |         |         
- duration       | DOUBLE(11)    | YES  |     |         |         
- language       | VARCHAR(255)  | YES  |     |         |         
- pub_date       | TIMESTAMP(19) | YES  |     |         |         
- poster         | VARCHAR(255)  | YES  |     |         |         
- summary        | TEXT(65535)   | YES  |     |         |         
- douban_id      | DOUBLE(22)    | YES  |     |         |         
- rating         | DOUBLE(22)    | YES  |     |         |         
- poster_url     | VARCHAR(255)  | YES  |     |         |         
+ NOTIFICATIONID | BIGINT(19)    | NO   | PRI |         |         
+ NOTIFER        | BIGINT(19)    | NO   |     |         | 通知发起者id 
+ NOTIFER_NAME   | VARCHAR(100)  | YES  |     |         | 通知发起者name
+ RECEIVER       | BIGINT(19)    | NO   |     |         | 接收消息者   
+ OUTERID        | BIGINT(19)    | NO   |     |         | 问题/回复的id
+ OUTER_TITLE    | VARCHAR(1000) | YES  |     |         | 问题名称    
+ GMT_CREATED    | BIGINT(19)    | NO   |     |         |         
+ TYPE           | INT(10)       | NO   |     | 0       | 1为问题，2为评论
 ----------------+---------------+------+-----+---------+---------
 
-Table: t_movie_cast
-----------+--------------+------+-----+---------+---------
- Field    | Type         | Null | Key | Default | Remarks 
-----------+--------------+------+-----+---------+---------
- id       | INT(10)      | NO   | PRI |         |         
- movie_id | INT(10)      | NO   | PRI |         |         
- role_id  | INT(10)      | YES  |     |         |         
- cast_id  | INT(10)      | YES  |     |         |         
- act_as   | VARCHAR(255) | YES  |     |         |         
-----------+--------------+------+-----+---------+---------
+Table: t_question
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ QUESTIONID   | BIGINT(19)   | NO   | PRI |         |         
+ DESCRIPTION  | VARCHAR(255) | YES  |     |         |         
+ GMT_CREATOR  | BIGINT(19)   | YES  |     |         |         
+ GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
+ GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
+ IS_DELETED   | BIGINT(19)   | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
 
-Table: t_movie_genre
-----------+---------+------+-----+---------+---------
- Field    | Type    | Null | Key | Default | Remarks 
-----------+---------+------+-----+---------+---------
- id       | INT(10) | NO   | PRI |         |         
- movie_id | INT(10) | NO   | PRI |         |         
- genre_id | INT(10) | YES  |     |         |         
-----------+---------+------+-----+---------+---------
+Table: t_test
+------------+---------------+------+-----+---------+---------
+ Field      | Type          | Null | Key | Default | Remarks 
+------------+---------------+------+-----+---------+---------
+ TESTID     | BIGINT(19)    | NO   | PRI |         |         
+ DESCRPTION | VARCHAR(1000) | YES  |     |         | 考题描述    
+ TYPE       | INT(10)       | YES  |     |         | 客观题：0，主观题：1；多选题：2；判断题：3
+ ANSWER     | VARCHAR(1000) | YES  |     |         |         
+ SCORE      | INT(10)       | YES  |     |         | 分值      
+ IS_DELETED | BIGINT(19)    | YES  |     |         |         
+------------+---------------+------+-----+---------+---------
+
+Table: t_testline
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ TESTLINEID  | BIGINT(19)   | NO   | PRI |         |         
+ TESTID      | BIGINT(19)   | YES  |     |         |         
+ DESCRIPTION | VARCHAR(500) | YES  |     |         |         
+ ANSWER      | VARCHAR(2)   | YES  |     |         |         
+-------------+--------------+------+-----+---------+---------
 
 Table: t_user
-----------+--------------+------+-----+---------+---------
- Field    | Type         | Null | Key | Default | Remarks 
-----------+--------------+------+-----+---------+---------
- id       | INT(10)      | NO   | PRI |         |         
- username | VARCHAR(50)  | NO   |     |         |         
- password | VARCHAR(100) | NO   |     |         |         
- email    | VARCHAR(50)  | YES  |     |         |         
- head_url | VARCHAR(255) | YES  |     |         | 图像URL   
- gender   | BIT(1)       | YES  |     |         |         
- status   | BIT(1)       | YES  |     |         | 用户状态    
- admin    | BIT(1)       | YES  |     |         |         
- role     | BIT(1)       | YES  |     |         | 用户角色    
-----------+--------------+------+-----+---------+---------
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ USERID     | BIGINT(19)   | NO   | PRI |         |         
+ EMAIL      | VARCHAR(255) | YES  |     |         |         
+ PASSWORD   | VARCHAR(255) | YES  |     |         |         
+ NAME       | VARCHAR(100) | NO   |     |         |         
+ PHONE      | VARCHAR(255) | YES  |     |         |         
+ AGE        | INT(10)      | YES  |     |         |         
+ SEX        | BIT          | YES  |     |         | 女：0，男：1 
+ TYPE       | BIT          | YES  |     | 0       | 学生：0，老师 1
+ HEAD       | VARCHAR(255) | YES  |     |         |         
+ IS_DELETED | BIGINT(19)   | YES  |     |         |         
+------------+--------------+------+-----+---------+---------
 
-Table: test
--------+---------+------+-----+---------+---------
- Field | Type    | Null | Key | Default | Remarks 
--------+---------+------+-----+---------+---------
- id    | INT(10) | NO   | PRI |         |         
--------+---------+------+-----+---------+---------
+Table: t_user_class
+--------------+------------+------+-----+---------+---------
+ Field        | Type       | Null | Key | Default | Remarks 
+--------------+------------+------+-----+---------+---------
+ USER_CLASSID | BIGINT(19) | NO   | PRI |         |         
+ CLASSID      | INT(10)    | YES  |     |         |         
+ USERID       | BIGINT(19) | YES  |     |         |         
+ GMT_CREATED  | BIGINT(19) | YES  |     |         |         
+ DELETER      | INT(10)    | YES  |     |         |         
+ IS_DELETED   | BIGINT(19) | YES  |     |         |         
+--------------+------------+------+-----+---------+---------
 

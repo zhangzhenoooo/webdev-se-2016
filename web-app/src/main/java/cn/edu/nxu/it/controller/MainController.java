@@ -1,26 +1,20 @@
 package cn.edu.nxu.it.controller;
 
-import cn.edu.nxu.it.aop.LoginValidator;
-import cn.edu.nxu.it.aop.RegisterValidator;
-import cn.edu.nxu.it.model.Movie;
 import cn.edu.nxu.it.model.User;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Kv;
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.ActiveRecordException;
-import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 
 import java.util.List;
 
 public class MainController extends Controller {
 
-    //首页
-//    public void index() {
-//        renderFreeMarker("index.ftl");
-//    }
 
+    public void nav() {
+        renderFreeMarker("navigation.html");
+    }
     //显示登录页面
     public void login() {
         /*将传入的redirect参数传入模板 相当于
@@ -28,14 +22,14 @@ public class MainController extends Controller {
             setAttr("redirectUrl", redirectUrl):
          */
         keepPara("redirectUrl"); //跳转url
-       renderFreeMarker("login.ftl");
+        renderFreeMarker("login.ftl");
     }
 
     public void index(){
-        int p = getParaToInt("p",1);
-        Page<Movie> page = Movie.dao.paginate(p, 5,
-                "SELECT *", "FROM t_movie");
-        setAttr("page",page);
+//        int p = getParaToInt("p",1);
+//        Page<Movie> page = Movie.dao.paginate(p, 5,
+//                "SELECT *", "FROM t_movie");
+//        setAttr("page",page);
         renderFreeMarker("index.ftl");
     }
 
@@ -45,12 +39,9 @@ public class MainController extends Controller {
         redirect("/login");
     }
 
-    //注册
-    public void register(){
-        renderFreeMarker("register.ftl");
-    }
 
-//文件上传访问路径
+
+    //文件上传访问路径
     public void up(){
         renderFreeMarker("upload.ftl");
     }
@@ -60,14 +51,14 @@ public class MainController extends Controller {
         renderFreeMarker("index.ftl");
     }
 
-public void showMovies(){
+    public void showMovies(){
         renderFreeMarker("show_movies.ftl");
-}
+    }
 
-/**
- * 注册判断
- */
-@Before(RegisterValidator.class)
+    /**
+     * 注册判断
+     */
+//@Before(RegisterValidator.class)
     public void registerCheck(){
         String username = getPara("username");
         String password = getPara("password");
@@ -78,10 +69,7 @@ public void showMovies(){
         System.out.println(username+password+email+gender+captcha+repassword);
 
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(HashKit.md5(password));
-        user.setEmail(email);
-        user.setGender(gender);
+
         boolean success = false;
         String message = "注册失败";
         try {
@@ -102,9 +90,8 @@ public void showMovies(){
     /**
      * 登录判断
      */
-    @Before(LoginValidator.class)
+//    @Before(LoginValidator.class)
     public void loginCheck() {
-
         String username = getPara("username");
         String password = getPara("password");
         String redirectUrl = getPara("redirectUrl", "/");
@@ -112,11 +99,12 @@ public void showMovies(){
         boolean success = false;
         String message = "用户名或密码错误";
         //TODO: 需要从数据库中判断用户名和密码的正确
-        String sql = "select * from t_user where username = ? and password = md5(?)";
+        String sql = "select * from t_user where EMAIL = ? AND PASSWORD = ?";
         List<User> users = User.dao.find(sql,username,password);
         System.out.println(users);
 
         if (users.size() != 0){
+
             message = "登录成功";
             success = true;
             result.set("redirectUrl", redirectUrl);
@@ -131,6 +119,61 @@ public void showMovies(){
     //显示验证码
     public void captcha() {
         renderCaptcha();
+    }
+
+
+    //个人资料
+    public  void myMes(){
+
+        String sql = "SELECT * FROM t_user WHERE EMAIL = ? ";
+        List<User> users = User.dao.find(sql,"123@qq.com");
+        if (users.size() !=0){
+            setAttr("user",users.get(0));
+            System.out.println("user.sex = "+users.get(0).isSEX());
+        }
+        renderFreeMarker("myMes.ftl");
+    }
+    //跳转到注册页面
+    public void register(){
+        renderFreeMarker("register.ftl");
+    }
+
+
+    /**
+     * 注册
+     */
+    public void doRegister(){
+        UploadFile userHead = getFile("user.HEAD","/user/head");
+        User user = getModel(User.class,true);
+        user.setHEAD(userHead.getFileName());
+        String password2 = getPara("user.PASSWORD2");
+        if (user.getEMAIL() ==null || "".equals(user.getEMAIL())){
+            setAttr("message","邮箱不能为空");
+            renderFreeMarker("register.ftl");
+        }
+        else  if (user.getNAME() == null || "".equals(user.getNAME())){
+            setAttr("message","名字不能为空");
+            renderFreeMarker("register.ftl");
+        }
+        else if (user.getPASSWORD() == null ||password2 ==null ){
+            setAttr("message","密码不能为空");
+            renderFreeMarker("register.ftl");
+        }
+        else if (!password2.equals(user.getPASSWORD())){
+            setAttr("message","两次密码不一致");
+            renderFreeMarker("register.ftl");
+        }else {
+            //判断邮箱是否被注册
+            List<User> dbUsers = User.dao.find("SELECT USERID FROM t_user WHERE EMAIL = ?", user.getEMAIL());
+            if (dbUsers.size() <0 ){
+                setAttr("message","邮箱："+user.getEMAIL()+" 已经被注册过了");
+                renderFreeMarker("register.ftl");
+            }else {
+                user.save();
+                renderNull();
+                redirect("/");
+            }
+        }
     }
 
 }
