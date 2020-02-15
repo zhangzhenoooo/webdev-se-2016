@@ -20,6 +20,17 @@ public abstract class BaseTest<M extends BaseTest<M>> extends Model<M> implement
 	}
 
 
+	public M setCATALOGUEID(java.lang.Long CATALOGUEID) {
+		set("CATALOGUEID", CATALOGUEID);
+		return (M)this;
+	}
+
+
+	public java.lang.Long getCATALOGUEID() {
+		return getLong("CATALOGUEID");
+	}
+
+
 	public M setDESCRPTION(java.lang.String DESCRPTION) {
 		set("DESCRPTION", DESCRPTION);
 		return (M)this;

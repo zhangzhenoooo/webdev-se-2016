@@ -76,48 +76,33 @@
             <div class="row" >
                 <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                     <h3>我的课程：</h3>
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="myClassTable">
                         <thead>
                         <tr>
                             <th scope="col" width="5%">#</th>
-                            <th scope="col" width="50%">课程名称</th>
-                            <th scope="col" width="20%">最近更新时间</th>
+                            <th scope="col" width="20%">课程名称</th>
+                            <th scope="col" width="50%">课程描述</th>
                             <th scope="col" width="25%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>
-                                <button type="button" class="btn btn-primary">详情</button>
-                                <button type="button" class="btn btn-success">更新</button>
-                                <button type="button" class="btn btn-danger">删除</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>
-                                <button type="button" class="btn btn-primary">详情</button>
-                                <button type="button" class="btn btn-success">更新</button>
-                                <button type="button" class="btn btn-danger">删除</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>
-                                <button type="button" class="btn btn-primary">详情</button>
-                                <button type="button" class="btn btn-success">更新</button>
-                                <button type="button" class="btn btn-danger">删除</button>
-                            </td>
-                        </tr>
+
+                        <#list courses! as course >
+                               <tr>
+                                   <th scope="row">1</th>
+                                   <td><a href="classMes?id=${(course.CLASSID)!''}" >${(course.TITLE)!''}</a></td>
+                                   <td>${(course.DESCRIPTION)!''}</td>
+                                   <td>
+                                       <button type="button" class="btn btn-primary">详情</button>
+                                       <button type="button" class="btn btn-success">更新</button>
+                                       <button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>
+                                   </td>
+                               </tr>
+                        </#list>
+
                         </tbody>
                     </table>
+
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                     <h3>热门课程：</h3>
@@ -129,8 +114,6 @@
     </div>
 
 
-
-
 </div>
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
@@ -138,6 +121,7 @@
 </div>
 <script src="/js/jquery-2.1.4.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+/<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>

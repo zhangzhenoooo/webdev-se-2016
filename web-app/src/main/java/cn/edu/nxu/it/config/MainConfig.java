@@ -29,6 +29,7 @@ public class MainConfig extends JFinalConfig {
         routes.add("/cast", CastController.class);
         routes.add("/movie/cast", MovieCastController.class);
         routes.add("/class",ClassController.class);
+        routes.add("/test",TestController.class);
 
 
     }

@@ -47,7 +47,7 @@
                                     </div>
                                 </form>
                                 <br>
-                                <img src="/images/head.jpg" class="img-fluid"  alt="Responsive image">
+                                <img src="" class="img-fluid"  alt="Responsive image">
                             </div>
                         </div>
                     <#--第二部分-->
@@ -82,7 +82,6 @@
                                         <div class="float-right">
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >新建行</button>
 
-                                        <#--<button type="button" style="width: 100px;" id="newRow"  class="btn btn-info right">新建行</button>-->
                                         </div>
                                         <br>
                                     <#--添加章节卡片-->
@@ -157,14 +156,38 @@
             $("#addCatalogue").toggle();
         });
 
+        function  addRow(table,row,title,url) {
+
+            var table_row ='';
+            table_row = table_row + "<tr>" ;
+            table_row = table_row+ ' <th scope="row">'+ row +' </th> <td>';
+            table_row=table_row       +title+'  </td> <td>'+url+'</td>  <td>';
+            table_row = table_row + ' <button type="button" onclick=modifiyRow('+row;
+            table_row =table_row + ' ) class="btn btn-info">修改</button>';
+            table_row = table_row + '<button type="button" onclick=deleteRow('+row;
+            table_row = table_row + '  ) class="btn btn-danger">删除</button>';
+            table_row = table_row + '        </td> </tr>';
+            table.append(table_row)
+        }
 
 
-        $('#text').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var modal = $(this)
+        /**
+         *   获取文件名称带后缀的
+          */
+        function  getFileName(file){
+            var fileName=file.replace(/^.+?\\([^\\]+?)(\.[^\.\\]*?)?$/gi,"$1");  //正则表达式获取文件
+            var FileExt=file.replace(/.+\./,"");   //正则表达式获取后缀
+            var url = fileName +FileExt;
+            return url;
+        }
+
+        $("#btn-addRow").click(function () {
+            var table = $("#table-catalogue");
+             row = table.find("tr").length;
             var  classId = $("#classId");
-            var  title = $("#catalogueTitle");
-            var  url = $("#catalogueUrl");
+            var  title = $("#catalogueTitle").val();
+            var file = $("#catalogueUrl").val();
+            var  url = getFileName(file);
             var data = new FormData($( "#text" )[0]);
             $(function () {
                 $.
@@ -176,98 +199,67 @@
                     data:data,
                     dataType:"json",
                     success:function(data){
-                        alert("success");
-                        modal.reset();
-                        // $('#myModal').modal('toggle')
-                        // alert(data.message);
-                    },
-                    error:function (data) {
-                        alert("filed");
+                        // alert("success");
+                       addRow(table,row,title,url);
+                       var  myModel = $("#exampleModal");
+                       myModel.modal("toggle");
+                       $("#text")[0].reset();
+
+
+
                     }
                 });
             });
-            // modal.find('.modal-title').text('New message to ' + recipient)
-            modal.find('.modal-body input').val(recipient)
-        })
+        });
 
-        // var   loginForm = $("#form-catalogue").form({
-        //     on: 'blur',
-        //     fields: {
-        //         classId: {
-        //             identifier: 'classId',
-        //             rules: [
-        //                 {
-        //                     type: 'empty',
-        //                     prompt: 'title不能为空'
-        //                 }
-        //             ]
-        //         },
-        //         catalogueTitle: {
-        //             identifier: 'catalogueTitle',
-        //             rules: [
-        //                 {
-        //                     type: 'empty',
-        //                     prompt: 'title不能为空'
-        //                 }
-        //             ]
-        //         },
-        //         catalogueUrl: {
-        //             identifier: 'catalogueUrl',
-        //             rules: [
-        //                 {
-        //                     type: 'empty',
-        //                     prompt: '资源不能为空'
-        //                 }
-        //             ]
-        //         }
-        //     }
+
+
+        // $('#text').on('show.bs.modal', function (event) {
+        //     var button = $(event.relatedTarget) // Button that triggered the modal
+        //     var modal = $(this)
+        //     var table = $("#table-catalogue");
+        //     var row = table.find("tr").length;
+        //     var  classId = $("#classId");
+        //     var  title = $("#catalogueTitle");
+        //     var  url = $("#catalogueUrl");
+        //     var data = new FormData($( "#text" )[0]);
+        //     $(function () {
+        //         $.
+        //         ajax({
+        //             type:"post",
+        //             url:"/class/addCatalogue",
+        //             processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
+        //             contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
+        //             data:data,
+        //             dataType:"json",
+        //             success:function(data){
+        //              // var message = data.message;
+        //                 addRow(table,row,title,url);
+        //                 alert("success");
+        //
+        //                 $("#catalogueTitle").val(message);
+        //                 modal.reset();
+        //                 // $('#myModal').modal('toggle')
+        //                 // alert(data.message);
+        //             },
+        //             error:function (data) {
+        //                 alert("filed");
+        //             }
+        //         });
+        //     });
+        //     // modal.find('.modal-title').text('New message to ' + recipient)
+        //     // modal.find('.modal-body input').val(recipient)
         // });
-        //       loginForm.api({
-        //           url: '/class/addCatalogue',
-        //           serializeForm: true,
-        //           method: 'post',
-        //           enctype:'multipart/form-data',
-        //           successTest: function (response) {
-        //               return response.success || false;
-        //           },
-        //           onSuccess: function (response) {
-        //               if (response.success) {
-        //                   //FIXME: 可能有潜在的安全风险
-        //                   // window.location.href = response.redirectUrl;
-        //                   alert("success");
-        //               }
-        //               alert("sess");
-        //           }, onFailure: function (response) {
-        //               // $('#errorMessage').html(response.message);
-        //               // $('#login-form').transition('jiggle');
-        //               // loginForm.form('reset');
-        //               // refreshCaptcha();
-        //               // $('#username').focus();
-        //               alert("ttttttt"+response.message);
-        //           }
-        //       });
 
-        //
-        // function  addRow(table,row,title,url) {
-        //
-        //     var table_row ='';
-        //     table_row = table_row + "<tr>" ;
-        //     table_row = table_row+ ' <th scope="row">'+ title +' </th> <td>';
-        //     table_row=table_row       +url+'  </td> <td>123.pdf</td>  <td>';
-        //     table_row = table_row + ' <button type="button" onclick=modifiyRow('+row;
-        //     table_row =table_row + ' ) class="btn btn-info">修改</button>';
-        //     table_row = table_row + '<button type="button" onclick=deleteRow('+row;
-        //     table_row = table_row + '  ) class="btn btn-danger">删除</button>';
-        //     table_row = table_row + '        </td> </tr>';
-        //     table.apend(table_row)
-        // }
-        //
-        // function modifiyRow(i) {
-        //
-        // }
-        // function deleteRow(i) {
-        //
-        // }
+
+
+
+        function modifiyRow(i) {
+
+        }
+        function deleteRow(i) {
+
+        }
 
 
 

@@ -5,10 +5,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-2.1.4.min.js"></script>
     <script src="/js/jquery.serialize-object.min.js"></script>
     <script src="/js/semantic.min.js"></script>
-    <link rel="stylesheet" href="/styles/semantic.min.css">
+    <link rel="stylesheet" href="/style/semantic.min.css">
     <title>登录</title>
 </head>
 <body>

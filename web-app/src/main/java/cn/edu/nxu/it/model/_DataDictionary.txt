@@ -8,6 +8,7 @@ Table: t_catalogue
  TITLE        | VARCHAR(255) | YES  |     |         |         
  GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
  GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
+ VIEW_COUNT   | BIGINT(19)   | YES  |     | 0       |         
  IS_DELETED   | BIGINT(19)   | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 
@@ -105,16 +106,17 @@ Table: t_question
 --------------+--------------+------+-----+---------+---------
 
 Table: t_test
-------------+---------------+------+-----+---------+---------
- Field      | Type          | Null | Key | Default | Remarks 
-------------+---------------+------+-----+---------+---------
- TESTID     | BIGINT(19)    | NO   | PRI |         |         
- DESCRPTION | VARCHAR(1000) | YES  |     |         | 考题描述    
- TYPE       | INT(10)       | YES  |     |         | 客观题：0，主观题：1；多选题：2；判断题：3
- ANSWER     | VARCHAR(1000) | YES  |     |         |         
- SCORE      | INT(10)       | YES  |     |         | 分值      
- IS_DELETED | BIGINT(19)    | YES  |     |         |         
-------------+---------------+------+-----+---------+---------
+-------------+---------------+------+-----+---------+---------
+ Field       | Type          | Null | Key | Default | Remarks 
+-------------+---------------+------+-----+---------+---------
+ TESTID      | BIGINT(19)    | NO   | PRI |         |         
+ CATALOGUEID | BIGINT(19)    | YES  |     |         |         
+ DESCRPTION  | VARCHAR(1000) | YES  |     |         | 考题描述    
+ TYPE        | INT(10)       | YES  |     |         | 客观题：0，主观题：1；多选题：2；判断题：3
+ ANSWER      | VARCHAR(1000) | YES  |     |         |         
+ SCORE       | INT(10)       | YES  |     |         | 分值      
+ IS_DELETED  | BIGINT(19)    | YES  |     |         |         
+-------------+---------------+------+-----+---------+---------
 
 Table: t_testline
 -------------+--------------+------+-----+---------+---------
