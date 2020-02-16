@@ -3,6 +3,7 @@ package cn.edu.nxu.it.controller;
 import cn.edu.nxu.it.DTO.MyClassDTO;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.Catalogue;
+import cn.edu.nxu.it.model.Comment;
 import cn.edu.nxu.it.model.Course;
 import cn.edu.nxu.it.model.User;
 import com.jfinal.aop.Before;
@@ -93,7 +94,7 @@ public class ClassController extends Controller {
     public void myClass(){
         User user = (User) getSession().getAttribute("user");
         if (true){
-            List<Course> courses = Course.dao.find("SELECT * FROM t_course  ");
+            List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL ");
             setAttr("courses",courses);
         }
         renderFreeMarker("my_class.ftl");
@@ -112,6 +113,9 @@ public class ClassController extends Controller {
          myClass();
     }
 
+    /**
+     * 单个课程页面
+     */
     public  void  classMes() {
         Integer id = getInt("id");
         Course course = Course.dao.findById(id);
@@ -120,6 +124,17 @@ public class ClassController extends Controller {
         set("course", catalogues);
         set("catalogues", catalogues);
         renderFreeMarker("class_mes.ftl");
+    }
+
+    /**
+     * 具体章节界面
+     */
+    public void  catalogue(){
+        Integer catalogueId = getInt("id");
+        Catalogue catalogue = Catalogue.dao.findById(catalogueId);
+        List<Course> courses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
+        List<Comment> comments = Comment.dao.find("SELECT * FROM t_comment WHERE PARENTID = ?",catalogueId);
+        renderFreeMarker("class_catalogue.ftl");
     }
 
 

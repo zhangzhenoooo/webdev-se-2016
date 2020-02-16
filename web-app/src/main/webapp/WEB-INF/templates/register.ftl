@@ -82,15 +82,7 @@
                         请选择性别
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="user.HEAD">是否要上传头像？</label>
-                    <input type="file" class="form-control" name="user.HEAD" id="user.HEAD" required>
-                    <div class="invalid-feedback">
-                        请上传头像
-                    </div>
-                </div>
-
-
+<br>
                 <button type="submit" class="btn btn-primary">注册</button>
                 <button type="reset" class="btn btn-primary">重置</button>
             </form>

@@ -128,9 +128,9 @@ public class MainController extends Controller {
     //个人资料
     @Before(NeedLogin.class)
     public  void myMes(){
-
+        User user = (User) getSession().getAttribute("user");
         String sql = "SELECT * FROM t_user WHERE EMAIL = ? ";
-        List<User> users = User.dao.find(sql,"123@qq.com");
+        List<User> users = User.dao.find(sql,user.getEMAIL());
         if (users.size() !=0){
             setAttr("user",users.get(0));
             System.out.println("user.sex = "+users.get(0).isSEX());
@@ -147,9 +147,7 @@ public class MainController extends Controller {
      * 注册
      */
     public void doRegister(){
-        UploadFile userHead = getFile("user.HEAD","/user/head");
         User user = getModel(User.class,true);
-        user.setHEAD(userHead.getFileName());
         String password2 = getPara("user.PASSWORD2");
         if (user.getEMAIL() ==null || "".equals(user.getEMAIL())){
             setAttr("message","邮箱不能为空");
@@ -174,8 +172,7 @@ public class MainController extends Controller {
                 renderFreeMarker("register.ftl");
             }else {
                 user.save();
-                renderNull();
-                redirect("/");
+                redirect("login.ftl");
             }
         }
     }

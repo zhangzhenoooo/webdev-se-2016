@@ -15,6 +15,7 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 p-5 card">
+            <h2>课程题目：</h2>
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>课程详情页</title>
+    <title>课的章节</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><link rel="stylesheet" href="/css/bootstrap-theme.css">
 </head>
 <body >
@@ -39,7 +39,7 @@
                 <#--bottom-->
                     <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
                         <div class="card-header">
-                            章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                            第几章：第一小节：<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
                         </div>
                         <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
                             <blockquote class="blockquote mb-0">
@@ -47,9 +47,7 @@
                                 <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
                                     <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
                                         <#list catalogues as catalogue>
-                                                   <li class="list-group-item">
-                                                       <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
-                                                   </li>
+                                                   <li class="list-group-item">${(catalogue.TITLE)!'为命名'}</li>
                                         </#list>
 
                                         <#--<li class="list-group-item">第二章：Dapibus ac facilisis in</li>-->

@@ -86,14 +86,15 @@
                         </tr>
                         </thead>
                         <tbody>
-
+                        <#assign i=0>
+                        <#--序号-->
                         <#list courses! as course >
+                            <#assign i=i+1>
                                <tr>
-                                   <th scope="row">1</th>
+                                   <th scope="row">${i}</th>
                                    <td><a href="classMes?id=${(course.CLASSID)!''}" >${(course.TITLE)!''}</a></td>
                                    <td>${(course.DESCRIPTION)!''}</td>
                                    <td>
-                                       <button type="button" class="btn btn-primary">详情</button>
                                        <button type="button" class="btn btn-success">更新</button>
                                        <button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>
                                    </td>
@@ -102,6 +103,20 @@
 
                         </tbody>
                     </table>
+                    <hr>
+                    <div class="card">
+                        <div class="card-header">
+                           <h3>最新消息:显示那些课程都有那些学生回答了测试：今天的</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
