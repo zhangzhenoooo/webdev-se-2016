@@ -10,7 +10,7 @@
 </head>
 <body >
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
- <#include "navigation.html">
+ <#include "navigation.ftl">
 </div>
 <div class="container-fluid main">
     <div class="row">

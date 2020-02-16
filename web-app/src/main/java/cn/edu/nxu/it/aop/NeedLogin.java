@@ -24,7 +24,7 @@ protected void processUnlogin(Controller controller){
     @Override
     public void intercept(Invocation invocation) {
         Controller controller = invocation.getController();
-        if (controller.getSessionAttr("username") != null) {
+        if (controller.getSessionAttr("user") != null) {
             invocation.invoke();
         } else {
 

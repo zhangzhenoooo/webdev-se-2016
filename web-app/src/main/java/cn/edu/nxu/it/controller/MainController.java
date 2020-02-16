@@ -1,6 +1,9 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.aop.LoginValidator;
+import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.User;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.kit.LogKit;
@@ -13,7 +16,7 @@ public class MainController extends Controller {
 
 
     public void nav() {
-        renderFreeMarker("navigation.html");
+        renderFreeMarker("navigation.ftl");
     }
     //显示登录页面
     public void login() {
@@ -90,7 +93,7 @@ public class MainController extends Controller {
     /**
      * 登录判断
      */
-//    @Before(LoginValidator.class)
+    @Before(LoginValidator.class)
     public void loginCheck() {
         String username = getPara("username");
         String password = getPara("password");
@@ -123,6 +126,7 @@ public class MainController extends Controller {
 
 
     //个人资料
+    @Before(NeedLogin.class)
     public  void myMes(){
 
         String sql = "SELECT * FROM t_user WHERE EMAIL = ? ";

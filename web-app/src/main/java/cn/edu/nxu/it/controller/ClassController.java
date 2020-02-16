@@ -1,9 +1,11 @@
 package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.MyClassDTO;
+import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.Catalogue;
 import cn.edu.nxu.it.model.Course;
 import cn.edu.nxu.it.model.User;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 public class ClassController extends Controller {
 
+    @Before(NeedLogin.class)
     public void publishClass(){
         renderFreeMarker("class_publish.ftl");
     }
@@ -30,6 +33,7 @@ public class ClassController extends Controller {
     /**
      * 发布课程
      */
+    @Before(NeedLogin.class)
     public  void  doPublishClass(){
         Course course = getModel(Course.class);
         User user = (User) getSession().getAttribute("user");
@@ -85,6 +89,7 @@ public class ClassController extends Controller {
     /**
      * 进入我的课程界面
      */
+    @Before(NeedLogin.class)
     public void myClass(){
         User user = (User) getSession().getAttribute("user");
         if (true){
@@ -98,6 +103,7 @@ public class ClassController extends Controller {
     /**
      * 删除课程
      */
+    @Before(NeedLogin.class)
     public  void  delete(){
         Integer id = getInt("id");
         Course course = Course.dao.findById(31);

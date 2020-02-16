@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="Session.user" type="cn.edu.nxu.it.model.User" -->
 <!DOCTYPE html>
 <html >
 <head>
@@ -39,12 +40,15 @@
         </form>
         <ul class="navbar navbar-right" >
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    我的
-                </a>
+
+                   <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       ${(Session.user.getNAME())!'未登录'}
+                   </a>
+
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/myMes">个人主页</a>
                     <a class="dropdown-item" href="/updatePassword">更改密码</a>
+                    <a class="dropdown-item" href="/logout">退出登录</a>
                     <a class="dropdown-item" href="/register">注册</a>
                 </div>
             </li>
