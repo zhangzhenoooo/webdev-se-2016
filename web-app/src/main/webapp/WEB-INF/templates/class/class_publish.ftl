@@ -27,7 +27,7 @@
 
                                         <div class="form-group">
                                             <label for="title" class="title">课程名称:</label>
-                                            <input type="text"  class="form-control" id="title"  name="course.TITLE" value="${(course.CLASSID)!''}" aria-describedby="emailHelp">
+                                            <input type="text"  class="form-control" id="title"  name="course.TITLE" value="${(course.TITLE)!''}" aria-describedby="emailHelp">
                                         <#--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                                         </div>
                                         <div class="form-group">
@@ -68,15 +68,20 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Java基础</td>
+
+                                            <#--<#assign  i = 0>-->
+                                            <#--<#list catalogues as catalogue>-->
+                                                <#--<#assign  i = i+1>-->
+                                             <tr>
+                                                <th scope="row">${(i)!'-'}</th>
+                                                <td>${(catalogue.TITLE)!'-'}</td>
                                                 <td>123.pdf</td>
                                                 <td>
                                                     <button type="button" class="btn btn-info">修改</button>
                                                     <button type="button" class="btn btn-danger">删除</button>
                                                 </td>
-                                            </tr>
+                                             </tr>
+                                            <#--</#list>-->
                                             </tbody>
                                         </table>
                                         <div class="float-right">
@@ -102,7 +107,7 @@
                                                             <div class="modal-body">
                                                                 <form id="text" enctype="multipart/form-data" method="post">
                                                                     <div class="form-group">
-                                                                        <input type="text" id="classId" name="classId" VALUE="${(course.getCLASSID())!''}" >
+                                                                        <input type="hidden" id="classId" name="classId" VALUE="${(course.getCLASSID())!''}" >
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="catalogueTitle" class="col-form-label">添加标题</label>

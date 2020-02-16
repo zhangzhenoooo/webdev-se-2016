@@ -41,34 +41,22 @@
                         <div class="card-header">
                             第几章：第一小节：<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
                         </div>
-                        <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
-                            <blockquote class="blockquote mb-0">
-                                <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-                                <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                                    <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
-                                        <#list catalogues as catalogue>
-                                                   <li class="list-group-item">${(catalogue.TITLE)!'为命名'}</li>
-                                        </#list>
+                        <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="min-height: 300px;max-height: 500px;overflow: auto;" >
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">测试</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">评论</a>
+                                </li>
 
-                                        <#--<li class="list-group-item">第二章：Dapibus ac facilisis in</li>-->
-                                        <#--<li class="list-group-item">第三章：Morbi leo risus</li>-->
-                                        <#--<li class="list-group-item">第四章：Porta ac consectetur ac</li>-->
-                                        <#--<li class="list-group-item">第五章：Vestibulum at eros</li>-->
-                                    </ul>
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-end">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                            </blockquote>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    测试大纲
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">全部评论</div>
+                            </div>
                         </div>
                     </div>
             </div>

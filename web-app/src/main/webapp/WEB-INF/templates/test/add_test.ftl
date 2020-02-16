@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -39,27 +40,39 @@
                 <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="content" role="tabpanel" aria-labelledby="btn_single_choice"  id="single_choice">
                         <h5 class="card-title text-center">选择题</h5>
-                        <form id="form_single_choice">
+                        <form id="form_single_choice" method="post" action="doAddTest">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">请输入问题描述：</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <label for="CATALOGUEID"></label>
+                                <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="TYPE"></label>
+                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
+                            </div>
+                            <div class="form-group">
+                                <label for="DESCRIPTION">请输入问题描述：</label>
+                                <input type="text" class="form-control" id="DESCRIPTION" name="DESCRIPTION" >
                                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">选项A:</label>
-                                <input type="text" class="form-control" id="exampleInputPassword1">
+                                <label for="a">选项A:</label>
+                                <input type="text" class="form-control" id="a" name="a">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">选项B:</label>
-                                <input type="text" class="form-control" id="exampleInputPassword1">
+                                <label for="b">选项B:</label>
+                                <input type="text" class="form-control" id="b" name="b">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">选项C:</label>
-                                <input type="text" class="form-control" id="exampleInputPassword1">
+                                <label for="c">选项C:</label>
+                                <input type="text" class="form-control" id="c" name="c">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">选项D:</label>
-                                <input type="text" class="form-control" id="exampleInputPassword1">
+                                <label for="d">选项D:</label>
+                                <input type="text" class="form-control" id="d" name="d">
+                            </div>
+                            <div class="form-group">
+                                <label for="ANSWER">答案:</label>
+                                <input type="text" class="form-control" id="ANSWER" name="ANSWER">
                             </div>
                             <button type="submit" class="btn btn-primary">保存</button>
                             <button type="reset" class="btn btn-primary">重置</button>
@@ -127,19 +140,19 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                    选择题：
-                    <span class="badge badge-primary badge-pill">14</span>
+                    <span class="badge badge-primary badge-pill"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     填空题：
-                    <span class="badge badge-primary badge-pill">2</span>
+                    <span class="badge badge-primary badge-pill"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                   判断题：
-                    <span class="badge badge-primary badge-pill">1</span>
+                    <span class="badge badge-primary badge-pill"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     主观题：
-                    <span class="badge badge-primary badge-pill">1</span>
+                    <span class="badge badge-primary badge-pill"></span>
                 </li>
             </ul>
 

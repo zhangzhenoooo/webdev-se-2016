@@ -1,6 +1,5 @@
 package cn.edu.nxu.it.controller;
 
-import cn.edu.nxu.it.DTO.MyClassDTO;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.Catalogue;
 import cn.edu.nxu.it.model.Comment;
@@ -9,14 +8,8 @@ import cn.edu.nxu.it.model.User;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
-import com.sun.org.apache.xml.internal.resolver.Catalog;
 
-import java.awt.*;
-import java.security.PolicySpi;
 import java.util.List;
 
 /**
@@ -43,10 +36,13 @@ public class ClassController extends Controller {
         course.setGmtCreated(System.currentTimeMillis());
         course.setGmtModified(System.currentTimeMillis());
         set("course",course);
+        String sql = "SELECT * FROM t_catalogue WHERE CLASSID = ?";
+        List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
+        set("catalogues",catalogues);
         boolean result =  course.save();
         if (result){
             setAttr("message","添加成功");
-            renderFreeMarker("class_publish.ftl");
+            redirect("/publishClass");
         }else {
             setAttr("message","添加失败");
             renderFreeMarker("class_publish.ftl");

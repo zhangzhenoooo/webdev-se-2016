@@ -95,8 +95,8 @@
                                    <td><a href="classMes?id=${(course.CLASSID)!''}" >${(course.TITLE)!''}</a></td>
                                    <td>${(course.DESCRIPTION)!''}</td>
                                    <td>
-                                       <button type="button" class="btn btn-success">更新</button>
-                                       <button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>
+                                       <button type="button" class="btn btn-success"><a href="#" style="color: white;">更新课件</a> </button>
+                                       <#--<button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>-->
                                    </td>
                                </tr>
                         </#list>

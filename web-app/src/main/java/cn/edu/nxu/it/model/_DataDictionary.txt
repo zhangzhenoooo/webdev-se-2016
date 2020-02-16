@@ -111,7 +111,9 @@ Table: t_test
 -------------+---------------+------+-----+---------+---------
  TESTID      | BIGINT(19)    | NO   | PRI |         |         
  CATALOGUEID | BIGINT(19)    | YES  |     |         |         
+ PARENTID    | BIGINT(19)    | YES  |     |         | 如果是选择题的话，该值均为第一个选项的主键值
  DESCRPTION  | VARCHAR(1000) | YES  |     |         | 考题描述    
+ DESCRPTION2 | VARCHAR(255)  | YES  |     |         | 考题描述:选项 
  TYPE        | INT(10)       | YES  |     |         | 客观题：0，主观题：1；多选题：2；判断题：3
  ANSWER      | VARCHAR(1000) | YES  |     |         |         
  SCORE       | INT(10)       | YES  |     |         | 分值      

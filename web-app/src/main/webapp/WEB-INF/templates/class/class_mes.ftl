@@ -49,6 +49,13 @@
                                         <#list catalogues as catalogue>
                                                    <li class="list-group-item">
                                                        <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
+                                                       &nbsp; <button type="button" class="btn btn-primary float-right">
+                                                       <a href="/test/test?id=${(catalogue.CLASSID)!'/'}" style="color: white;">课后测试</a>
+                                                   </button>
+                                                       &nbsp;<button type="button" class="btn btn-primary float-right">课件下载</button>
+                                                       &nbsp;   <button type="button" class="btn btn-primary float-right">
+                                                       <a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>
+                                                   </button>&nbsp;
                                                    </li>
                                         </#list>
 

@@ -31,6 +31,17 @@ public abstract class BaseTest<M extends BaseTest<M>> extends Model<M> implement
 	}
 
 
+	public M setPARENTID(java.lang.Long PARENTID) {
+		set("PARENTID", PARENTID);
+		return (M)this;
+	}
+
+
+	public java.lang.Long getPARENTID() {
+		return getLong("PARENTID");
+	}
+
+
 	public M setDESCRPTION(java.lang.String DESCRPTION) {
 		set("DESCRPTION", DESCRPTION);
 		return (M)this;
@@ -39,6 +50,17 @@ public abstract class BaseTest<M extends BaseTest<M>> extends Model<M> implement
 
 	public java.lang.String getDESCRPTION() {
 		return getStr("DESCRPTION");
+	}
+
+
+	public M setDESCRPTION2(java.lang.String DESCRPTION2) {
+		set("DESCRPTION2", DESCRPTION2);
+		return (M)this;
+	}
+
+
+	public java.lang.String getDESCRPTION2() {
+		return getStr("DESCRPTION2");
 	}
 
 

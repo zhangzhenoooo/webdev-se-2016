@@ -15,85 +15,94 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <#--选择题-->
+        <#--选择题-->
             <div class="card">
                 <div class="card-header">
                     选择题
                 </div>
                 <div class="card-body">
+                    <#if singleChoices?? >
+
+
+                   <#list  singleChoices as singleChoice>
+                        <h5 class="card-title"><span> 1.</span>Special title treatment</h5>
+                    <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
+                    <hr>
+                   </#list>
+                    </#if>
                     <h5 class="card-title"><span> 1.</span>Special title treatment</h5>
                     <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
-                  <hr>
+                    <hr>
                     <h5 class="card-title">Special title treatment</h5>
                     <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
                     <hr>
                 </div>
             </div>
-                <#--填空题-->
-                <div class="card">
-                    <div class="card-header">
-                        填空题
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">！富文本实现</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
+        <#--填空题-->
+            <div class="card">
+                <div class="card-header">
+                    填空题
                 </div>
-                <#--判断题-->
-                <div class="card">
-                    <div class="card-header">
-                        判断题
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col" width="10%">（100分）</th>
-                                <th scope="col" width="75%">请选择对错</th>
-                                <th scope="col" width="15%">每题/5分</th>
+                <div class="card-body">
+                    <h5 class="card-title">！富文本实现</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        <#--判断题-->
+            <div class="card">
+                <div class="card-header">
+                    判断题
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" width="10%">（100分）</th>
+                            <th scope="col" width="75%">请选择对错</th>
+                            <th scope="col" width="15%">每题/5分</th>
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>对，错</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>对，错</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>对，错</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>对，错</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>对，错</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>对，错</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <#--主观题-->
-                <div class="card">
-                    <div class="card-header">
-                        主观题
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
+            </div>
+        <#--主观题-->
+            <div class="card">
+                <div class="card-header">
+                    主观题
                 </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
 
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                计分板;
+            计分板;
         </div>
     </div>
 </div>
