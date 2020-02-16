@@ -24,10 +24,6 @@ public class MainConfig extends JFinalConfig {
         //配置模板的基础路径 /开头的路径是从webapp开始
         routes.setBaseViewPath("/WEB-INF/templates");
         routes.add("/", MainController.class);
-        routes.add("/admin", AdminController.class);
-        routes.add("/movie", MovieController.class);
-        routes.add("/cast", CastController.class);
-        routes.add("/movie/cast", MovieCastController.class);
         routes.add("/class",ClassController.class);
         routes.add("/test",TestController.class);
 

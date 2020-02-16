@@ -3,7 +3,7 @@
 Jfinal + bootstrap实现
 ##工具
 [jfinal doc](https://jfinal.com/doc)
-[bootstrap4 doc of Chinese](https://v4.bootcss.com/docs/components/navbar/)
+[bootstrap4 doc of Chinese/](https://v4.bootcss.com/docs/components/navbar/)
 [freemarker doc of Chinese](http://freemarker.foofun.cn/)
 
 

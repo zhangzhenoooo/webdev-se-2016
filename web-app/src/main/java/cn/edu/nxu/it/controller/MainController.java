@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MainController extends Controller {
 
-
+//test pull
     public void nav() {
         renderFreeMarker("navigation.ftl");
     }
