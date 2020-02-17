@@ -26,6 +26,7 @@ public class MainConfig extends JFinalConfig {
         routes.add("/", MainController.class);
         routes.add("/class",ClassController.class);
         routes.add("/test",TestController.class);
+        routes.add("/comment",CommentController.class);
 
 
     }

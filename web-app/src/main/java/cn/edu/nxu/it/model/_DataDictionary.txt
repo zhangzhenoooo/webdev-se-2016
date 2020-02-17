@@ -23,15 +23,19 @@ Table: t_catalogueline
 ----------------+--------------+------+-----+---------+---------
 
 Table: t_comment
-------------+--------------+------+-----+---------+---------
- Field      | Type         | Null | Key | Default | Remarks 
-------------+--------------+------+-----+---------+---------
- COMMENTID  | BIGINT(19)   | NO   | PRI |         |         
- PARENTID   | BIGINT(19)   | YES  |     |         |         
- CONTENT    | VARCHAR(255) | YES  |     |         |         
- LEVEL      | INT(10)      | NO   |     | 0       | 评论的等级   
- IS_DELETED | BIGINT(19)   | YES  |     |         |         
-------------+--------------+------+-----+---------+---------
+---------------+---------------+------+-----+---------+---------
+ Field         | Type          | Null | Key | Default | Remarks 
+---------------+---------------+------+-----+---------+---------
+ COMMENTID     | BIGINT(19)    | NO   | PRI |         |         
+ CLASSID       | BIGINT(19)    | YES  |     |         |         
+ PARENTID      | BIGINT(19)    | NO   |     |         |         
+ TYPE          | INT(10)       | NO   |     |         |         
+ COMMENTATOR   | BIGINT(19)    | NO   |     |         |         
+ GMT_CTRATED   | BIGINT(19)    | NO   |     |         |         
+ GMT_MODIFIED  | BIGINT(19)    | NO   |     |         |         
+ CONTENT       | VARCHAR(1024) | YES  |     |         |         
+ COMMENT_COUNT | INT(10)       | YES  |     | 0       | 评论数     
+---------------+---------------+------+-----+---------+---------
 
 Table: t_course
 --------------+---------------+------+-----+---------+---------

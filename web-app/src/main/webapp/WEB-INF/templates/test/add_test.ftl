@@ -39,19 +39,18 @@
             <#--1-->
                 <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="content" role="tabpanel" aria-labelledby="btn_single_choice"  id="single_choice">
-                        <h5 class="card-title text-center">选择题</h5>
                         <form id="form_single_choice" method="post" action="doAddTest">
                             <div class="form-group">
                                 <label for="CATALOGUEID"></label>
-                                <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
                             </div>
                             <div class="form-group">
                                 <label for="TYPE"></label>
-                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
+                                <input type="hidden" class="form-control" name=TYPE" id="TYPE"  value="2">
                             </div>
                             <div class="form-group">
-                                <label for="DESCRIPTION">请输入问题描述：</label>
-                                <input type="text" class="form-control" id="DESCRIPTION" name="DESCRIPTION" >
+                                <label for="2_DESCRIPTION">请输入问题描述：</label>
+                                <input type="text" class="form-control" id="2_DESCRIPTION" name="2_DESCRIPTION" >
                                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                             </div>
                             <div class="form-group">
@@ -71,8 +70,8 @@
                                 <input type="text" class="form-control" id="d" name="d">
                             </div>
                             <div class="form-group">
-                                <label for="ANSWER">答案:</label>
-                                <input type="text" class="form-control" id="ANSWER" name="ANSWER">
+                                <label for="2_ANSWER">答案(大写):</label>
+                                <input type="text" class="form-control" id="2_ANSWER" name="2_ANSWER">
                             </div>
                             <button type="submit" class="btn btn-primary">保存</button>
                             <button type="reset" class="btn btn-primary">重置</button>
@@ -82,11 +81,19 @@
             <#--2-->
                 <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="content"  aria-labelledby="btn_gap-filling" id="gap-filling">
-                        <h5 class=" card-title text-center">填空题</h5>
+
                         <form id="form_gap-filling">
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">请将你的问题填入下列区域中：</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" ></textarea>
+                                <label for="CATALOGUEID"></label>
+                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="TYPE"></label>
+                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="0_DESCRIPTION">请将你的问题填入下列区域中：</label>
+                                <textarea class="form-control" id="0_DESCRIPTION" name="0_DESCRIPTION" ></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">保存</button>
                             <button type="reset" class="btn btn-primary">重置</button>
@@ -96,21 +103,28 @@
             <#--3-->
                 <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                     <div class="content"  aria-labelledby="btn_gap-filling" id="gap-true_or_false" id="true_or_false">
-                        <h5 class=" card-title text-center">判断题</h5>
-                        <form id="form_true_or_false">
+
+                        <form id="form_true_or_false" method="post" action="doAddTest">
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">请将你的问题填入下列区域中：</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" ></textarea>
+                                <label for="CATALOGUEID"></label>
+                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="TYPE"></label>
+                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="3">
+                            </div>
+                            <div class="form-group">
+                                <label for="3_DESCRIPTION">请将你的问题填入下列区域中：</label>
+                                <textarea class="form-control" id="3_DESCRIPTION" name="3_DESCRIPTION" ></textarea>
                             </div>
                             <p>请选择正确答案：</p>
                             <div class="form-check form-check-inline  ml-5">
-                                <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">错</label>
+                                <input class="form-check-input " type="radio" name="3_ANSWER" id="inlineRadio1_true" value="1">
+                                <label class="form-check-label" for="inlineRadio1_true">对</label>
                             </div>
-
                             <div class="form-check form-check-inline ">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">对</label>
+                                <input class="form-check-input" type="radio" name="3_ANSWER" id="inlineRadio_false" value="0">
+                                <label class="form-check-label" for="inlineRadio_false">错</label>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary float-right mr-3">保存</button>
@@ -121,11 +135,23 @@
             <#--4-->
                 <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                     <div class="content"  aria-labelledby="btn_gap-filling" id="gap-subjectivee" id="subjective">
-                        <h5 class=" card-title text-center">主观题</h5>
+
                         <form id="form_subjective">
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">请将你的问题填入下列区域中：</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" ></textarea>
+                                <label for="CATALOGUEID"></label>
+                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="TYPE"></label>
+                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
+                                <textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>
+                                <textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">保存</button>
                             <button type="reset" class="btn btn-primary">重置</button>

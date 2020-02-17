@@ -1,6 +1,7 @@
 package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.TestDTO;
+import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.model.Course;
 import cn.edu.nxu.it.model.Test;
@@ -50,17 +51,19 @@ public class TestController extends Controller {
      */
     public void  doAddTest(){
         Long catalogueId = getLong("CATALOGUEID");
-        keepPara("CATALOGUEID");
+        set("id",catalogueId);
         Integer type = getInt("TYPE");
         Test test ;
         if (type == TestTypeEnum.SINGLE_CHOICE.getType()){
+            //选择题:2
             test = new Test();
-            String description = get("DESCRIPTION");
-            String answer = get("ANSWER");
+            String description = get("2_DESCRIPTION");
+            String answer = get("2_ANSWER");
             test.setDESCRPTION(description);
             test.setCATALOGUEID(catalogueId);
             test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
             test.setSCORE(0);
+            test.setANSWER(answer);
 
             String a = get("a");
             test.setDESCRPTION2(a);
@@ -77,6 +80,35 @@ public class TestController extends Controller {
             String d = get("d");
             test.setTESTID(null);
             test.setDESCRPTION2(d);
+            test.save();
+        }
+        if (type == TestTypeEnum.TRUE_OR_FALSE.getType()){
+//            判断题:3
+            test = new Test();
+            String description = get("3_DESCRIPTION");
+            Object answer = get("3_ANSWER");
+            test.setDESCRPTION(description);
+            test.setCATALOGUEID(catalogueId);
+            test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
+            test.setSCORE(0);
+            if (TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer().equals(answer) ){
+                test.setANSWER((String) TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer());
+            }else if (TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer().equals(answer)){
+                test.setANSWER((String) TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer());
+            }
+            test.save();
+
+        }
+        if (type == TestTypeEnum.SUBJECTIVE.getType()){
+            //主观题:1
+            test = new Test();
+            String description = get("1_DESCRIPTION");
+            String answer = get("1_ANSWER");
+            test.setDESCRPTION(description);
+            test.setCATALOGUEID(catalogueId);
+            test.setTYPE(TestTypeEnum.SUBJECTIVE.getType());
+            test.setSCORE(0);
+            test.setANSWER(answer);
             test.save();
         }
         Course course = Course.dao.findById(catalogueId);//>???????????????

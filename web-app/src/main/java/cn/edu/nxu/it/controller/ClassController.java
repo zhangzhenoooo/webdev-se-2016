@@ -1,10 +1,8 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.Enum.CommentTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
-import cn.edu.nxu.it.model.Catalogue;
-import cn.edu.nxu.it.model.Comment;
-import cn.edu.nxu.it.model.Course;
-import cn.edu.nxu.it.model.User;
+import cn.edu.nxu.it.model.*;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
@@ -106,25 +104,32 @@ public class ClassController extends Controller {
         Course course = Course.dao.findById(31);
         course.setIsDelete(System.currentTimeMillis());
          course.update();
-         myClass();
+         myClass();//调用该方法进行重新加载课程的页面
     }
 
     /**
      * 单个课程页面
      */
+    @Before(NeedLogin.class)
     public  void  classMes() {
         Integer id = getInt("id");
-        Course course = Course.dao.findById(id);
+        Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",id);
         String sql = "SELECT * FROM t_catalogue WHERE CLASSID = ? ORDER BY GMT_CREATED DESC";
         List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
-        set("course", catalogues);
+        String sqlTest = "SELECT  t_test.*  FROM t_test INNER JOIN t_catalogue ON t_catalogue.CATALOUGEID = t_test.CATALOGUEID INNER JOIN t_course ON t_course.CLASSID = t_catalogue.CLASSID WHERE t_course.CLASSID = ?";
+        List<Test> tests = Test.dao.find(sqlTest,id);
+        List<Comment> comments = Comment.dao.find("SELECT * FROM t_comment WHERE PARENTID = ? AND TYPE = ?", id, CommentTypeEnum.COMMENT_CLASS.getType());
+        set("course", course);
         set("catalogues", catalogues);
+        set("tests",tests);
+        set("comments",comments);
         renderFreeMarker("class_mes.ftl");
     }
 
     /**
      * 具体章节界面
      */
+    @Before(NeedLogin.class)
     public void  catalogue(){
         Integer catalogueId = getInt("id");
         Catalogue catalogue = Catalogue.dao.findById(catalogueId);

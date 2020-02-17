@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>课程详情页</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/community.css">
 </head>
 <body >
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
@@ -15,71 +16,150 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-               <div class="row">
-                   <#--top-->
-                       <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
-                           <div class="row no-gutters">
-                               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                   <img src="/upload/class/lol英雄联盟银白审判凯尔4k壁纸_彼岸图网.jpg" class="card-img" alt="...">
-                               </div>
-                               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                   <div class="card-body">
-                                       <#--课程名称-->
-                                       <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
-                                       <p>简介：</p>
-                                       <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
-                                       <p class="card-text"><small class="text-muted">开始时间：<span>${(course.GMT_CREATED)!''}</span></small></p>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-               </div>
-            <br>
             <div class="row">
-                <#--bottom-->
-                    <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
-                        <div class="card-header">
-                            章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+            <#--top-->
+                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
+                    <div class="row no-gutters">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <img src="/upload/class/${(course.HEAD)!''}" class="card-img" alt="...">
+                            <#--//保存课程的id-->
+                            <input type="text" id="classId" value="${(course. CLASSID)!''}">
                         </div>
-                        <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
-                            <blockquote class="blockquote mb-0">
-                                <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-                                <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                                    <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
-                                        <#list catalogues as catalogue>
-                                                   <li class="list-group-item">
-                                                       <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
-                                                       &nbsp; <button type="button" class="btn btn-primary float-right">
-                                                       <a href="/test/test?id=${(catalogue.CLASSID)!'/'}" style="color: white;">课后测试</a>
-                                                   </button>
-                                                       &nbsp;<button type="button" class="btn btn-primary float-right">课件下载</button>
-                                                       &nbsp;   <button type="button" class="btn btn-primary float-right">
-                                                       <a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>
-                                                   </button>&nbsp;
-                                                   </li>
-                                        </#list>
-
-                                        <#--<li class="list-group-item">第二章：Dapibus ac facilisis in</li>-->
-                                        <#--<li class="list-group-item">第三章：Morbi leo risus</li>-->
-                                        <#--<li class="list-group-item">第四章：Porta ac consectetur ac</li>-->
-                                        <#--<li class="list-group-item">第五章：Vestibulum at eros</li>-->
-                                    </ul>
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-end">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                            </blockquote>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="card-body">
+                            <#--课程名称-->
+                                <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
+                                <p>简介：</p>
+                                <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
+                                <p class="card-text"><small class="text-muted">开始时间：<span>${(course.GMT_CREATED*1000)?number_to_datetime?string('yyyy-MM-dd ')} </span></small></p>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+            <#--bottom-->
+                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                    <div class="card-header">
+                        章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                    </div>
+                    <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                        <blockquote class="blockquote mb-0">
+                        <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
+                        <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
+                            <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
+                                        <#list catalogues as catalogue>
+                                            <li class="list-group-item">
+                                                <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
+                                                &nbsp; <button type="button" class="btn btn-primary float-right">
+                                                <a href="/test/test?id=${(catalogue.CLASSID)!'/'}" style="color: white;">课后测试</a>
+                                            </button>
+                                                &nbsp;<button type="button" class="btn btn-primary float-right">课件下载</button>
+                                                &nbsp;   <button type="button" class="btn btn-primary float-right">
+                                                <a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>
+                                            </button>&nbsp;
+                                            </li>
+                                        </#list>
+
+                            </ul>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </blockquote>
+                    </div>
+                    <div class="card">
+                    <#--//评论区-->
+                        <div class="card-header">
+                            评论区
+                        </div>
+                        <div class="card-body">
+                            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <!--回复-->
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4>
+                                        <span >${(comments?size)!}</span> 个回复
+                                    </h4>
+                                    <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" >
+                                        <#list comments as comment>
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object img-rounded">${(comment.COMMENTATOR)!''}
+                                                    </a>
+                                                </div>
+                                                <div class="media-body" >
+                                                    <h5 class="media-heading">
+                                                        <span >username:${(comment.COMMENTATOR)!''}</span>
+                                                    </h5>
+                                                    <div >
+                                                        ${(comment.CONTENT)!''}
+                                                    </div>
+                                                    <div class="menu">
+                                                        <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                                        <span onclick="collapseComments(this)" class="comment-icon">
+                                                        <span class="glyphicon glyphicon-comment"></span>
+                                                        <span ></span>
+                                                  </span>
+                                                        <span class="pull-right"> 2020-02-02   </span>
+                                                    </div>
+                                                    <!--二级评论-->
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments"
+                                                         id="${'comment-'+(comment.COMMENTID)!}">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <input type="text" class="form-control" placeholder="评论一下……"
+                                                                   th:id="${'input-'+(comment.COMMENTID)!}">
+                                                            <button type="button" class="btn btn-success pull-right" onclick="comment(this)"
+                                                            data-id="${(comment.COMMENTID)!}">评论</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </#list>
+
+                                    </div>
+                                </div>
+
+                                <!--回复输入框-->
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4>
+                                        提交回复
+                                    </h4>
+                                    <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img class="media-object img-rounded" src="/upload/user/${(user.HEAD)!'/images/default-avatar.png'}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5 class="media-heading">
+                                                    <span >${(user.NAME)!'匿名用户'}</span>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <input type="text" id="question_id" value="${(course. CLASSID)!''}" >
+                                        <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+                                        <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -113,11 +193,10 @@
                         <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
                         <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">第一章 ：Cras justo odio</li>
-                                <li class="list-group-item">第二章：Dapibus ac facilisis in</li>
-                                <li class="list-group-item">第三章：Morbi leo risus</li>
-                                <li class="list-group-item">第四章：Porta ac consectetur ac</li>
-                                <li class="list-group-item">第五章：Vestibulum at eros</li>
+                                <#list tests as test>
+                                    <a href="#">  <li class="list-group-item">${(test.DESCRPTION)!''}</li></a>
+                                </#list>
+
                             </ul>
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
@@ -140,9 +219,10 @@
         </div>
     </div>
 </div>
-<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="/js/community.js"></script>
 </body>
 </html>

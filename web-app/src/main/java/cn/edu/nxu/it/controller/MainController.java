@@ -54,9 +54,7 @@ public class MainController extends Controller {
         renderFreeMarker("index.ftl");
     }
 
-    public void showMovies(){
-        renderFreeMarker("show_movies.ftl");
-    }
+
 
     /**
      * 注册判断
