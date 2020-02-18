@@ -21,19 +21,35 @@
                     添加章节以及教学资源
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <form id="text" enctype="multipart/form-data" method="post">
+                        <div class="form-group">
+                            <input type="hidden" id="classId" name="classId" VALUE="${(course.CLASSID)!''}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="catalogueTitle" class="col-form-label">添加标题</label>
+                            <input type="text" class="form-control" name="catalogueTitle" id="catalogueTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="catalogueUrl" class="col-form-label">添加教学资源：</label>
+                            <input  type="file" class="form-control-file" name="catalogueUrl" id="catalogueUrl">
+                        </div>
+                        <button type="button"  id="btn-addRow" class="btn btn-primary">添加</button>
+                    </form>
                 </div>
             </div>
 
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>章节目录</h3>
+            <ul class="list-group list-group-flush">
+                <#list catalogues as catalogue>
+                    <li class="list-group-item">
+                        <span>${(catalogue.TITLE)!''}</span>
+                    </li>
+                </#list>
 
+            </ul>
         </div>
     </div>
 </div>
@@ -41,5 +57,34 @@
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $("#btn-addRow").click(function () {
+            // var table = $("#table-catalogue");
+            // row = table.find("tr").length;
+            var  classId = $("#classId");
+            // var  title = $("#catalogueTitle").val();
+            // var file = $("#catalogueUrl").val();
+            // var  url = getFileName(file);
+            var data = new FormData($( "#text" )[0]);
+            $(function () {
+                $.
+                ajax({
+                    type:"post",
+                    url:"/class/addCatalogue",
+                    processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
+                    contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        // alert("success");
+                        window.location.reload();
+                        alert(data.message);
+                    }
+                });
+            });
+        });
+    })
+</script>
 </body>
 </html>

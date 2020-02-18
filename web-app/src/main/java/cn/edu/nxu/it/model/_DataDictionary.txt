@@ -151,14 +151,16 @@ Table: t_user
 ------------+--------------+------+-----+---------+---------
 
 Table: t_user_class
---------------+------------+------+-----+---------+---------
- Field        | Type       | Null | Key | Default | Remarks 
---------------+------------+------+-----+---------+---------
- USER_CLASSID | BIGINT(19) | NO   | PRI |         |         
- CLASSID      | INT(10)    | YES  |     |         |         
- USERID       | BIGINT(19) | YES  |     |         |         
- GMT_CREATED  | BIGINT(19) | YES  |     |         |         
- DELETER      | INT(10)    | YES  |     |         |         
- IS_DELETED   | BIGINT(19) | YES  |     |         |         
---------------+------------+------+-----+---------+---------
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ USER_CLASSID | BIGINT(19)   | NO   | PRI |         |         
+ CLASSID      | INT(10)      | YES  |     |         |         
+ USERID       | BIGINT(19)   | YES  |     |         |         
+ GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
+ DELETER      | INT(10)      | YES  |     |         |         
+ IS_DELETED   | BIGINT(19)   | YES  |     |         |         
+ CLASSNAME    | VARCHAR(255) | YES  |     |         |         
+ USERNAME     | VARCHAR(255) | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
 

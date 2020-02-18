@@ -54,7 +54,7 @@
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="card" style="width: 18rem;">
-                <img src="/upload/8colors%208个可爱小女孩3440x1440动漫壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
+                <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${(user.getNAME())!'匿名用户'}</h5>
                  <p class="card-text">在帅的道路上越走越远...</p>

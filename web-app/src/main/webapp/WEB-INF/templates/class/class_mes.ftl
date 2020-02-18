@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>课程详情页</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><link rel="stylesheet" href="/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <script src="/js/community.js"></script>
+    <script src="/js/moment.js"></script>
 </head>
 <body >
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
@@ -21,9 +23,9 @@
                 <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
                     <div class="row no-gutters">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <img src="/upload/class/${(course.HEAD)!''}" class="card-img" alt="...">
+                            <img src="/upload/class/${(course.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="...">
                             <#--//保存课程的id-->
-                            <input type="text" id="classId" value="${(course. CLASSID)!''}">
+                            <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                             <div class="card-body">
@@ -85,6 +87,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                                 <!--回复-->
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <h4>
@@ -96,10 +99,10 @@
                                             <div class="media">
                                                 <div class="media-left">
                                                     <a href="#">
-                                                        <img class="media-object img-rounded">${(comment.COMMENTATOR)!''}
+                                                        <img class="media-object img-rounded" src="${(comment.user.HEAD)!'/upload/user/default-avatar.png'}">${(comment.COMMENTATOR)!''}
                                                     </a>
                                                 </div>
-                                                <div class="media-body" >
+                                                <div class="media-body" id="${'comment-body-'+comment.COMMENTID}" >
                                                     <h5 class="media-heading">
                                                         <span >username:${(comment.COMMENTATOR)!''}</span>
                                                     </h5>
@@ -107,19 +110,22 @@
                                                         ${(comment.CONTENT)!''}
                                                     </div>
                                                     <div class="menu">
-                                                        <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                                                        <span onclick="collapseComments(this)" class="comment-icon">
+                                                        <span class="glyphicon glyphicon-thumbs-up icon">点赞
+                                                        </span>
+                                                        <span  class="comment-icon">
+                                                            <img data-id="${comment.COMMENTID}"  onclick="collapseComments(this)" src="/images/icon/chat24.png" alt="" width="32" height="32" title="点击查看回复">
+                                                        </span>
                                                         <span class="glyphicon glyphicon-comment"></span>
-                                                        <span ></span>
+                                                        <span >${(comment.COMMENT_COUNT)!0}</span>
                                                   </span>
-                                                        <span class="pull-right"> 2020-02-02   </span>
+                                                        <span class="float-right"> &nbsp;评论日期:2020-02-02   </span>
                                                     </div>
                                                     <!--二级评论-->
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments"
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  collapse sub-comments"
                                                          id="${'comment-'+(comment.COMMENTID)!}">
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <input type="text" class="form-control" placeholder="评论一下……"
-                                                                   th:id="${'input-'+(comment.COMMENTID)!}">
+                                                                   id="${'input-'+comment.COMMENTID}">
                                                             <button type="button" class="btn btn-success pull-right" onclick="comment(this)"
                                                             data-id="${(comment.COMMENTID)!}">评论</button>
                                                         </div>
@@ -141,7 +147,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <a href="#">
-                                                    <img class="media-object img-rounded" src="/upload/user/${(user.HEAD)!'/images/default-avatar.png'}">
+                                                    <img class="media-object img-rounded" src="/upload/user/${(user.HEAD)!'default-avatar.png'}">
                                                 </a>
                                             </div>
                                             <div class="media-body">
@@ -150,7 +156,7 @@
                                                 </h5>
                                             </div>
                                         </div>
-                                        <input type="text" id="question_id" value="${(course. CLASSID)!''}" >
+                                        <input type="hidden" id="question_id" value="${(course. CLASSID)!''}" >
                                         <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
                                         <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
                                     </div>
@@ -223,6 +229,11 @@
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="/js/community.js"></script>
+<link rel="stylesheet" href="/css/editormd.min.css">
+<link rel="stylesheet" href="/css/editormd.preview.min.css">
+<script src="/js/editormd.min.js" type="application/javascript"></script>
+<script src="/js/moment.js" type="application/javascript"></script>
+<script src="/js/lib/marked.min.js"></script>
+<script src="/js/lib/prettify.min.js"></script>
 </body>
 </html>

@@ -1,8 +1,12 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.CourseDTO;
 import cn.edu.nxu.it.aop.LoginValidator;
 import cn.edu.nxu.it.aop.NeedLogin;
+import cn.edu.nxu.it.model.Course;
 import cn.edu.nxu.it.model.User;
+import cn.edu.nxu.it.model.UserClass;
+import cn.edu.nxu.it.service.CourseService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
@@ -173,6 +177,17 @@ public class MainController extends Controller {
                 redirect("login.ftl");
             }
         }
+    }
+
+    @Before(NeedLogin.class)
+    public void studentManagement(){
+        User user = (User) getSession().getAttribute("user");
+        String sql = "SELECT t_user_class.* FROM t_user_class INNER JOIN t_course ON t_user_class.CLASSID = t_course.CLASSID WHERE t_course.CREATOR =?";
+        List<UserClass> userClasses = UserClass.dao.find(sql,user.getUSERID());
+        List<Course> courses = Course.dao.find("SELECT * FROM t_course WHERE CREATOR = ?", user.getUSERID());
+        set("userClasses",userClasses) ;
+        set("courses",courses) ;
+        renderFreeMarker("students_management.ftl");
     }
 
 }

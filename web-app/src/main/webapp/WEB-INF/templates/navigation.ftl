@@ -31,7 +31,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">学生管理</a>
+                <a class="nav-link " href="studentManagement"  aria-disabled="true">学生管理</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -42,7 +42,7 @@
             <li class="nav-item dropdown">
 
                    <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       ${(user.NAME)!'未登录'}
+                       ${(session.user.NAME)!'未登录'}
                    </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -58,11 +58,6 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
-<script>
-    $(document).ready(function () {
-
-    })
-</script>
 </body>
 
 </html>

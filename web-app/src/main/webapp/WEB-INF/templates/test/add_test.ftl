@@ -46,7 +46,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="TYPE"></label>
-                                <input type="hidden" class="form-control" name=TYPE" id="TYPE"  value="2">
+                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
                             </div>
                             <div class="form-group">
                                 <label for="2_DESCRIPTION">请输入问题描述：</label>
@@ -166,19 +166,19 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                    选择题：
-                    <span class="badge badge-primary badge-pill"></span>
+                    <span class="badge badge-primary badge-pill">${(singleChoices?size)!0}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     填空题：
-                    <span class="badge badge-primary badge-pill"></span>
+                    <span class="badge badge-primary badge-pill">${(gapFillings?size)!0}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                   判断题：
-                    <span class="badge badge-primary badge-pill"></span>
+                    <span class="badge badge-primary badge-pill">${(trueOrFalses?size)!0}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     主观题：
-                    <span class="badge badge-primary badge-pill"></span>
+                    <span class="badge badge-primary badge-pill">${(trueOrFalses?size)!0}</span>
                 </li>
             </ul>
 

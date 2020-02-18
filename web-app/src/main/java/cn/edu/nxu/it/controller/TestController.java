@@ -52,9 +52,9 @@ public class TestController extends Controller {
     public void  doAddTest(){
         Long catalogueId = getLong("CATALOGUEID");
         set("id",catalogueId);
-        Integer type = getInt("TYPE");
+        int type = getInt("TYPE");
         Test test ;
-        if (type == TestTypeEnum.SINGLE_CHOICE.getType()){
+        if (type ==TestTypeEnum.SINGLE_CHOICE.getType()){
             //选择题:2
             test = new Test();
             String description = get("2_DESCRIPTION");
@@ -112,10 +112,10 @@ public class TestController extends Controller {
             test.save();
         }
         Course course = Course.dao.findById(catalogueId);//>???????????????
-        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
-        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
-        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
-        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+        List<Test> tests_SINGLE_CHOICE ; //选择题
+        List<Test> tests_GAP_FILLING ; //填空题
+        List<Test> tests_TURE_OR_FALSE; //判断题
+        List<Test> tests_SUBJECTIVE ; //主观题
         String sql = "SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ?";
         tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
         tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
@@ -124,7 +124,7 @@ public class TestController extends Controller {
         set("singleChoices",tests_SINGLE_CHOICE);
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
-        set("subjectives",tests_SUBJECTIVE);
+        set("trueOrFalses",tests_SUBJECTIVE);
 
         renderFreeMarker("add_test.ftl");
     }

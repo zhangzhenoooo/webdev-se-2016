@@ -1,14 +1,22 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
 import cn.edu.nxu.it.model.Catalogue;
 import cn.edu.nxu.it.model.Comment;
 import cn.edu.nxu.it.model.Course;
 import cn.edu.nxu.it.model.User;
+import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.core.Controller;
 import com.jfinal.json.Json;
 import com.jfinal.kit.Kv;
 import com.sun.jmx.remote.internal.ClientCommunicatorAdmin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CommentController extends Controller {
     /**
@@ -74,4 +82,22 @@ public class CommentController extends Controller {
         }
         renderJson(result);
     }
+
+    /**
+     * 获取评论
+     */
+    public void getComment (){
+        Long commentId =getLong("id");
+        System.out.println("commentId =============="+commentId);
+        CommentService commentService = new CommentService();
+        List<CommentDTO> commentDTOS = commentService.initComment(commentId,CommentTypeEnum.COMMNET_COMMENT.getType());
+        Kv result = Kv.create();
+        result.set("comments",commentDTOS);
+        System.out.println("commentDTOS =============="+commentDTOS.size());
+        renderJson("comments",result);
+
+    }
+
+
+
 }
