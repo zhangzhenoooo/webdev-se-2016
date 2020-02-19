@@ -15,11 +15,55 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <table class="table">
+                <h3 style="color: red;">${(message)!''}</h3>
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">课程名称</th>
+                    <th scope="col">课程描述</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#assign  i=0>
+                <#list paginate.list! as course>
+                    <#assign  i=i+1>
+                <tr>
+                    <th scope="row">${(i)!}</th>
+                    <td>
+                        <a href="courseMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
+                    </td>
+                    <td>${(course.DESCRIPTION)!''}</td>
+                    <td>
+                        <a class="btn btn-primary" href="doSelect?id=${(course.CLASSID)!} ">选课</a>
+                    </td>
+                </tr>
+                </#list>
+                </tbody>
+
+            </table>
+            <hr>
 
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-
+            <div class="card">
+                <div class="card-header">
+                    已选课程
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <#if selectedUserClasses?? && (selectedUserClasses?size >0)>
+                                <#list selectedUserClasses as selectedUserClasse>
+                                     <li class="list-group-item">
+                                        <a href="classMes?id=${(selectedUserClasse.CLASSID)!''}">${(selectedUserClasse.CLASSNAME)!''}</a>
+                                     </li>
+                                </#list>
+                        </#if>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>

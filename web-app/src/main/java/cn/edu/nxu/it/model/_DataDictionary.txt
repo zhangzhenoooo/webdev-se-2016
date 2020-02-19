@@ -1,3 +1,15 @@
+Table: t_answer
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ ANSWERID    | BIGINT(19)   | NO   | PRI |         |         
+ ANSWER      | VARCHAR(255) | YES  |     |         |         
+ TESTID      | BIGINT(19)   | YES  |     |         |         
+ TYPE        | BIT          | YES  |     |         | 1:单选题。2为其他（填空，判断，主观题）
+ CREATOR     | BIGINT(19)   | YES  |     |         |         
+ GMT_CREATED | BIGINT(19)   | YES  |     |         |         
+-------------+--------------+------+-----+---------+---------
+
 Table: t_catalogue
 --------------+--------------+------+-----+---------+---------
  Field        | Type         | Null | Key | Default | Remarks 
@@ -10,6 +22,7 @@ Table: t_catalogue
  GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
  VIEW_COUNT   | BIGINT(19)   | YES  |     | 0       |         
  IS_DELETED   | BIGINT(19)   | YES  |     |         |         
+ URL          | VARCHAR(255) | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 
 Table: t_catalogueline
@@ -72,6 +85,19 @@ Table: t_favorite
  DESCRIPTION | VARCHAR(255) | YES  |     |         |         
  IS_DELETED  | BIGINT(19)   | YES  |     |         |         
 -------------+--------------+------+-----+---------+---------
+
+Table: t_history
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ HISTORYID    | BIGINT(19)   | NO   | PRI |         |         
+ CREATOR      | BIGINT(19)   | YES  |     |         |         
+ CREATOR_NAME | VARCHAR(255) | YES  |     |         |         
+ THINGID      | BIGINT(19)   | YES  |     |         |         
+ THING_NAME   | VARCHAR(255) | YES  |     |         |         
+ GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
+ GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
 
 Table: t_major
 -------------+---------------+------+-----+---------+---------

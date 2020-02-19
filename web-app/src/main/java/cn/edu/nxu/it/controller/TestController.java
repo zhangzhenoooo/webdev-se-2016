@@ -26,16 +26,20 @@ public class TestController extends Controller {
 
         //        装载试题
         List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
         List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
         List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
         List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
 
         tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
         tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
         tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
         tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
 
-        set("singleChoice",tests_SINGLE_CHOICE);
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("subjectives",tests_SUBJECTIVE);
@@ -64,23 +68,34 @@ public class TestController extends Controller {
             test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
             test.setSCORE(0);
             test.setANSWER(answer);
+            test.save();
+
+            Testline testline = new Testline();
 
             String a = get("a");
-            test.setDESCRPTION2(a);
-            test.save();
-            test.setPARENTID(test.getTESTID());//
+            testline.setDESCRIPTION(a);
+            testline.setANSWER(answer);
+            testline.setTESTID(test.getTESTID());
+            testline.save();
+
+
             String b = get("b");
-            test.setTESTID(null);
-            test.setDESCRPTION2(b);
-            test.save();
+            testline.setDESCRIPTION(b);
+            testline.setANSWER(answer);
+            testline.setTESTID(test.getTESTID());
+            testline.save();
+
             String c = get("c");
-            test.setTESTID(null);
-            test.setDESCRPTION2(c);
-            test.save();
+            testline.setDESCRIPTION(c);
+            testline.setANSWER(answer);
+            testline.setTESTID(test.getTESTID());
+            testline.save();
+
             String d = get("d");
-            test.setTESTID(null);
-            test.setDESCRPTION2(d);
-            test.save();
+            testline.setDESCRIPTION(d);
+            testline.setANSWER(answer);
+            testline.setTESTID(test.getTESTID());
+            testline.save();
         }
         if (type == TestTypeEnum.TRUE_OR_FALSE.getType()){
 //            判断题:3

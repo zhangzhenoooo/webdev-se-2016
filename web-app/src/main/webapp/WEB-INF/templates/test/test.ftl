@@ -21,34 +21,38 @@
                     选择题
                 </div>
                 <div class="card-body">
-                    <#if singleChoices?? >
-
-
+                    <#assign  string = "ABCDEFGH">
+                     <#assign  i = 0,x=1>
+                    <#if singleChoices?? && (singleChoices?size >0)>
                    <#list  singleChoices as singleChoice>
-                        <h5 class="card-title"><span> 1.</span>Special title treatment</h5>
-                    <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
+                             <h5 class="card-title"><span>${x}</span>${(singleChoice.DESCRPTION)}</h5>
+                       <#if singleChoicelines??>
+                           <#list singleChoicelines as singleChoiceline>
+                               <#if singleChoice.TESTID ==singleChoiceline.TESTID  >
+                               <#--选项：-->
+                                  <p class="card-text">  <input type="text" class="form-control" aria-label="Text input with radio button">
+                                      <span> ${(string[i])}.</span>${(singleChoice.DESCRPTION2)}</p>
+                               </#if>
+                           </#list>
+                       </#if>
                     <hr>
+                       <#assign  i = i+1,x = x +1>
                    </#list>
-                    </#if>
-                    <h5 class="card-title"><span> 1.</span>Special title treatment</h5>
-                    <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
-                    <hr>
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text"> @ With supporting text below as a natural lead-in to additional content.</p>
-                    <hr>
+
+                   </#if>
                 </div>
             </div>
         <#--填空题-->
-            <div class="card">
-                <div class="card-header">
-                    填空题
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">！富文本实现</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
+            <#--<div class="card">-->
+                <#--<div class="card-header">-->
+                    <#--填空题-->
+                <#--</div>-->
+                <#--<div class="card-body">-->
+                    <#--<h5 class="card-title">！富文本实现</h5>-->
+                    <#--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+                    <#--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                <#--</div>-->
+            <#--</div>-->
         <#--判断题-->
             <div class="card">
                 <div class="card-header">
@@ -65,21 +69,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>对，错</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>对，错</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>对，错</td>
-                        </tr>
+                        <#if trueOrFalses??>
+                        <#assign i = 0>
+                            <#list trueOrFalses as trueOrFalse>
+                                <#assign i = i+1>
+                                 <tr>
+                                     <th scope="row">${i}</th>
+                                     <td>${(trueOrFalse.DESCRIPTOPN)!''}</td>
+                                     <td>
+                                         <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                             <label class="form-check-label" for="inlineRadio1">对</label>
+                                         </div>
+                                         <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                             <label class="form-check-label" for="inlineRadio2">错</label>
+                                         </div>
+                                     </td>
+                                 </tr>
+                            </#list>
+                        </#if>
+
                         </tbody>
                     </table>
                 </div>
@@ -90,12 +100,19 @@
                     主观题
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <form>
+                        <#assign i=0>
+                        <#if subjectives??>
+                            <#list subjectives as subjective >
+                                <#assign i=i+1>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span>${(subjective.DESCRPTION)!''}</label>
+                                    <textarea type="text" class="form-control" id="exampleInputEmail1" ></textarea>
+                                </div>
+                            </#list>
+                        </#if>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
 

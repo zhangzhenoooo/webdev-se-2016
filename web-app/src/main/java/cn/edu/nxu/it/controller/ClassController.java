@@ -77,6 +77,7 @@ public class ClassController extends Controller {
         Catalogue catalogue = new Catalogue();
         catalogue.setCLASSID(courseID);
         catalogue.setTITLE(title);
+        catalogue.setURL(file.getFileName());
         List<Course>  dbCourses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",courseID);
         Kv result = Kv.create();
         if (dbCourses.size() == 0){
@@ -127,8 +128,12 @@ public class ClassController extends Controller {
     }
 
     /**
-     * 单个课程页面
-     */
+     *
+     * @description  单个课程页面
+     * @author zhangz
+     * @date 2020:02:19 15:32:04
+     * @return null
+     **/
     @Before(NeedLogin.class)
     public  void  classMes() {
         Long id = getLong("id");
@@ -137,13 +142,13 @@ public class ClassController extends Controller {
         List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
         String sqlTest = "SELECT  t_test.*  FROM t_test INNER JOIN t_catalogue ON t_catalogue.CATALOUGEID = t_test.CATALOGUEID INNER JOIN t_course ON t_course.CLASSID = t_catalogue.CLASSID WHERE t_course.CLASSID = ?";
         List<Test> tests = Test.dao.find(sqlTest,id);
-
         List<CommentDTO> comments = commentService.initComment(id,CommentTypeEnum.COMMENT_CLASS.getType());
         set("course", course);
         set("catalogues", catalogues);
         set("tests",tests);
         set("comments",comments);
         renderFreeMarker("class_mes.ftl");
+
     }
 
 

@@ -4,6 +4,7 @@ import cn.edu.nxu.it.DTO.CourseDTO;
 import cn.edu.nxu.it.aop.LoginValidator;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.Course;
+import cn.edu.nxu.it.model.Notification;
 import cn.edu.nxu.it.model.User;
 import cn.edu.nxu.it.model.UserClass;
 import cn.edu.nxu.it.service.CourseService;
@@ -22,6 +23,7 @@ public class MainController extends Controller {
     public void nav() {
         renderFreeMarker("navigation.ftl");
     }
+
     //显示登录页面
     public void login() {
         /*将传入的redirect参数传入模板 相当于
@@ -116,6 +118,9 @@ public class MainController extends Controller {
             //登录成功则将用户名写入session中以在之后判断用户登录状态
             User user = users.get(0);
             setSessionAttr("user", user);
+            //获取消息，存入session
+            List<Notification> notifications = Notification.dao.find("SELECT * FROM t_notification WHERE RECEIVER = ?", user.getUSERID());
+            setSessionAttr("notifications",notifications);
         }
         result.set("message", message).set("success", success);
         renderJson(result);
@@ -131,14 +136,13 @@ public class MainController extends Controller {
     @Before(NeedLogin.class)
     public  void myMes(){
         User user = (User) getSession().getAttribute("user");
-        String sql = "SELECT * FROM t_user WHERE EMAIL = ? ";
-        List<User> users = User.dao.find(sql,user.getEMAIL());
-        if (users.size() !=0){
-            setAttr("user",users.get(0));
-            System.out.println("user.sex = "+users.get(0).isSEX());
-        }
+        setAttr("user",user);
+        String sql = "SELECT DISTINCT t_course.* FROM t_course INNER JOIN t_user_class ON t_course.CLASSID = t_user_class.CLASSID WHERE t_user_class.USERID =?";
+        List<Course> courses = Course.dao.find(sql, user.getUSERID());
+        set("courses",courses);
         renderFreeMarker("myMes.ftl");
     }
+
     //跳转到注册页面
     public void register(){
         renderFreeMarker("register.ftl");

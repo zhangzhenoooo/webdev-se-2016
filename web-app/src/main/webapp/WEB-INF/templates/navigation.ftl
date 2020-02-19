@@ -31,19 +31,33 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="studentManagement"  aria-disabled="true">学生管理</a>
+                <a class="nav-link " href="/studentManagement"  aria-disabled="true">学生管理</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    课程管理(学生)
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/user/selectCourse">选课</a>
+                    <a class="dropdown-item" href="/class/myClass">我的课程</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">我的任务</a>
+                </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">查询</button>
-        </form>
+        <#--<form class="form-inline my-2 my-lg-0">-->
+            <#--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+            <#--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">查询</button>-->
+        <#--</form>-->
         <ul class="navbar navbar-right" >
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal" aria-disabled="true">我的消息 <span class="badge badge-primary badge-pill">${(session.notifications?size)!0}</span></a>
+            </li>
             <li class="nav-item dropdown">
 
-                   <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       ${(session.user.NAME)!'未登录'}
-                   </a>
+                <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ${(session.user.NAME)!'未登录'}
+                </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/myMes">个人主页</a>
@@ -55,6 +69,38 @@
         </ul>
     </div>
 </nav>
+
+<div class="modal fade overflow-auto" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-left: 30%;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">我的消息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    <#if session.notifications??>
+                        <#list session.notifications as notification>
+                               <li class="list-group-item">
+                                   <span>${(notification.NOTIFER_NAME)!}</span>
+                                   <span><#if notification.TYPE == 1>   发起了提问: <#else > 回复了:</#if></span>
+                                   <span>${(notification.OUTER_TITLE)!''}</span><br>
+                                   回复日期：<span class="text-right">${(notification.GMT_CREATED)!''}</span>
+                               </li>
+                        </#list>
+                    </#if>
+
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->

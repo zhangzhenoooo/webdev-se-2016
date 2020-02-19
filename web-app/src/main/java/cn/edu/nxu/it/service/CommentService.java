@@ -15,7 +15,7 @@ public class CommentService {
 
     public List<CommentDTO> initComment(Long commentId, Integer type){
         String sql  ="SELECT * FROM t_comment WHERE PARENTID = ? AND TYPE =? ";
-        List<Comment> comments = Comment.dao.find(sql,commentId, CommentTypeEnum.COMMNET_COMMENT.getType());
+        List<Comment> comments = Comment.dao.find(sql,commentId, type);
 
         if (comments.size() == 0) {
             return new ArrayList<>();
@@ -27,7 +27,7 @@ public class CommentService {
 
 
         // 获取评论人并转换为 Map
-        String sqlUser = "SELECT t_user.* FROM t_user INNER JOIN t_comment ON t_user.USERID = t_comment.COMMENTATOR WHERE t_comment.PARENTID =?  AND t_comment.TYPE = ?";
+        String sqlUser = "SELECT DISTINCT t_user.* FROM t_user INNER JOIN t_comment ON t_user.USERID = t_comment.COMMENTATOR WHERE t_comment.PARENTID =?  AND t_comment.TYPE = ?";
         List<User> users = User.dao.find(sqlUser,commentId,type);
         Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getUSERID(), user -> user));
 

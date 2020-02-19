@@ -91,7 +91,7 @@
                                 <!--回复-->
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <h4>
-                                        <span >${(comments?size)!}</span> 个回复
+                                        <span >${(comments?size)!0}</span> 个回复
                                     </h4>
                                     <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" >
@@ -99,12 +99,12 @@
                                             <div class="media">
                                                 <div class="media-left">
                                                     <a href="#">
-                                                        <img class="media-object img-rounded" src="${(comment.user.HEAD)!'/upload/user/default-avatar.png'}">${(comment.COMMENTATOR)!''}
+                                                        <img class="media-object img-rounded" src="/upload/user/head/${(comment.user.HEAD)!'/upload/user/head/default-avatar.png'}">
                                                     </a>
                                                 </div>
-                                                <div class="media-body" id="${'comment-body-'+comment.COMMENTID}" >
+                                                <div class="media-body" id="${'comment-body-'+comment.user.USERID}" >
                                                     <h5 class="media-heading">
-                                                        <span >username:${(comment.COMMENTATOR)!''}</span>
+                                                        <span >${(comment.user.NAME)!''}</span>
                                                     </h5>
                                                     <div >
                                                         ${(comment.CONTENT)!''}
@@ -113,7 +113,7 @@
                                                         <span class="glyphicon glyphicon-thumbs-up icon">点赞
                                                         </span>
                                                         <span  class="comment-icon">
-                                                            <img data-id="${comment.COMMENTID}"  onclick="collapseComments(this)" src="/images/icon/chat24.png" alt="" width="32" height="32" title="点击查看回复">
+                                                            <img data-id="${comment.COMMENTID}"   onclick="collapseComments(this)" src="/images/icon/chat24.png" alt="" width="32" height="32" title="点击查看回复">
                                                         </span>
                                                         <span class="glyphicon glyphicon-comment"></span>
                                                         <span >${(comment.COMMENT_COUNT)!0}</span>

@@ -15,37 +15,52 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <div class="card"    >
-                <div class="card-header" data-id="1" id="course-1"   onclick="collapseComments(this)">
-                    <h3>课程名称</h3>
-                </div>
-                <div class="card-body" data-id="table-1" id="table-1">
+            <#if courses?? && (courses?size >0)>
+                <#assign x = 0>
+                <#list courses as course>
+                    <#assign x = x+1>
+                          <div class="card"    >
+                              <div class="card-header" data-id="${(course.CLASSID)!''}" id="course-${(course.CLASSID)!''}"   onclick="collapseComments(this)">
+                                  <h3><span>${x}.&nbsp;</span>${(course.TITLE)}</h3>
+                              </div>
+                              <div class="card-body" data-id="table-${(course.CLASSID)!''}" id="table-${(course.CLASSID)!''}">
 
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">学生姓名</th>
-                            <th scope="col">加入时间</th>
-                            <th scope="col">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>
-                                <a class="btn btn-primary" href="#" role="button">详情</a>
-                                <a class="btn btn-primary" href="#" role="button">删除</a>
-                            </td>
-                        </tr>
+                                  <table class="table table-hover">
+                                      <thead>
+                                      <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">学生姓名</th>
+                                          <th scope="col">加入时间</th>
+                                          <th scope="col">操作</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <#if userClasses?? && (userClasses?size >0)>
+                                      <#assign i = 0>
+                                          <#list  userClasses as userClasse>
+                                          <#if course.CLASSID ==userClasse.CLASSID  >
+                                              <#assign i = i+1>
+                                                <tr>
+                                                    <th scope="row">${(1)!''}</th>
+                                                    <td>${(userClasse.USERNAME)!''}</td>
+                                                    <td>${(userClasse.GMT_CREATED)!''}</td>
+                                                    <td>
+                                                        <a class="btn btn-primary" href="#" role="button">详情</a>
+                                                        <a class="btn btn-primary" href="#" role="button">删除</a>
+                                                    </td>
+                                                </tr>
+                                          </#if>
+                                              <#assign i = 0>
+                                          </#list>
+                                      </#if>
+                                      </tbody>
+                                  </table>
+                                  <hr>
+                              </div>
+                          </div>
+                </#list>
+            </#if>
 
-                        </tbody>
-                    </table>
-                    <hr>
-                </div>
-            </div>
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">

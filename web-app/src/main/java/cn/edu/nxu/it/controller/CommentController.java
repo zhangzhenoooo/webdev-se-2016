@@ -2,14 +2,13 @@ package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
-import cn.edu.nxu.it.model.Catalogue;
-import cn.edu.nxu.it.model.Comment;
-import cn.edu.nxu.it.model.Course;
-import cn.edu.nxu.it.model.User;
+import cn.edu.nxu.it.Enum.NotifyTypeEnum;
+import cn.edu.nxu.it.model.*;
 import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.core.Controller;
 import com.jfinal.json.Json;
 import com.jfinal.kit.Kv;
+import com.jfinal.plugin.activerecord.Db;
 import com.sun.jmx.remote.internal.ClientCommunicatorAdmin;
 
 import java.util.ArrayList;
@@ -56,14 +55,25 @@ public class CommentController extends Controller {
                 comment.setGmtModified(System.currentTimeMillis());
                 comment.setCommentCount(0);
                 comment.save();
+                //添加通知
+                Notification notification = new Notification();
+                notification.setNOTIFER(user.getUSERID());
+                notification.setNotiferName(user.getNAME());
+                notification.setOUTERID(dbCourse.getCLASSID());
+                notification.setOuterTitle(dbCourse.getTITLE());
+                notification.setRECEIVER(dbCourse.getCREATOR());
+                notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
+                notification.setGmtCreated(System.currentTimeMillis());
+                notification.save();
+
                 result.set("success",true);
             }
 
         }
         if (type.equals(CommentTypeEnum.COMMNET_COMMENT.getType())) {
             //回复评论:2
-            Catalogue dbCatalogue = Catalogue.dao.findFirst("SELECT * FROM t_comment WHERE PARENTID = ?",parentId);
-            if (dbCatalogue ==null){
+            Comment dbComment = Comment.dao.findFirst("SELECT * FROM t_comment WHERE COMMENTID = ?",parentId);
+            if (dbComment ==null){
                 result.set("message","你所回复的内容已被删除！");
                 result.set("success",false);
             }else {
@@ -77,7 +87,18 @@ public class CommentController extends Controller {
                 comment.setGmtModified(System.currentTimeMillis());
                 comment.setCommentCount(0);
                 comment.save();
+                //添加通知
+                Notification notification = new Notification();
+                notification.setNOTIFER(user.getUSERID());
+                notification.setNotiferName(user.getNAME());
+                notification.setOUTERID(dbComment.getCOMMENTATOR());
+                notification.setOuterTitle(dbComment.getCONTENT());
+                notification.setRECEIVER(comment.getCOMMENTATOR());
+                notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
+                notification.setGmtCreated(System.currentTimeMillis());
+                notification.save();
                 result.set("success",true);
+                Db.update("UPDATE t_comment SET COMMENT_COUNT = COMMENT_COUNT +1  WHERE COMMENTID =?",parentId);//评论的评论数加一
             }
         }
         renderJson(result);

@@ -17,7 +17,7 @@
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h3 class="shadow-sm p-3 mb-5 bg-white rounded">个人主页</h3>
-          <hr >
+            <hr >
             <form class="shadow p-3 mb-5 bg-white rounded" >
                 <div class="form-group">
                     <label for="user.EMAIL">绑定的邮箱:</label>
@@ -35,11 +35,11 @@
                             class="selected"
                         >男
                         </#if>
-                       </option>
+                        </option>
                         <option value="=0" <#if !user.isSEX() >
                         class="selected"
                             >女
-                       </#if></option>
+                        </#if></option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -50,6 +50,35 @@
                 <button type="reset" class="btn btn-primary">取消</button>
 
             </form>
+            <h3>我的课程</h3>
+            <hr>
+            <#if courses??>
+                <div class="row">
+                        <#assign  i = 1>
+                    <#list courses as course>
+
+                                  <div class="col-sm-3">
+                                      <div class="card" style="width: 18rem;">
+                                          <img src="/upload/class/${course.HEAD}" class="card-img-top" alt="${(course.TITLE)!''}">
+                                          <div class="card-body">
+                                              <p class="card-text"><span></span>
+                                                  <a href="#">${(course.TITLE)!''}</a>
+                                              </p>
+                                              <p class="card-text"><span>课程简介：</span>${(course.DESCRIPTION)!''}</p>
+                                          </div>
+                                      </div>
+                                  </div>
+                        <#if i%4 == 0>
+                            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        </#if>
+                        <#assign  i = i+1>
+
+                    </#list>
+                </div>
+            </#if>
+
+
+
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
@@ -57,7 +86,7 @@
                 <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${(user.getNAME())!'匿名用户'}</h5>
-                 <p class="card-text">在帅的道路上越走越远...</p>
+                    <p class="card-text">在帅的道路上越走越远...</p>
                 </div>
             </div>
         <#--浏览历史记录-->
@@ -77,5 +106,8 @@
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "footer.ftl">
+</div>
 </body>
 </html>
