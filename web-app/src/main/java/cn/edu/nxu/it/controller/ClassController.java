@@ -10,11 +10,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.upload.UploadFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author zhangz
@@ -47,7 +43,7 @@ public class ClassController extends Controller {
         boolean result =  course.save();
         if (result){
             setAttr("message","添加成功");
-            redirect("class/publishClass");
+            redirect("/publishClass");
         }else {
             setAttr("message","添加失败");
             renderFreeMarker("class_publish.ftl");
@@ -71,7 +67,7 @@ public class ClassController extends Controller {
      * 添加章节信息(发布课程界面)
      */
     public  void  addCatalogue(){
-        UploadFile  file = getFile("catalogueUrl","class");
+        UploadFile  file = getFile("catalogueUrl","/class");
         Long courseID = getLong("classId");
         String title = get("catalogueTitle");
         Catalogue catalogue = new Catalogue();
@@ -108,7 +104,7 @@ public class ClassController extends Controller {
     public void myClass(){
         User user = (User) getSession().getAttribute("user");
         if (true){
-            List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL ");
+            List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL AND CREATOR = ? ",user.getUSERID());
             setAttr("courses",courses);
         }
         renderFreeMarker("my_class.ftl");

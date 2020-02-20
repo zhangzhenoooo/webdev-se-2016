@@ -1,18 +1,15 @@
 package cn.edu.nxu.it.Enum;
 
 public enum TestAnswerEnum {
-    SINGLE_CHOIC_A("A"),
-    SINGLE_CHOIC_B("B"),
-    SINGLE_CHOIC_C("C"),
-    SINGLE_CHOIC_D("D"),
+
     TRUE_OR_FALSE_TRUE(1),
     TRUE_OR_FALSE_FALSE(0),
 
     ;
 
-    private Object answer;
+    private Integer answer;
 
-    TestAnswerEnum(Object answer) {
+    TestAnswerEnum(Integer answer) {
         this.answer = answer;
     }
 
@@ -20,7 +17,7 @@ public enum TestAnswerEnum {
         return answer;
     }
 
-    public void setAnswer(Object answer) {
+    public void setAnswer(Integer answer) {
         this.answer = answer;
     }
 }

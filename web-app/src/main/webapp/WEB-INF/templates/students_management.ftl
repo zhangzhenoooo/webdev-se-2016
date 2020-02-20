@@ -45,8 +45,8 @@
                                                     <td>${(userClasse.USERNAME)!''}</td>
                                                     <td>${(userClasse.GMT_CREATED)!''}</td>
                                                     <td>
-                                                        <a class="btn btn-primary" href="#" role="button">详情</a>
-                                                        <a class="btn btn-primary" href="#" role="button">删除</a>
+                                                        <#--<a class="btn btn-primary" href="#" role="button">详情</a>-->
+                                                        <a class="btn btn-primary" href="deleteStudent?userId=${(userClasse.USERID)!}-classId=${(userClasse.CLASSID)!}" role="button">移出我的课程</a>
                                                     </td>
                                                 </tr>
                                           </#if>
@@ -74,11 +74,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
-          function  collapseComments(e) {
-              var id = e.getAttribute("data-id");
-              var table = $("#table-" + id);
-              table.toggle();
-          }
+
+        function  collapseComments(e) {
+            var id = e.getAttribute("data-id");
+            var table = $("#table-" + id);
+            table.toggle();
+        }
 
 </script>
 </body>

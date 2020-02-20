@@ -1,16 +1,12 @@
 package cn.edu.nxu.it.controller;
 
-import cn.edu.nxu.it.DTO.TestDTO;
 import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
-import cn.edu.nxu.it.model.Course;
-import cn.edu.nxu.it.model.Test;
-import cn.edu.nxu.it.model.Testline;
-import cn.hutool.json.JSONUtil;
+import cn.edu.nxu.it.aop.NeedLogin;
+import cn.edu.nxu.it.model.*;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Db;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import freemarker.template.utility.StringUtil;
+import com.jfinal.kit.Kv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +42,19 @@ public class TestController extends Controller {
         renderFreeMarker("test.ftl");
     }
 
+    @Before(NeedLogin.class)
     public void addTest(){
         keepPara("id");
         renderFreeMarker("add_test.ftl");
     }
+
     /**
      * 添加章节检测
      */
     public void  doAddTest(){
         Long catalogueId = getLong("CATALOGUEID");
         set("id",catalogueId);
+        Integer testId = getInt("TESTID");
         int type = getInt("TYPE");
         Test test ;
         if (type ==TestTypeEnum.SINGLE_CHOICE.getType()){
@@ -80,18 +79,21 @@ public class TestController extends Controller {
 
 
             String b = get("b");
+            testline.setTESTLINEID(null);
             testline.setDESCRIPTION(b);
             testline.setANSWER(answer);
             testline.setTESTID(test.getTESTID());
             testline.save();
 
             String c = get("c");
+            testline.setTESTLINEID(null);
             testline.setDESCRIPTION(c);
             testline.setANSWER(answer);
             testline.setTESTID(test.getTESTID());
             testline.save();
 
             String d = get("d");
+            testline.setTESTLINEID(null);
             testline.setDESCRIPTION(d);
             testline.setANSWER(answer);
             testline.setTESTID(test.getTESTID());
@@ -101,14 +103,14 @@ public class TestController extends Controller {
 //            判断题:3
             test = new Test();
             String description = get("3_DESCRIPTION");
-            Object answer = get("3_ANSWER");
+            String answer = get("3_ANSWER");
             test.setDESCRPTION(description);
             test.setCATALOGUEID(catalogueId);
             test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
             test.setSCORE(0);
-            if (TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer().equals(answer) ){
+            if (TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer().equals(answer) || TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer() ==answer ){
                 test.setANSWER((String) TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer());
-            }else if (TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer().equals(answer)){
+            }else if (TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer().equals(answer) || TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer() ==answer){
                 test.setANSWER((String) TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer());
             }
             test.save();
@@ -140,7 +142,105 @@ public class TestController extends Controller {
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("trueOrFalses",tests_SUBJECTIVE);
-
         renderFreeMarker("add_test.ftl");
     }
+
+
+
+    /**
+     *
+     * @description 将测试添加到数据库
+     * @author zhangz
+     * @date 2020:02:20 15:34:35
+     * @return null
+     **/
+    public  void  doAnswer(){
+        Long testId = getLong("testId");
+        String answer = get("answer");
+        Integer type = getInt("type");
+        User user = (User) getSession().getAttribute("user");
+        Answer dbAnswer = Answer.dao.findFirst("SELECT * FROM t_answer WHERE TESTID = ? AND CREATOR = ?",testId,user.getUSERID());
+        Kv result  = Kv.create();
+        if (dbAnswer != null ){
+            //    修改
+            if (answer == null || "".equals(answer)){
+                dbAnswer.delete();
+            }else {
+                dbAnswer.setANSWER(answer);
+                dbAnswer.setGmtCreated(System.currentTimeMillis());
+                boolean affectRow = dbAnswer.update();
+                if (affectRow ){
+                    result.set("success",true);
+                }else {
+                    result.set("success",true);
+                }
+            }
+
+        }else {
+            //    插入
+            Answer inserAnswer = new Answer();
+            inserAnswer.setTESTID(testId);
+            inserAnswer.setANSWER(answer);
+            inserAnswer.setCREATOR(user.getUSERID());
+            inserAnswer.setGmtCreated(System.currentTimeMillis());
+            inserAnswer.setTYPE(type);
+            boolean affectRow = inserAnswer.save();
+            if (affectRow){
+                result.set("success",true);
+            }else {
+                result.set("success",false);
+            }
+        }
+        renderJson(result);
+        return;
+    }
+
+    /**
+     *
+     * @description 根据id获取test的信息
+     * @author zhangz
+     * @date 2020:02:20 22:01:40
+     * @return
+     **/
+    public void getTest(){
+        Long testId = getLong("testId");
+        Integer type = getInt("type");
+        Test dbTest = Test.dao.findFirst("SELECT * FROM t_test WHERE TESTID = ?", testId);
+        Kv resulet = Kv.create();
+        if (dbTest == null){
+            resulet.set("success",false);
+            set("message","该试题已经被删除了");
+            renderJson(resulet);
+            return;
+        }
+        if (dbTest.getTYPE() == TestTypeEnum.SINGLE_CHOICE.getType()){
+            //单选
+            resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("answer",dbTest.getANSWER());
+            resulet.set("success",true);
+            resulet.set("testId",dbTest.getTESTID());
+            List<Testline> dbTestlines = Testline.dao.find("SELECT * FROM t_testline WHERE TESTID = ?", testId);
+            String[] strings = {"a","b","c","d","e","f,","g"};
+            int i = 0;
+           for (Testline testline:dbTestlines){
+               resulet.set(strings[i],testline.getDESCRIPTION());
+                 i++;
+           }
+
+        }else if (dbTest.getTYPE() == TestTypeEnum.TRUE_OR_FALSE.getType()){
+            //判断
+            resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("answer",dbTest.getANSWER());
+            resulet.set("success",true);
+            resulet.set("testId",dbTest.getTESTID());
+        }else  if (dbTest.getTYPE() == TestTypeEnum.SUBJECTIVE.getType()){
+//            主观题
+            resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("answer",dbTest.getANSWER());
+            resulet.set("success",true);
+            resulet.set("testId",dbTest.getTESTID());
+        }
+        renderJson(resulet);
+    }
+
 }

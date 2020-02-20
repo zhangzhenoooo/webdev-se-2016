@@ -1,7 +1,6 @@
 package cn.edu.nxu.it.service;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
-import cn.edu.nxu.it.Enum.CommentTypeEnum;
 import cn.edu.nxu.it.model.Comment;
 import cn.edu.nxu.it.model.User;
 

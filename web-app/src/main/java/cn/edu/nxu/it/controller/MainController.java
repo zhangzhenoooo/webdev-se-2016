@@ -13,6 +13,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.ActiveRecordException;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 
 import java.util.List;
@@ -192,6 +193,20 @@ public class MainController extends Controller {
         set("userClasses",userClasses) ;
         set("courses",courses) ;
         renderFreeMarker("students_management.ftl");
+    }
+
+    /**
+     *
+     * @description 删除学生
+     * @author zhangz
+     * @date 2020:02:20 19:31:32
+     * @return
+     **/
+    public void deleteStudent(){
+        Long userId = getLong("userId");
+        Long classId = getLong("classId");
+        Db.delete("DELETE FROM t_user_class WHERE CLASSID = ? AND USERID =?",classId,userId);
+        studentManagement();
     }
 
 }

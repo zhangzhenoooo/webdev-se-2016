@@ -14,7 +14,7 @@
 <div class="container-fluid main">
     <div class="row">
         <!--左边-->
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 " style="padding-left: 10%;padding-right: 10%;padding-top: 10px">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="padding-left: 20%;padding-right: 20%;padding-top: 10px">
             <h3 class="text-center">注册</h3>
             <br>
             <#--表单的错误提示-->
@@ -88,10 +88,7 @@
             </form>
 
         </div>
-        <!--右边-->
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3 >推荐课程：</h3>
-        </div>
+
     </div>
 </div>
 <script src="/js/jquery-2.1.4.min.js"></script>

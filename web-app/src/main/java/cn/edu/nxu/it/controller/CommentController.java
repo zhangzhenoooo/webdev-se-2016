@@ -6,16 +6,10 @@ import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.model.*;
 import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.core.Controller;
-import com.jfinal.json.Json;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
-import com.sun.jmx.remote.internal.ClientCommunicatorAdmin;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CommentController extends Controller {
     /**

@@ -4,10 +4,10 @@ Table: t_answer
 -------------+--------------+------+-----+---------+---------
  ANSWERID    | BIGINT(19)   | NO   | PRI |         |         
  ANSWER      | VARCHAR(255) | YES  |     |         |         
- TESTID      | BIGINT(19)   | YES  |     |         |         
- TYPE        | BIT          | YES  |     |         | 1:单选题。2为其他（填空，判断，主观题）
  CREATOR     | BIGINT(19)   | YES  |     |         |         
+ TESTID      | BIGINT(19)   | YES  |     |         |         
  GMT_CREATED | BIGINT(19)   | YES  |     |         |         
+ TYPE        | INT(10)      | YES  |     |         |         
 -------------+--------------+------+-----+---------+---------
 
 Table: t_catalogue
@@ -36,19 +36,20 @@ Table: t_catalogueline
 ----------------+--------------+------+-----+---------+---------
 
 Table: t_comment
----------------+---------------+------+-----+---------+---------
- Field         | Type          | Null | Key | Default | Remarks 
----------------+---------------+------+-----+---------+---------
- COMMENTID     | BIGINT(19)    | NO   | PRI |         |         
- CLASSID       | BIGINT(19)    | YES  |     |         |         
- PARENTID      | BIGINT(19)    | NO   |     |         |         
- TYPE          | INT(10)       | NO   |     |         |         
- COMMENTATOR   | BIGINT(19)    | NO   |     |         |         
- GMT_CTRATED   | BIGINT(19)    | NO   |     |         |         
- GMT_MODIFIED  | BIGINT(19)    | NO   |     |         |         
- CONTENT       | VARCHAR(1024) | YES  |     |         |         
- COMMENT_COUNT | INT(10)       | YES  |     | 0       | 评论数     
----------------+---------------+------+-----+---------+---------
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ COMMENTID     | BIGINT(19)   | NO   | PRI |         |         
+ PARENTID      | BIGINT(19)   | YES  |     |         |         
+ CONTENT       | VARCHAR(255) | YES  |     |         |         
+ IS_DELETED    | BIGINT(19)   | YES  |     |         |         
+ CLASSID       | BIGINT(19)   | YES  |     |         |         
+ TYPE          | INT(10)      | YES  |     |         |         
+ COMMENTATOR   | BIGINT(19)   | YES  |     |         |         
+ GMT_CTRATED   | BIGINT(19)   | YES  |     |         |         
+ GMT_MODIFIED  | BIGINT(19)   | YES  |     |         |         
+ COMMENT_COUNT | INT(10)      | YES  |     |         |         
+---------------+--------------+------+-----+---------+---------
 
 Table: t_course
 --------------+---------------+------+-----+---------+---------
@@ -141,9 +142,9 @@ Table: t_test
 -------------+---------------+------+-----+---------+---------
  TESTID      | BIGINT(19)    | NO   | PRI |         |         
  CATALOGUEID | BIGINT(19)    | YES  |     |         |         
- PARENTID    | BIGINT(19)    | YES  |     |         | 如果是选择题的话，该值均为第一个选项的主键值
+ PARENTID    | BIGINT(19)    | YES  |     |         |         
  DESCRPTION  | VARCHAR(1000) | YES  |     |         | 考题描述    
- DESCRPTION2 | VARCHAR(255)  | YES  |     |         | 考题描述:选项 
+ DESCRPTION2 | VARCHAR(255)  | YES  |     |         |         
  TYPE        | INT(10)       | YES  |     |         | 客观题：0，主观题：1；多选题：2；判断题：3
  ANSWER      | VARCHAR(1000) | YES  |     |         |         
  SCORE       | INT(10)       | YES  |     |         | 分值      
@@ -186,7 +187,7 @@ Table: t_user_class
  GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
  DELETER      | INT(10)      | YES  |     |         |         
  IS_DELETED   | BIGINT(19)   | YES  |     |         |         
- CLASSNAME    | VARCHAR(255) | YES  |     |         |         
  USERNAME     | VARCHAR(255) | YES  |     |         |         
+ CLASSNAME    | VARCHAR(255) | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 

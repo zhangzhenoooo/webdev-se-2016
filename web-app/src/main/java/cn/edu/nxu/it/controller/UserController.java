@@ -1,12 +1,15 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.CommentDTO;
+import cn.edu.nxu.it.Enum.CommentTypeEnum;
+import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
-import cn.edu.nxu.it.model.Catalogue;
-import cn.edu.nxu.it.model.Course;
-import cn.edu.nxu.it.model.User;
-import cn.edu.nxu.it.model.UserClass;
+import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.Kv;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 import java.util.List;
@@ -93,7 +96,7 @@ public class UserController  extends Controller {
      * @date 2020:02:19 13:46:25
      * @return null
      **/
-    public void courseMes(){
+    public void classMes(){
         Long courseId = getLong("id");
         Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",courseId);
         if (course == null){
@@ -108,4 +111,36 @@ public class UserController  extends Controller {
         set("catalogues",catalogues);
         renderFreeMarker("class_mes.ftl");
     }
+
+    /**
+     * 进入我的课程界面
+     */
+    @Before(NeedLogin.class)
+    public void myClass(){
+        User user = (User) getSession().getAttribute("user");
+        if (true){
+            List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL AND CREATOR = ? ",user.getUSERID());
+            setAttr("courses",courses);
+        }
+        renderFreeMarker("my_class.ftl");
+
+    }
+
+public void markRead(){
+    Long notificationId = getLong("NOTIFICATIONID");
+    User user = (User) getSession().getAttribute("user");
+    Kv reslut = Kv.create();
+    if (notificationId ==0){
+        Db.delete("DELETE FROM   t_notification WHERE   RECEIVER =?",user.getUSERID());
+        reslut.set("success",true);
+    }else {
+        Db.delete("DELETE FROM   t_notification WHERE RECEIVER  =? AND NOTIFICATIONID=?",user.getUSERID(),notificationId);
+        reslut.set("success",true);
+    }
+    List<Notification> notifications = Notification.dao.find("SELECT * FROM t_notification WHERE RECEIVER = ?", user.getUSERID());
+    reslut.set("count",notifications.size());
 }
+
+
+}
+
