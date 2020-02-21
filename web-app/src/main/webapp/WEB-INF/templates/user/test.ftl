@@ -26,6 +26,7 @@
                     <#if singleChoices?? && (singleChoices?size >0)>
                         <#list  singleChoices as singleChoice>
                         <#--题目描述-->
+                        <br>
                              <h5 class="card-title"><span>${(x)}.</span>${(singleChoice.DESCRPTION)!''}<span class="float-right">(5分)</span></h5>
                             <#if singleChoicelines?? &&(singleChoicelines?size >0) >
                                 <#assign  i = 0>
@@ -40,6 +41,7 @@
                                 </#list>
                             </#if>
                             <#assign x = x +1>
+                        <#--<br>-->
                              <a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-delete-${(singleChoice.TESTID)!''}">删除</a>
                              <a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-modify-${(singleChoice.TESTID)!''}">修改</a>
 
@@ -81,7 +83,7 @@
                                 <#assign i = i+1>
                                  <tr>
                                      <th scope="row">${i}</th>
-                                     <td>${(trueOrFalse.DESCRIPTOPN)!''}</td>
+                                     <td>${(trueOrFalse.DESCRPTION)!''}</td>
                                      <td>
 
                                          <div class="form-check form-check-inline">

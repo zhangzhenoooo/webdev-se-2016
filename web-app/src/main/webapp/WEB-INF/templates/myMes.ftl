@@ -18,10 +18,10 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h3 class="shadow-sm p-3 mb-5 bg-white rounded">个人主页</h3>
             <hr >
-            <form class="shadow p-3 mb-5 bg-white rounded" >
+            <form class="shadow p-3 mb-5 bg-white rounded" method="post" action="" >
                 <div class="form-group">
                     <label for="user.EMAIL">绑定的邮箱:</label>
-                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp">
+                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" disabled>
                     <small id="emailHelp" class="form-text text-muted">邮箱是登录账号哦，保存着个人信息。请不要随意更改哦</small>
                 </div>
                 <div class="form-group">
@@ -59,10 +59,10 @@
 
                                   <div class="col-sm-3">
                                       <div class="card" style="width: 18rem;">
-                                          <img src="/upload/class/${course.HEAD}" class="card-img-top" alt="${(course.TITLE)!''}">
+                                          <img src="/upload/class/${(course.HEAD)!''}" class="card-img-top" alt="${(course.TITLE)!''}">
                                           <div class="card-body">
                                               <p class="card-text"><span></span>
-                                                  <a href="#">${(course.TITLE)!''}</a>
+                                                  <a href="/user/classMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
                                               </p>
                                               <p class="card-text"><span>课程简介：</span>${(course.DESCRIPTION)!''}</p>
                                           </div>

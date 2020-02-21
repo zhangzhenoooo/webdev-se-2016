@@ -2,6 +2,7 @@ package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
+import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
 import cn.edu.nxu.it.service.CommentService;
@@ -9,6 +10,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.upload.UploadFile;
+import net.sf.ehcache.search.expression.Not;
 
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ClassController extends Controller {
         boolean result =  course.save();
         if (result){
             setAttr("message","添加成功");
-            redirect("/publishClass");
+            redirect("/class/publishClass");
         }else {
             setAttr("message","添加失败");
             renderFreeMarker("class_publish.ftl");
@@ -88,6 +90,28 @@ public class ClassController extends Controller {
             if (affectedRow){
                 set("message","添加成功");
                 set("success",true);
+                //添加消息
+                Course course = Course.dao.findFirst("SELECT * FROM t_course WHERR CLASSID = ?",catalogue.getCLASSID());
+                List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
+                Notification notification ;
+                for (UserClass userClass : userClasses){
+                    notification = new Notification();
+                    notification.setOUTERID(course.getCLASSID());
+                    notification.setGmtCreated(System.currentTimeMillis());
+                    notification.setTYPE(NotifyTypeEnum.NOTIFY_CATALOGUE.getType());
+                    notification.setRECEIVER(userClass.getUSERID());
+                    notification.setOuterTitle(course.getTITLE());
+                    User user = (User) getSession().getAttribute("user");
+                    notification.setNotiferName(user.getNAME());
+                    notification.setNOTIFER(user.getUSERID());
+                    Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
+                    if (dbNotification == null ){
+                        //当没有消息的时候写入，避免重复消息
+                        notification.save();
+                    }
+                    notification.save();
+                }
+
             }else {
                 set("message","添加失败");
                 set("success",false);
@@ -136,12 +160,12 @@ public class ClassController extends Controller {
         Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",id);
         String sql = "SELECT * FROM t_catalogue WHERE CLASSID = ? ORDER BY GMT_CREATED DESC";
         List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
-        String sqlTest = "SELECT  t_test.*  FROM t_test INNER JOIN t_catalogue ON t_catalogue.CATALOUGEID = t_test.CATALOGUEID INNER JOIN t_course ON t_course.CLASSID = t_catalogue.CLASSID WHERE t_course.CLASSID = ?";
-        List<Test> tests = Test.dao.find(sqlTest,id);
+        String sqlTest = "SELECT DISTINCT t_catalogue.* FROM t_catalogue INNER JOIN t_test ON t_catalogue.CATALOUGEID = t_test.CATALOGUEID  WHERE t_catalogue.CLASSID =?";
+        List<Catalogue> tests = Catalogue.dao.find(sqlTest,course.getCLASSID());
         List<CommentDTO> comments = commentService.initComment(id,CommentTypeEnum.COMMENT_CLASS.getType());
         set("course", course);
         set("catalogues", catalogues);
-        set("tests",tests);
+        set("CataloguetTests",tests);
         set("comments",comments);
         renderFreeMarker("class_mes.ftl");
 
@@ -163,6 +187,19 @@ public class ClassController extends Controller {
         set("catalogue",catalogue);
         set("comments",commentDTOS);
         renderFreeMarker("class_catalogue.ftl");
+
+
+    }
+
+    public void  downLoadFile(){
+        Long catalogueId = getLong("id");
+        Catalogue catalogue = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE  CATALOUGEID =  ?", catalogueId);
+       String oldFileName = catalogue.getURL();
+        String type = oldFileName.substring( oldFileName.lastIndexOf("."));
+        String newFileName = catalogue.getTITLE()+type;
+        renderFile(catalogue.getURL(),newFileName);
+        renderFile("class/"+catalogue.getURL());
+
     }
 
 

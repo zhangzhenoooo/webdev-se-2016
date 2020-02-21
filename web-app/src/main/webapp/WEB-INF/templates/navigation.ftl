@@ -41,7 +41,7 @@
                     <a class="dropdown-item" href="/user/selectCourse">选课</a>
                     <a class="dropdown-item" href="/user/myClass">我的课程</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">我的任务</a>
+                    <a class="dropdown-item" href="#">我的任务(选做)</a>
                 </div>
             </li>
         </ul>

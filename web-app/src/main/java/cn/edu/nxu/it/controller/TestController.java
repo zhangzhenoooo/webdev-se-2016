@@ -1,5 +1,6 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
@@ -7,6 +8,7 @@ import cn.edu.nxu.it.model.*;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
+import com.jfinal.plugin.activerecord.Db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +44,123 @@ public class TestController extends Controller {
         renderFreeMarker("test.ftl");
     }
 
+
     @Before(NeedLogin.class)
     public void addTest(){
+        Integer catalogueId = getInt("id");
         keepPara("id");
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+
+        //        装载试题
+        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
+
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
         renderFreeMarker("add_test.ftl");
     }
 
     /**
-     * 添加章节检测
+     * 更新章节检测
      */
-    public void  doAddTest(){
+    public void  updateTest(){
+        Long catalogueId = getLong("CATALOGUEID");
+        set("id",catalogueId);
+        int type = getInt("TYPE");
+        Long testId = getLong("TESTID");
+
+        Test test  = Test.dao.findFirst("SELECT * FROM t_test WHERE TESTID = ?",testId) ;
+        if (type ==TestTypeEnum.SINGLE_CHOICE.getType()){
+            //选择题:2
+            String description = get("2_DESCRIPTION");
+            String answer = get("2_ANSWER");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
+            test.setANSWER(answer);
+            test.update();
+
+            List<Testline> testlines = Testline.dao.find("SELECT * FROM t_testline  WHERE TESTID = ?", testId);
+            List<String> descriptions = new ArrayList<>();
+            descriptions.add(get("a"));
+            descriptions.add(get("b"));
+            descriptions.add(get("c"));
+            descriptions.add(get("d"));
+            int i = 0;
+            for (Testline testline :testlines){
+                testline.setDESCRIPTION(descriptions.get(i));
+                testline.setANSWER(answer);
+                testline.update();
+                i++;
+            }
+        }
+        if (type == TestTypeEnum.TRUE_OR_FALSE.getType()){
+//            判断题:3
+            String description = get("3_DESCRIPTION");
+            String answer = get("3_ANSWER");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
+
+                test.setANSWER(answer);
+
+            test.update();
+
+        }
+        if (type == TestTypeEnum.SUBJECTIVE.getType()){
+            //主观题:1
+            String description = get("1_DESCRIPTION");
+            String answer = get("1_ANSWER");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.SUBJECTIVE.getType());
+            test.setANSWER(answer);
+            test.update();
+        }
+        Course course = Course.dao.findById(catalogueId);//>???????????????
+
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+
+        //        装载试题
+        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
+
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+        renderFreeMarker("test.ftl");
+    }
+
+    /**
+     *
+     * @description 添加测试题
+     * @author zhangz
+     * @date 2020:02:21 15:48:24
+     * @return
+     **/
+    public void doAddTest(){
         Long catalogueId = getLong("CATALOGUEID");
         set("id",catalogueId);
         Integer testId = getInt("TESTID");
@@ -128,7 +237,28 @@ public class TestController extends Controller {
             test.setANSWER(answer);
             test.save();
         }
-        Course course = Course.dao.findById(catalogueId);//>???????????????
+        //添加消息
+        Course course = Course.dao.findFirst("SELECT * FROM t_course WHERR CLASSID = ?",catalogueId);
+        List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
+        Notification notification ;
+        for (UserClass userClass : userClasses){
+
+            notification = new Notification();
+            notification.setOUTERID(course.getCLASSID());
+            notification.setGmtCreated(System.currentTimeMillis());
+            notification.setTYPE(NotifyTypeEnum.NOTIFY_TEST.getType());
+            notification.setRECEIVER(userClass.getUSERID());
+            notification.setOuterTitle(course.getTITLE());
+            User user = (User) getSession().getAttribute("user");
+            notification.setNotiferName(user.getNAME());
+            notification.setNOTIFER(user.getUSERID());
+            Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
+           if (dbNotification == null ){
+               //当没有消息的时候写入，避免重复消息
+               notification.save();
+           }
+        }
+
         List<Test> tests_SINGLE_CHOICE ; //选择题
         List<Test> tests_GAP_FILLING ; //填空题
         List<Test> tests_TURE_OR_FALSE; //判断题
@@ -143,6 +273,7 @@ public class TestController extends Controller {
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("trueOrFalses",tests_SUBJECTIVE);
         renderFreeMarker("add_test.ftl");
+
     }
 
 
@@ -216,26 +347,29 @@ public class TestController extends Controller {
         if (dbTest.getTYPE() == TestTypeEnum.SINGLE_CHOICE.getType()){
             //单选
             resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("catalogueId",dbTest.getCATALOGUEID());
             resulet.set("answer",dbTest.getANSWER());
             resulet.set("success",true);
             resulet.set("testId",dbTest.getTESTID());
             List<Testline> dbTestlines = Testline.dao.find("SELECT * FROM t_testline WHERE TESTID = ?", testId);
             String[] strings = {"a","b","c","d","e","f,","g"};
             int i = 0;
-           for (Testline testline:dbTestlines){
-               resulet.set(strings[i],testline.getDESCRIPTION());
-                 i++;
-           }
+            for (Testline testline:dbTestlines){
+                resulet.set(strings[i],testline.getDESCRIPTION());
+                i++;
+            }
 
         }else if (dbTest.getTYPE() == TestTypeEnum.TRUE_OR_FALSE.getType()){
             //判断
             resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("catalogueId",dbTest.getCATALOGUEID());
             resulet.set("answer",dbTest.getANSWER());
             resulet.set("success",true);
             resulet.set("testId",dbTest.getTESTID());
         }else  if (dbTest.getTYPE() == TestTypeEnum.SUBJECTIVE.getType()){
 //            主观题
             resulet.set("description",dbTest.getDESCRPTION());
+            resulet.set("catalogueId",dbTest.getCATALOGUEID());
             resulet.set("answer",dbTest.getANSWER());
             resulet.set("success",true);
             resulet.set("testId",dbTest.getTESTID());

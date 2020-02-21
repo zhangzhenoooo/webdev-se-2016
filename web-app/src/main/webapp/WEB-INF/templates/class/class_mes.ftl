@@ -50,14 +50,16 @@
                         <blockquote class="blockquote mb-0">
                         <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
                         <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                            <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
+                            <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 300px;">
                                         <#list catalogues as catalogue>
                                             <li class="list-group-item">
                                                 <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
                                                 &nbsp; <button type="button" class="btn btn-primary float-right">
                                                 <a href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课后测试</a>
                                             </button>
-                                                &nbsp;<button type="button" class="btn btn-primary float-right">课件下载</button>
+                                                &nbsp;<button type="button" class="btn btn-primary float-right">
+                                                <a href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课件下载</a>
+                                            </button>
                                                 &nbsp;   <button type="button" class="btn btn-primary float-right">
                                                 <a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>
                                             </button>&nbsp;
@@ -171,25 +173,25 @@
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 ">
-            <div class="row p-2">
-            <#--最新动态-->
-                <h3>最新动态</h3>
-                <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <blockquote class="blockquote mb-0">
-                    <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-                    <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                        <ul class="list-group list-group-flush ">
-                        <#--10 pis-->
-                            <li class="list-group-item">第一章 ：Cras justo odio</li>
-                            <li class="list-group-item">第二章：Dapibus ac facilisis in</li>
-                            <li class="list-group-item">第三章：Morbi leo risus</li>
-                            <li class="list-group-item">第四章：Porta ac consectetur ac</li>
-                            <li class="list-group-item">第五章：Vestibulum at eros</li>
-                        </ul>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="row mt-5">
+            <#--<div class="row p-2">-->
+            <#--&lt;#&ndash;最新动态&ndash;&gt;-->
+                <#--<h3>最新动态</h3>-->
+                <#--<div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                    <#--<blockquote class="blockquote mb-0">-->
+                    <#--&lt;#&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>&ndash;&gt;-->
+                    <#--&lt;#&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;-->
+                        <#--<ul class="list-group list-group-flush ">-->
+                        <#--&lt;#&ndash;10 pis&ndash;&gt;-->
+                            <#--<li class="list-group-item">第一章 ：Cras justo odio</li>-->
+                            <#--<li class="list-group-item">第二章：Dapibus ac facilisis in</li>-->
+                            <#--<li class="list-group-item">第三章：Morbi leo risus</li>-->
+                            <#--<li class="list-group-item">第四章：Porta ac consectetur ac</li>-->
+                            <#--<li class="list-group-item">第五章：Vestibulum at eros</li>-->
+                        <#--</ul>-->
+                    <#--</blockquote>-->
+                <#--</div>-->
+            <#--</div>-->
+            <div class="row ">
                 <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12" style="max-height: 600px;min-height: 400px;">
                     <div class="card-header">
                         课后习题
@@ -199,24 +201,24 @@
                         <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
                         <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
                             <ul class="list-group list-group-flush">
-                                <#list tests as test>
-                                    <a href="#">  <li class="list-group-item">${(test.DESCRPTION)!''}</li></a>
+                                <#list CataloguetTests as CataloguetTest>
+                                    <a href="/test/test?id=${(CataloguetTest.CATALOUGEID)!''}">  <li class="list-group-item">${(CataloguetTest.TITLE)!''}&nbsp;章节测试</li></a>
                                 </#list>
 
                             </ul>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <#--<nav aria-label="Page navigation example">-->
+                                <#--<ul class="pagination justify-content-end">-->
+                                    <#--<li class="page-item disabled">-->
+                                        <#--<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+                                    <#--</li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                                    <#--<li class="page-item">-->
+                                        <#--<a class="page-link" href="#">Next</a>-->
+                                    <#--</li>-->
+                                <#--</ul>-->
+                            <#--</nav>-->
                         </blockquote>
                     </div>
                 </div>

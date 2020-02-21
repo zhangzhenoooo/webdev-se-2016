@@ -143,6 +143,14 @@ public class MainController extends Controller {
         set("courses",courses);
         renderFreeMarker("myMes.ftl");
     }
+    public void  updateMyMes(){
+        User user = getModel(User.class);
+        User loginUser = (User) getSession().getAttribute("user");
+        if (loginUser.getEMAIL() == user.getEMAIL()){
+            user.update();
+        }
+        myMes();
+    }
 
     //跳转到注册页面
     public void register(){
@@ -184,6 +192,39 @@ public class MainController extends Controller {
         }
     }
 
+    /**
+     *
+     * @description 跳转到修改密码
+     * @author zhangz
+     * @date 2020:02:21 21:33:58
+     * @return
+     **/
+    @Before(NeedLogin.class)
+    public void updatePassword(){
+        renderFreeMarker("update_password.ftl");
+    }
+
+    public void doUpdatePassword(){
+        User user = (User) getSession().getAttribute("user");
+        String oldPassword = get("oldPassword");
+        String newPassword = get("newPassword");
+        String newPassword2 = get("newPassword2");
+        if(!user.getPASSWORD().equals(oldPassword)){
+            set("message","原密码错误");
+            renderFreeMarker("update_password.ftl");
+        }
+        else if (!newPassword.equals(newPassword2)){
+            set("message","两次密码错误");
+            renderFreeMarker("update_password.ftl");
+        }else {
+            user.setPASSWORD(newPassword);
+            user.update();
+            myMes();
+        }
+
+    }
+
+
     @Before(NeedLogin.class)
     public void studentManagement(){
         User user = (User) getSession().getAttribute("user");
@@ -208,5 +249,7 @@ public class MainController extends Controller {
         Db.delete("DELETE FROM t_user_class WHERE CLASSID = ? AND USERID =?",classId,userId);
         studentManagement();
     }
+
+
 
 }

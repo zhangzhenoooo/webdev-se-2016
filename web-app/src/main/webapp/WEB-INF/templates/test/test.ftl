@@ -81,7 +81,7 @@
                                 <#assign i = i+1>
                                  <tr>
                                      <th scope="row">${i}</th>
-                                     <td>${(trueOrFalse.DESCRIPTOPN)!''}</td>
+                                     <td>${(trueOrFalse.DESCRPTION)!''}</td>
                                      <td>
 
                                          <div class="form-check form-check-inline">
@@ -119,7 +119,7 @@
                                 <#assign i=i+1>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span>${(subjective.DESCRPTION)!''}</label>
-                                    <textarea type="text" class="form-control" onblur="answerSubjective(this)" data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}" ></textarea>
+                                    <textarea type="text" class="form-control" onblur="answerSubjective(this)" data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}" >${(subjective.ANSWER)!''}</textarea>
                                     <a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>
                                     <a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>
 
@@ -127,7 +127,6 @@
                             </#list>
                         </#if>
                         <br>
-                        <button type="submit" class="btn btn-primary float-right mt-5">交卷</button>
                     </form>
                 </div>
             </div>
@@ -188,18 +187,18 @@
             </div>
             <div class="modal-body">
                 <#--选择题-->
-                    <form id="form_single_choice" method="post" action="doAddTest">
+                    <form id="form_single_choice" method="post" action="updateTest">
                         <div class="form-group">
-                            <label for="CATALOGUEID"></label>
-                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            <label for="CATALOGUEID2"></label>
+                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID2"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
-                            <label for="TESTID"></label>
-                            <input type="hidden" class="form-control" name="TESTID" id="TESTID"  >
+                            <label for="TESTID2"></label>
+                            <input type="text" class="form-control" name="TESTID" id="TESTID2"  >
                         </div>
                         <div class="form-group">
                             <label for="TYPE"></label>
-                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
+                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="2">
                         </div>
                         <div class="form-group">
                             <label for="2_DESCRIPTION">请输入问题描述：</label>
@@ -230,18 +229,18 @@
                         <button type="reset" class="btn btn-primary">重置</button>
                     </form>
                 <#--判断题-->
-                    <form id="form_true_or_false" method="post" action="doAddTest">
+                    <form id="form_true_or_false" method="post" action="updateTest">
                         <div class="form-group">
-                            <label for="CATALOGUEID"></label>
-                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            <label for="CATALOGUEID3"></label>
+                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID3"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
-                            <label for="TESTID"></label>
-                            <input type="hidden" class="form-control" name="TESTID" id="TESTID"  >
+                            <label for="TESTID3"></label>
+                            <input type="text" class="form-control" name="TESTID" id="TESTID3"  >
                         </div>
                         <div class="form-group">
                             <label for="TYPE"></label>
-                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="3">
+                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="3">
                         </div>
                         <div class="form-group">
                             <label for="3_DESCRIPTION">请将你的问题填入下列区域中：</label>
@@ -263,16 +262,16 @@
                 <#--主观题-->
                     <form id="form_subjective">
                         <div class="form-group">
-                            <label for="CATALOGUEID"></label>
-                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
+                            <label for="CATALOGUEID1"></label>
+                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
                             <label for="TESTID"></label>
-                            <input type="hidden" class="form-control" name="TESTID" id="TESTID"  >
+                            <input type="text" class="form-control" name="TESTID" id="TESTID1"  >
                         </div>
                         <div class="form-group">
                             <label for="TYPE"></label>
-                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
+                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="1">
                         </div>
                         <div class="form-group">
                             <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
@@ -304,45 +303,31 @@
 
   function getSinglChoice(e) {
       var  testId = e.getAttribute("data-id");
-      var catalogueId = $("#CATALOGUEID");
-      // var description = $("#2_DESCRIPTION");
-      // var a = $("#a");
-      // var b = $("#b");
-      // var c = $("#c");
-      // var d = $("#d");
-      // $("#form_single_choice").hide();
       $("#form_true_or_false").hide();
       $("#form_subjective").hide();
+      $("#form_single_choice").show();
       getTest(testId,2);
   }
 
   function getTrueOrFalse(e) {
       var  testId = e.getAttribute("data-id");
-      var catalogueId = $("#CATALOGUEID");
-      // var description = $("#3_DESCRIPTION");
-      // var ture = $("#inlineRadio1_true");
-      // var false = $("#inlineRadio_false");
       $("#form_single_choice").hide();
-      // $("#form_true_or_false").hide();
       $("#form_subjective").hide();
+      $("#form_true_or_false").show();
+
       getTest(testId,3);
 
   }
   function getSubjective(e) {
       var  testId = e.getAttribute("data-id");
-      var catalogueId = $("#CATALOGUEID");
-      // var description = $("#1_DESCRIPTION");
-      // var aswer = $("#1_ANSWER");
       $("#form_single_choice").hide();
+      $("#form_subjective").show();
       $("#form_true_or_false").hide();
-      // $("#form_subjective").hide();
-
       getTest(testId,1);
   }
 
   function  getTest(testId,type) {
-      $("#CATALOGUEID").val(testId);
-      $('#exampleModal').modal("toggle");;
+      $('#exampleModal').modal("toggle");
       $.ajax({
           type: 'post',
           url: '/test/getTest',
@@ -367,7 +352,8 @@
                       d.attr("value",data.d);
                       description.attr("value",data.description);
                       answer.attr("value",data.answer);
-                      $("#TESTID").val(data.testId);
+                      $("#TESTID2").val(data.testId);
+                      $("#CATALOGUEID2").val(data.catalogueId);
 
                   } else if (type == 3){
                       // 判断
@@ -377,12 +363,13 @@
                       var a_false = $("#inlineRadio_false");
                       description.val(data.description);
                       answer.attr("value",data.answer);
+                      $("#CATALOGUEID3").val(data.catalogueId);
                       if (data.answer) {
                           a_ture.prop("checked",'checked');
                       }else {
                           a_false.prop("checked",'checked');
                       }
-                      $("#TESTID").val(data.testId);
+                      $("#TESTID3").val(data.testId);
 
 
                   } else if (type ==1) {
@@ -391,7 +378,8 @@
                       var answer = $("#1_ANSWER");
                       description.val(data.description);
                       answer.val(data.answer);
-                      $("#TESTID").val(data.testId);
+                      $("#TESTID1").val(data.testId);
+                      $("#CATALOGUEID1").val(data.catalogueId);
 
                   }
               }else {

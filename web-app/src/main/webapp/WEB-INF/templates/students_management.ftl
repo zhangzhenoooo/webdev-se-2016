@@ -46,7 +46,7 @@
                                                     <td>${(userClasse.GMT_CREATED)!''}</td>
                                                     <td>
                                                         <#--<a class="btn btn-primary" href="#" role="button">详情</a>-->
-                                                        <a class="btn btn-primary" href="deleteStudent?userId=${(userClasse.USERID)!}-classId=${(userClasse.CLASSID)!}" role="button">移出我的课程</a>
+                                                        <a class="btn btn-primary" href="deleteStudent?userId=${(userClasse.USERID)!}&classId=${(userClasse.CLASSID)!}" role="button">移出我的课程</a>
                                                     </td>
                                                 </tr>
                                           </#if>

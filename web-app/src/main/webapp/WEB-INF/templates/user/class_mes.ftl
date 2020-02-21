@@ -62,6 +62,43 @@
                             </div>
                         </div>
                     </div>
+                    <#--章节目录-->
+                    <div class="card-header">
+                        章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                    </div>
+                    <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                        <blockquote class="blockquote mb-0">
+                        <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
+                        <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
+                            <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 400px;">
+                                        <#list catalogues as catalogue>
+                                            <li class="list-group-item">
+                                                <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
+                                                &nbsp; <button type="button" class="btn btn-primary float-right">
+                                                <a href="/user/test?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课后测试</a>
+                                            </button>
+                                                &nbsp;<button type="button" class="btn btn-primary float-right">
+                                                <a href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课件下载</a>
+                                            </button>
+                                            </li>
+                                        </#list>
+
+                            </ul>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </blockquote>
+                    </div>
 
                 </div>
             </div>

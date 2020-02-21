@@ -2,6 +2,7 @@ package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
+import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
@@ -12,6 +13,7 @@ import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -121,25 +123,76 @@ public class UserController  extends Controller {
         if (true){
             List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL AND CREATOR = ? ",user.getUSERID());
             setAttr("courses",courses);
+            List<Notification> notifications = Notification.dao.find("SELECT * FROM  t_notification WHERE RECEIVER = ? AND TYPE = ?", user.getUSERID(), NotifyTypeEnum.NOTIFY_COMMENT.getType());
+            set("notifications",notifications);
         }
         renderFreeMarker("my_class.ftl");
 
     }
 
-public void markRead(){
-    Long notificationId = getLong("NOTIFICATIONID");
-    User user = (User) getSession().getAttribute("user");
-    Kv reslut = Kv.create();
-    if (notificationId ==0){
-        Db.delete("DELETE FROM   t_notification WHERE   RECEIVER =?",user.getUSERID());
-        reslut.set("success",true);
-    }else {
-        Db.delete("DELETE FROM   t_notification WHERE RECEIVER  =? AND NOTIFICATIONID=?",user.getUSERID(),notificationId);
-        reslut.set("success",true);
+    public void markRead(){
+        Long notificationId = getLong("NOTIFICATIONID");
+        User user = (User) getSession().getAttribute("user");
+        Kv reslut = Kv.create();
+        if (notificationId ==0){
+            Db.delete("DELETE FROM   t_notification WHERE   RECEIVER =?",user.getUSERID());
+            reslut.set("success",true);
+        }else {
+            Db.delete("DELETE FROM   t_notification WHERE RECEIVER  =? AND NOTIFICATIONID=?",user.getUSERID(),notificationId);
+            reslut.set("success",true);
+        }
+        List<Notification> notifications = Notification.dao.find("SELECT * FROM t_notification WHERE RECEIVER = ?", user.getUSERID());
+        reslut.set("count",notifications.size());
+        renderJson(reslut);
     }
-    List<Notification> notifications = Notification.dao.find("SELECT * FROM t_notification WHERE RECEIVER = ?", user.getUSERID());
-    reslut.set("count",notifications.size());
-}
+
+/**
+ *
+ * @description 将课程从我的课程中移除
+ * @author zhangz
+ * @date 2020:02:21 18:45:55
+ * @return
+ **/
+    @Before(NeedLogin.class)
+    public void deleteClass(){
+        Long classId = getLong("id");
+        User user = (User) getSession().getAttribute("user");
+        Db.delete("DELETE  FROM t_user_class WHERE USERID  = ? AND CLASSID = ?",user.getUSERID(),classId);
+        myClass();
+    }
+
+
+    /**
+     * z章节检测
+     */
+    public void test(){
+        Integer catalogueId = getInt("id");
+        keepPara("id");
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+
+        //        装载试题
+        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
+
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+        renderFreeMarker("test.ftl");
+    }
+
+
 
 
 }

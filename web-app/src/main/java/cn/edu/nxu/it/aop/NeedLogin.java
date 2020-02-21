@@ -1,9 +1,13 @@
 package cn.edu.nxu.it.aop;
 
+import cn.edu.nxu.it.model.Notification;
+import cn.edu.nxu.it.model.User;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
+
+import java.util.List;
 
 /**
  * 登录拦截器，基本原理是判断session中是否存在用户名
@@ -25,6 +29,9 @@ protected void processUnlogin(Controller controller){
     public void intercept(Invocation invocation) {
         Controller controller = invocation.getController();
         if (controller.getSessionAttr("user") != null) {
+            User user = controller.getSessionAttr("user");
+            List<Notification> notifications = Notification.dao.find("SELECT * FROM t_notification WHERE RECEIVER = ?", user.getUSERID());
+            controller.setSessionAttr("notifications",notifications);
             invocation.invoke();
         } else {
 

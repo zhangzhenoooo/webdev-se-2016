@@ -95,7 +95,7 @@
                                    <td><a href="classMes?id=${(course.CLASSID)!''}" >${(course.TITLE)!''}</a></td>
                                    <td>${(course.DESCRIPTION)!''}</td>
                                    <td>
-                                       <button type="button" class="btn btn-success"><a href="addcatalogue?id=${(course.CLASSID)!}" style="color: white;">更新课件</a> </button>
+                                       <button type="button" class="btn btn-success"><a href="/user/deleteClass?id=${(course.CLASSID)!}" style="color: white;">移除</a> </button>
                                        <#--<button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>-->
                                    </td>
                                </tr>
@@ -106,15 +106,25 @@
                     <hr>
                     <div class="card">
                         <div class="card-header">
-                           <h3>最新消息:显示那些课程都有那些学生回答了测试：今天的</h3>
+                           <h4>最新消息：</h4>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <#if notifications ?? && (notifications?size > 0) >
+                            <#assign i = 1>
+                            <#list notifications as notification>
+                                <h5 class="card-title">
+                                    <span>${i} .&nbsp;</span>
+                                    <span>
+                                        你关注的<a href="#">${(notification.OUTER_TITLE)!}</a>课更新啦！
+                                    </span>
+                                </h5>
+                                <#assign i = i+1>
+                            </#list>
+                                <#else >
+                                  <h5 class="card-title">
+                                    你没有任何消息哦...
+                                  </h5>
+                            </#if>
                         </div>
                     </div>
 

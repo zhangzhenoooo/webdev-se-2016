@@ -8,7 +8,7 @@ package cn.edu.nxu.it.Enum;
 public enum  NotifyTypeEnum {
     NOTIFY_TEST(1),//老师发布了章节检测，提示学生
     NOTIFY_COMMENT(2),//回复了评论
-    NOTIFY_QUESTION(3),//学生对课程进行了提问，提醒老师去回复
+    NOTIFY_CATALOGUE(3),//更新了课件
 
     ;
     private Integer type;
