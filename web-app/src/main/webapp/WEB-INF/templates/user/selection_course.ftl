@@ -19,10 +19,10 @@
                 <h3 style="color: red;">${(message)!''}</h3>
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">课程名称</th>
-                    <th scope="col">课程描述</th>
-                    <th scope="col">操作</th>
+                    <th scope="col" width="5%">#</th>
+                    <th scope="col" width="20%">课程名称</th>
+                    <th scope="col" width="60%">课程描述</th>
+                    <th scope="col" width="10%">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,9 +32,11 @@
                 <tr>
                     <th scope="row">${(i)!}</th>
                     <td>
-                        <a href="courseMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
+                        <a href="/class/courseMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
                     </td>
-                    <td>${(course.DESCRIPTION)!''}</td>
+                    <td>
+                        <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(course.DESCRIPTION)!''} >${(course.DESCRIPTION)!''}</span>
+                    </td>
                     <td>
                         <a class="btn btn-primary" href="doSelect?id=${(course.CLASSID)!} ">选课</a>
                     </td>
@@ -58,6 +60,8 @@
                                 <#list selectedUserClasses as selectedUserClasse>
                                      <li class="list-group-item">
                                         <a href="classMes?id=${(selectedUserClasse.CLASSID)!''}">${(selectedUserClasse.CLASSNAME)!''}</a>
+                                         <button type="button" class="btn btn-danger float-right"><a href="/user/deleteSelectedClass?id=${(course.CLASSID)!}" style="color: white;">移除</a> </button>
+
                                      </li>
                                 </#list>
                         </#if>

@@ -18,14 +18,14 @@
         <form class="ui fluid form segment" id="login-form">
             <div class="field">
                 <div class="ui left icon input">
-                    <i class="user icon"></i>
-                    <input type="text" name="username" id="username"
+                    <img  src="/images/icon/user.png"  ></img>
+                    <input type="email" name="username" id="username" value="${(email)!''}"
                            placeholder="请输入用户名" autocomplete="off">
                 </div>
             </div>
             <div class="field">
                 <div class="ui left icon input">
-                    <i class="lock icon"></i>
+                    <img src="/images/icon/password.png"></img>
                     <input type="password" name="password" id="password"
                            placeholder="请输入密码">
                 </div>
@@ -33,7 +33,7 @@
             <div class="two fields">
                 <div class="eleven wide column field">
                     <div class="ui left icon input">
-                        <i class="yin yang icon"></i>
+                        <img class="yin yang icon" src="/images/icon/verification.png">
                         <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off">
                     </div>
                 </div>

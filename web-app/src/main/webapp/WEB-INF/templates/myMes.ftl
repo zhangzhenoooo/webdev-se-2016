@@ -59,12 +59,14 @@
 
                                   <div class="col-sm-3">
                                       <div class="card" style="width: 18rem;">
-                                          <img src="/upload/class/${(course.HEAD)!''}" class="card-img-top" alt="${(course.TITLE)!''}">
-                                          <div class="card-body">
+                                          <img src="/upload/class/${(course.HEAD)!''}" class="card-img-top" height="200px" alt="${(course.TITLE)!''}">
+                                          <div class="card-body"  style="height: 150px;">
                                               <p class="card-text"><span></span>
                                                   <a href="/user/classMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
                                               </p>
-                                              <p class="card-text"><span>课程简介：</span>${(course.DESCRIPTION)!''}</p>
+                                              <p class="card-text"><span>课程简介：</span>
+                                                  <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(course.DESCRIPTION)!''} >${(course.DESCRIPTION)!''}</span>
+                                              </p>
                                           </div>
                                       </div>
                                   </div>

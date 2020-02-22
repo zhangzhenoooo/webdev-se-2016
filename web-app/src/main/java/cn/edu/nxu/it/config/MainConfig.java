@@ -17,6 +17,7 @@ public class MainConfig extends JFinalConfig {
         //配置JFInal的开发模式
         me.setDevMode(true);
         me.setBaseUploadPath("upload/");
+        me.setBaseDownloadPath("upload/");
     }
 
     @Override

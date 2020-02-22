@@ -98,7 +98,7 @@ Table: t_history
  THING_NAME   | VARCHAR(255) | YES  |     |         |         
  GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
  GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
- TYPE         | INT(10)      | YES  |     |         | 1:课程章节；2测试
+ TYPE         | INT(10)      | YES  |     |         | 1:浏览课程章节/下载课件；2测试;3浏览课程
 --------------+--------------+------+-----+---------+---------
 
 Table: t_major
@@ -122,7 +122,7 @@ Table: t_notification
  OUTERID        | BIGINT(19)    | NO   |     |         | 问题/回复的id
  OUTER_TITLE    | VARCHAR(1000) | YES  |     |         | 问题名称    
  GMT_CREATED    | BIGINT(19)    | NO   |     |         |         
- TYPE           | INT(10)       | NO   |     | 0       | 1为发布了课件，2为评论，3为发布了章节测试
+ TYPE           | INT(10)       | NO   |     | 0       | 3为发布了课件，2为评论，1为发布了章节测
 ----------------+---------------+------+-----+---------+---------
 
 Table: t_question

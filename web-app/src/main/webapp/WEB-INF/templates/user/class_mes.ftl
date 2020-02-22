@@ -23,7 +23,7 @@
                 <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
                     <div class="row no-gutters">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <img height="200px" src="/upload/class/${(course.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="...">
+                            <img height="200px" src="/upload/class/${(course.HEAD)!'/upload/user/default_class_picture.jpg'}" class="card-img" alt="...">
                             <#--//保存课程的id-->
                             <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
                         </div>

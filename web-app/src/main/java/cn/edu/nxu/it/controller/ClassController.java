@@ -2,6 +2,7 @@ package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
+import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
@@ -32,12 +33,14 @@ public class ClassController extends Controller {
      */
     @Before(NeedLogin.class)
     public  void  doPublishClass(){
+        UploadFile file = getFile("class.HEAD","/class");
         Course course = getModel(Course.class);
         User user = (User) getSession().getAttribute("user");
 //        System.out.println("user.userid ================= "+ user.getUSERID());
         course.setCREATOR(user.getUSERID());
         course.setGmtCreated(System.currentTimeMillis());
         course.setGmtModified(System.currentTimeMillis());
+        course.setHEAD(file.getFileName());
         set("course",course);
         String sql = "SELECT * FROM t_catalogue WHERE CLASSID = ?";
         List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
@@ -45,8 +48,10 @@ public class ClassController extends Controller {
         boolean result =  course.save();
         if (result){
             setAttr("message","添加成功");
-            redirect("/class/publishClass");
+            set("course",course);
+            renderFreeMarker("class_publish.ftl");
         }else {
+            set("course",course);
             setAttr("message","添加失败");
             renderFreeMarker("class_publish.ftl");
         }
@@ -91,7 +96,7 @@ public class ClassController extends Controller {
                 set("message","添加成功");
                 set("success",true);
                 //添加消息
-                Course course = Course.dao.findFirst("SELECT * FROM t_course WHERR CLASSID = ?",catalogue.getCLASSID());
+                Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
                 List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
                 Notification notification ;
                 for (UserClass userClass : userClasses){
@@ -130,6 +135,9 @@ public class ClassController extends Controller {
         if (true){
             List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL AND CREATOR = ? ",user.getUSERID());
             setAttr("courses",courses);
+            String hotSql = "SELECT\n" + "a.*\n" + "FROM\n" + "t_course as  a\n" + "INNER JOIN \n" + "(\n" + "SELECT * ,COUNT(THINGID) AS  COUNT FROM t_history  GROUP BY THINGID\n" + ") b\n" + "ON a.CLASSID = b.THINGID AND a.IS_DELETE IS NULL \n" + "ORDER BY b.COUNT  DESC  LIMIT 10";
+            List<Course> hotCourses = Course.dao.find(hotSql);
+            set("hotCourses",hotCourses);
         }
         renderFreeMarker("my_class.ftl");
 
@@ -198,6 +206,17 @@ public class ClassController extends Controller {
         String type = oldFileName.substring( oldFileName.lastIndexOf("."));
         String newFileName = catalogue.getTITLE()+type;
         renderFile(catalogue.getURL(),newFileName);
+        User user = (User) getSession().getAttribute("user");
+        //添加浏览历史
+        History history = new History();
+        history.setCREATOR(user.getUSERID());
+        history.setCreatorName(user.getNAME());
+        history.setGmtCreated(System.currentTimeMillis());
+        history.setGmtModified(System.currentTimeMillis());
+        history.setTHINGID(catalogue.getCLASSID()); //历史记录里存储课程id，描述显示章节的标题
+        history.setThingName(catalogue.getTITLE()) ;
+        history.setTYPE(HistoryTypeEnum.HISTORY_CATALOGUE.getType());
+        history.save();
         renderFile("class/"+catalogue.getURL());
 
     }

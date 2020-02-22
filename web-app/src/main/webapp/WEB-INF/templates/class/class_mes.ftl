@@ -23,7 +23,7 @@
                 <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
                     <div class="row no-gutters">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <img src="/upload/class/${(course.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="...">
+                            <img src="/upload/class/${(course.HEAD)!'/upload/class/default_class_picture.jpg'}" class="card-img" alt="">
                             <#--//保存课程的id-->
                             <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
                         </div>
@@ -120,7 +120,8 @@
                                                         <span class="glyphicon glyphicon-comment"></span>
                                                         <span >${(comment.COMMENT_COUNT)!0}</span>
                                                   </span>
-                                                        <span class="float-right"> &nbsp;评论日期:2020-02-02   </span>
+                                                        <#assign dlong = (comment.GMT_CTRATED)!0?number * 1000 />
+                                                        <span class="float-right"> &nbsp;评论日期:${dlong?number_to_datetime}  </span>
                                                     </div>
                                                     <!--二级评论-->
                                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  collapse sub-comments"
@@ -149,12 +150,12 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <a href="#">
-                                                    <img class="media-object img-rounded" src="/upload/user/${(user.HEAD)!'default-avatar.png'}">
+                                                    <img class="media-object img-rounded" src="/upload/user/head/${(session.user.HEAD)!'default-avatar.png'}">
                                                 </a>
                                             </div>
                                             <div class="media-body">
                                                 <h5 class="media-heading">
-                                                    <span >${(user.NAME)!'匿名用户'}</span>
+                                                    <span >${(session.user.NAME)!'匿名用户'}</span>
                                                 </h5>
                                             </div>
                                         </div>

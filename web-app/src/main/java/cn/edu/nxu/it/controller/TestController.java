@@ -1,5 +1,6 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
@@ -280,7 +281,7 @@ public class TestController extends Controller {
 
     /**
      *
-     * @description 将测试添加到数据库
+     * @description 将测试添加到数据库(在答题的过程中，即回答一道题便保存一道)
      * @author zhangz
      * @date 2020:02:20 15:34:35
      * @return null
@@ -322,6 +323,17 @@ public class TestController extends Controller {
                 result.set("success",false);
             }
         }
+        //添加浏览历史
+        Catalogue catalogue = Catalogue.dao.findFirst("SELECT DISTINCT t_catalogue.* FROM t_catalogue INNER JOIN t_test ON t_test.CATALOGUEID = t_catalogue.CATALOUGEID WHERE t_test.TESTID = ?",testId);
+        History history = new History();
+        history.setCREATOR(user.getUSERID());
+        history.setCreatorName(user.getNAME());
+        history.setGmtCreated(System.currentTimeMillis());
+        history.setGmtModified(System.currentTimeMillis());
+        history.setTHINGID(catalogue.getCLASSID()); //历史记录里存储课程id，描述显示章节的标题
+        history.setThingName(catalogue.getTITLE()) ;
+        history.setTYPE(HistoryTypeEnum.HISTORY_TEST.getType());
+        history.save();
         renderJson(result);
         return;
     }
@@ -374,6 +386,18 @@ public class TestController extends Controller {
             resulet.set("success",true);
             resulet.set("testId",dbTest.getTESTID());
         }
+        //添加浏览历史
+        User user = (User) getSession().getAttribute("user");
+        Catalogue catalogue = Catalogue.dao.findFirst("SELECT DISTINCT t_catalogue.* FROM t_catalogue INNER JOIN t_test ON t_test.CATALOGUEID = t_catalogue.CATALOUGEID WHERE t_test.TESTID = ?",testId);
+        History history = new History();
+        history.setCREATOR(user.getUSERID());
+        history.setCreatorName(user.getNAME());
+        history.setGmtCreated(System.currentTimeMillis());
+        history.setGmtModified(System.currentTimeMillis());
+        history.setTHINGID(catalogue.getCLASSID()); //历史记录里存储课程id，描述显示章节的标题
+        history.setThingName(catalogue.getTITLE()) ;
+        history.setTYPE(HistoryTypeEnum.HISTORY_TEST.getType());
+        history.save();
         renderJson(resulet);
     }
 

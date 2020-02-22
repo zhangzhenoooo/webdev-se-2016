@@ -40,6 +40,11 @@ public class MainController extends Controller {
 //        Page<Movie> page = Movie.dao.paginate(p, 5,
 //                "SELECT *", "FROM t_movie");
 //        setAttr("page",page);
+        List<Course> allCourses = Course.dao.find("SELECT * FROM t_course WHERE IS_DELETE IS NULL ORDER BY GMT_CREATED DESC");
+        String hotSql = "SELECT\n" + "a.*\n" + "FROM\n" + "t_course as  a\n" + "INNER JOIN \n" + "(\n" + "SELECT * ,COUNT(THINGID) AS  COUNT FROM t_history  GROUP BY THINGID\n" + ") b\n" + "ON a.CLASSID = b.THINGID AND a.IS_DELETE IS NULL \n" + "ORDER BY b.COUNT  DESC  LIMIT 10";
+        List<Course> hotCourses = Course.dao.find(hotSql);
+        set("hotCourses",hotCourses);
+        set("allCourses",allCourses);
         renderFreeMarker("index.ftl");
     }
 
@@ -187,7 +192,8 @@ public class MainController extends Controller {
                 renderFreeMarker("register.ftl");
             }else {
                 user.save();
-                redirect("login.ftl");
+                set("email",user.getEMAIL()) ;
+            redirect("/login");
             }
         }
     }

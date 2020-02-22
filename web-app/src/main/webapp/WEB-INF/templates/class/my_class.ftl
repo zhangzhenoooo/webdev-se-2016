@@ -39,27 +39,25 @@
                     <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="/upload/class/404少女前线4k动漫壁纸_彼岸图网.jpg" class="d-block w-100 myfigure-img" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>今日热门：java基础</h5>
-                            <p>Java 是世界上最好的语言.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/upload/class/lol英雄联盟银白审判凯尔4k壁纸_彼岸图网.jpg" class="d-block w-100 myfigure-img" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>今日热门：PHP基础</h5>
-                            <p>PHP 是世界上最好的语言.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/upload/class/2020新年%20女孩子%20和服%20黑发%20.jpg" class="d-block w-100 myfigure-img" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>今日热门：C语言 基础</h5>
-                            <p>C  是世界上最好的语言.</p>
-                        </div>
-                    </div>
+                    <#assign  i = 1>
+                     <#if hotCourses?? && (hotCourses?size > 0)>
+                         <#list hotCourses as hotCours>
+                             <#if i==4 >
+                                 <#break >
+                             </#if>
+                         <div class="carousel-item <#if i== 1>active</#if>">
+                             <img src="/upload/class/${(hotCours.HEAD)!'default_class_picture.jpg'}" class="d-block w-100 myfigure-img" alt="...">
+                             <div class="carousel-caption d-none d-md-block">
+                                 <h5>今日热门：${(hotCours.TITLE)!''}</h5>
+                                 <p>
+                                     <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(hotCours.DESCRIPTION)!''} >${(hotCours.DESCRIPTION)!''}</span>
+                                 </p>
+                             </div>
+                         </div>
+                             <#assign  i = i+1>
+                         </#list>
+                     </#if>
+
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -93,7 +91,10 @@
                                <tr>
                                    <th scope="row">${i}</th>
                                    <td><a href="classMes?id=${(course.CLASSID)!''}" >${(course.TITLE)!''}</a></td>
-                                   <td>${(course.DESCRIPTION)!''}</td>
+                                   <td>
+                                       <#--<span  class="overflow-hidden">${(course.DESCRIPTION)!''}</span>-->
+                                       <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(course.DESCRIPTION)!''} >${(course.DESCRIPTION)!''}</span>
+                                   </td>
                                    <td>
                                        <button type="button" class="btn btn-success"><a href="addcatalogue?id=${(course.CLASSID)!}" style="color: white;">更新课件</a> </button>
                                        <#--<button type="button" class="btn btn-danger"><a href="delete">删除</a> </button>-->
@@ -121,6 +122,25 @@
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                     <h3>热门课程：</h3>
+                    <#if hotCourses?? && (hotCourses?size > 0)>
+                        <#list hotCourses as hotCourse>
+                             <div class="row no-gutters m-3" >
+                                 <div class="col-md-4">
+                                     <img src="/upload/class/${(hotCourse.HEAD)!'default_class_picture.jpg'}" height="80px;" class="card-img-top" alt="...">
+                                 </div>
+                                 <div class="col-md-8">
+                                     <div class="card-body" >
+                                         <h5 class="card-title"><a href="/user/classMes?id=${(hotCourse.CLASSID)!''}">${(hotCourse.TITLE)!''}</a> </h5>
+                                         <p class="card-text">课程介绍：
+                                             <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(hotCourse.DESCRIPTION)!''} >${(hotCourse.DESCRIPTION)!''}</span>
+                                         </p>
+                                     <#--<p class="card-text"><small class="text-muted"><span>主讲老师：</span></small></p>-->
+                                     </div>
+                                 </div>
+                             </div>
+                        <hr>
+                        </#list>
+                    </#if>
                 </div>
 
             </div>

@@ -19,37 +19,45 @@
                 <div class="col">
                     <div class="card card-body ">
                     <#--第一部分-->
+                        <form action="doPublishClass" id="form-class" method="post" enctype="multipart/form-data">
                         <div class="row shadow p-3 mb-5 bg-white rounded">
+
                             <div class="col-9 col-sm-9 col-md-9 col-lg-9 col-xl-9" style="margin:10px">
                                 <div class="card card-body">
                                     <h3>添加课程内容:</h3>
-                                    <form action="doPublishClass" id="form-class">
 
                                         <div class="form-group">
-                                            <label for="title" class="title">课程名称:</label>
-                                            <input type="text"  class="form-control" id="title"  name="course.TITLE" value="${(course.TITLE)!''}" aria-describedby="emailHelp">
+                                            <#--<label for="course.CLASSID" class="title">课程编号:</label>-->
+                                            <input type="hidden"  class="form-control" id="course.CLASSID"  name="course.CLASSID" value="${(course.CLASSID)!''}" aria-describedby="emailHelp">
                                         <#--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                                         </div>
                                         <div class="form-group">
-                                            <label for="description">课程描述:</label>
-                                            <textarea class="form-control" id="description" name="course.DESCRIPTION"  rows="3">${(course.DESCRIPTION)!''}</textarea>
+                                            <label for="title" class="course.TITLE">课程名称:</label>
+                                            <input type="text"  class="form-control" id="course.TITLE"  name="course.TITLE" value="${(course.TITLE)!''}" aria-describedby="emailHelp">
+                                        <#--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="course.DESCRIPTION">课程描述:</label>
+                                            <textarea class="form-control" id="course.DESCRIPTION" name="course.DESCRIPTION"  rows="3">${(course.DESCRIPTION)!''}</textarea>
                                         </div>
                                         <h3><label class="alert-danger">${(message)!''}</label></h3>
-                                        <button type="submit" class="btn btn-primary">提交</button>
-                                    </form>
+                                        <button type="submit" class="btn btn-primary" style="width: 100px;">提交</button>
+
                                 </div>
                             </div>
                             <div class="col">
-                                <form>
+
                                     <div class="form-group">
                                         <label for="class_head" class="title">选择封面</label>
-                                        <input type="file" class="form-control-file" id="class_head" name="class.HEAD">
+                                        <input type="file" class="form-control-file" id="class_head" name="class.HEAD" SRC="${(course.HEAD)!''}">
                                     </div>
-                                </form>
+
                                 <br>
                                 <img src="" class="img-fluid"  alt="Responsive image">
                             </div>
+
                         </div>
+                        </form>
                     <#--第二部分-->
                         <div class="row">
                             <div class="col">
@@ -73,9 +81,9 @@
                                             <#--<#list catalogues as catalogue>-->
                                                 <#--<#assign  i = i+1>-->
                                              <tr>
-                                                <th scope="row">${(i)!'-'}</th>
-                                                <td>${(catalogue.TITLE)!'-'}</td>
-                                                <td>123.pdf</td>
+                                                <th scope="row">${(i)!''}</th>
+                                                <td>${(catalogue.TITLE)!''}</td>
+                                                <td>${(catalogue.HEAD)!''}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-info">修改</button>
                                                     <button type="button" class="btn btn-danger">删除</button>

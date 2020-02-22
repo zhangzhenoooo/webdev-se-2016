@@ -2,6 +2,7 @@ package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
+import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
@@ -13,6 +14,7 @@ import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +113,16 @@ public class UserController  extends Controller {
         set("course",course);
         set("user",user);
         set("catalogues",catalogues);
+        //添加浏览历史
+        History history = new History();
+        history.setCREATOR(user.getUSERID());
+        history.setCreatorName(user.getNAME());
+        history.setGmtCreated(System.currentTimeMillis());
+        history.setGmtModified(System.currentTimeMillis());
+        history.setTHINGID(course.getCLASSID());
+        history.setThingName(course.getTITLE()) ;
+        history.setTYPE(HistoryTypeEnum.HISTORY_COURSE.getType());
+        history.save();
         renderFreeMarker("class_mes.ftl");
     }
 
@@ -121,10 +133,13 @@ public class UserController  extends Controller {
     public void myClass(){
         User user = (User) getSession().getAttribute("user");
         if (true){
-            List<Course> courses = Course.dao.find("SELECT * FROM t_course  WHERE IS_DELETE is NULL AND CREATOR = ? ",user.getUSERID());
+            List<Course> courses = Course.dao.find("SELECT DISTINCT\n" + "t_course.*\n" + "FROM\n" + "t_course\n" + "INNER JOIN t_user_class ON t_course.CLASSID = t_user_class.CLASSID\n" + "WHERE t_course.IS_DELETE IS NULL AND t_user_class.USERID = ?",user.getUSERID());
             setAttr("courses",courses);
             List<Notification> notifications = Notification.dao.find("SELECT * FROM  t_notification WHERE RECEIVER = ? AND TYPE = ?", user.getUSERID(), NotifyTypeEnum.NOTIFY_COMMENT.getType());
             set("notifications",notifications);
+            String hotSql = "SELECT\n" + "a.*\n" + "FROM\n" + "t_course as  a\n" + "INNER JOIN \n" + "(\n" + "SELECT * ,COUNT(THINGID) AS  COUNT FROM t_history  GROUP BY THINGID\n" + ") b\n" + "ON a.CLASSID = b.THINGID AND a.IS_DELETE IS NULL \n" + "ORDER BY b.COUNT  DESC  LIMIT 10";
+            List<Course> hotCourses = Course.dao.find(hotSql);
+            set("hotCourses",hotCourses);
         }
         renderFreeMarker("my_class.ftl");
 
@@ -158,7 +173,22 @@ public class UserController  extends Controller {
         Long classId = getLong("id");
         User user = (User) getSession().getAttribute("user");
         Db.delete("DELETE  FROM t_user_class WHERE USERID  = ? AND CLASSID = ?",user.getUSERID(),classId);
+
         myClass();
+    }
+    /**
+     *
+     * @description 取消选择的课
+     * @author zhangz
+     * @date 2020:02:22 15:42:18
+     * @return
+     **/
+    @Before(NeedLogin.class)
+    public void deleteSelectedClass(){
+        Long classId = getLong("id");
+        User user = (User) getSession().getAttribute("user");
+        Db.delete("DELETE  FROM t_user_class WHERE USERID  = ? AND CLASSID = ?",user.getUSERID(),classId);
+        selectCourse();
     }
 
 

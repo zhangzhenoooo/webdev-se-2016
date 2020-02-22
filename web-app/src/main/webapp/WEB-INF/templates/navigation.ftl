@@ -18,32 +18,36 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    课程管理
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/class/publishClass">发布课程</a>
-                    <a class="dropdown-item" href="/class/myClass">我的课程</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">我的测试</a>
-                </div>
-            </li>
+                <#if session.user.TYPE >
+                <#--//老师-->
+                           <li class="nav-item dropdown">
+                               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   课程管理
+                               </a>
+                               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                   <a class="dropdown-item" href="/class/publishClass">发布课程</a>
+                                   <a class="dropdown-item" href="/class/myClass">我的课程</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item" href="#">我的测试</a>
+                               </div>
+                           </li>
             <li class="nav-item">
                 <a class="nav-link " href="/studentManagement"  aria-disabled="true">学生管理</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    课程管理(学生)
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/user/selectCourse">选课</a>
-                    <a class="dropdown-item" href="/user/myClass">我的课程</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">我的任务(选做)</a>
-                </div>
-            </li>
+                <#else >
+                <#--学生-->
+               <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       课程管理
+                   </a>
+                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                       <a class="dropdown-item" href="/user/selectCourse">选课</a>
+                       <a class="dropdown-item" href="/user/myClass">我的课程</a>
+                       <div class="dropdown-divider"></div>
+                       <a class="dropdown-item" href="#">我的任务(选做)</a>
+                   </div>
+               </li>
+                </#if>
         </ul>
     <#--<form class="form-inline my-2 my-lg-0">-->
     <#--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->

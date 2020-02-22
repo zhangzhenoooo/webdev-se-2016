@@ -22,27 +22,24 @@
                      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
                  </ol>
                  <div class="carousel-inner">
-                     <div class="carousel-item active">
-                         <img height="500px" src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="d-block w-100" alt="...">
-                         <div class="carousel-caption d-none d-md-block">
-                             <h5>First slide label</h5>
-                             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                         </div>
-                     </div>
-                     <div class="carousel-item">
-                         <img height="500px" src="/upload/class/lol英雄联盟银白审判凯尔4k壁纸_彼岸图网.jpg" class="d-block w-100" alt="...">
-                         <div class="carousel-caption d-none d-md-block">
-                             <h5>Second slide label</h5>
-                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                         </div>
-                     </div>
-                     <div class="carousel-item">
-                         <img  height="500px" src="/upload/class/404少女前线4k动漫壁纸_彼岸图网.jpg" class="d-block w-100" alt="...">
-                         <div class="carousel-caption d-none d-md-block">
-                             <h5>Third slide label</h5>
-                             <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                         </div>
-                     </div>
+                     <#assign  i = 1>
+                     <#if hotCourses?? && (hotCourses?size > 0)>
+                     <#list hotCourses as hotCours>
+                     <#if i==4 >
+                         <#break >
+                     </#if>
+                              <div class="carousel-item <#if i == 1>active</#if>">
+                                  <img height="500px" src="/upload/class/${(hotCours.HEAD)!'default_class_picture.jpg'}" class="d-block w-100" alt="...">
+                                  <div class="carousel-caption d-none d-md-block">
+                                      <h5>${(hotCours.TITLE)!''}</h5>
+                                      <p>
+                                          <span style=" display :inline-block ;width: 100%;height: 20px;overflow: hidden;textOverflow: ellipsis;whiteSpace: nowrap" title=${(hotCours.DESCRIPTION)!''} >${(hotCours.DESCRIPTION)!''}</span>
+                                      </p>
+                                  </div>
+                              </div>
+                         <#assign  i = i+1>
+                     </#list>
+                     </#if>
                  </div>
                  <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -54,79 +51,32 @@
                  </a>
              </div>
          </div>
-         <#--新课-->
+         <#--全部课程-->
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                <h3>新开课程</h3>
-                <hr>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 card pt-2" >
+                <h3>全部课程</h3>
+
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
+                    <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                        <#if allCourses ?? && (allCourses?size > 0 ) >
+                        <#list  allCourses as  allCourse >
+                          <div class="row no-gutters m-3">
+                              <div class="col-md-3">
+                                  <img src="/upload/class/${(allCourse.HEAD)!'default_class_picture.jpg'}" height="200px;" class="card-img-top" alt="...">
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="card-body">
+                                      <h5 class="card-title"><a href="/class/classMes?id=${(allCourse.CLASSID)!''}">${(allCourse.TITLE)!''}</a> </h5>
+                                      <p class="card-text">课程介绍：${(allCourse.DESCRIPTION)!''}</p>
+                                      <#--<p class="card-text"><small class="text-muted"><span>主讲老师：</span></small></p>-->
+                                  </div>
+                              </div>
+                          </div>
+                                    <hr>
+                        </#list>
+                        </#if>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="/upload/《星球大战堕落秩序(Star%20Wars%20Jedi_%20Fallen%20Order)》4k游戏壁纸_彼岸图网.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
     </div>
