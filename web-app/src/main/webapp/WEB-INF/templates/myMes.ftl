@@ -95,7 +95,17 @@
             <br>
             <h3>History：</h3>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
+                <#if histories?? && (histories?size >0)>
+                    <#list histories as historie>
+                        <#assign dlong = (historie.GMT_MODIFIED)!0?number * 1000 />
+                                    <li class="list-group-item"><span>${dlong?number_to_datetime} </span>:&nbsp;
+                                        <#if historie.TYPE == 1>学习了课程章节：</#if>
+                                        <#if historie.TYPE == 2>参加了课程测试：</#if>
+                                        <#if historie.TYPE == 3>浏览了课程：</#if>
+                                        <span><a href="/user/classMes?id=${(historie.THINGID)!}">${(historie.THING_NAME)!}</a> </span></li>
+
+                    </#list>
+                </#if>
                 <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
                 <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
                 <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>

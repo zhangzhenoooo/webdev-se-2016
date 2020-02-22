@@ -22,7 +22,8 @@ protected void processUnlogin(Controller controller){
     } else {
         //获得被拦截请求URL 传入登录页面便于登录完成后跳转
         String redirectUrl = controller.getRequest().getRequestURI();
-        controller.redirect("/login?redirectUrl=" + redirectUrl, true);
+        String attr = controller.getRequest().getQueryString();
+        controller.redirect("/login?redirectUrl=" + redirectUrl+"?"+attr, true);
     }
 }
     @Override

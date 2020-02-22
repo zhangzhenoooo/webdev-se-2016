@@ -14,7 +14,7 @@
 <div class="container-fluid main">
     <div class="row">
         <!--左边-->
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" style="margin-left:10%;">
             <#if courses?? && (courses?size >0)>
                 <#assign x = 0>
                 <#list courses as course>
@@ -60,10 +60,6 @@
                           </div>
                 </#list>
             </#if>
-
-        </div>
-        <!--右边-->
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
 
         </div>
     </div>

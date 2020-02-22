@@ -18,7 +18,9 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-                <#if session.user.TYPE >
+            <#--<#if (seeeion.user)??>-->
+
+                    <#if ((session.user.TYPE)!3)==1 >
                 <#--//老师-->
                            <li class="nav-item dropdown">
                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,29 +33,33 @@
                                    <a class="dropdown-item" href="#">我的测试</a>
                                </div>
                            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="/studentManagement"  aria-disabled="true">学生管理</a>
-            </li>
-                <#else >
-                <#--学生-->
-               <li class="nav-item dropdown">
-                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       课程管理
-                   </a>
-                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                       <a class="dropdown-item" href="/user/selectCourse">选课</a>
-                       <a class="dropdown-item" href="/user/myClass">我的课程</a>
-                       <div class="dropdown-divider"></div>
-                       <a class="dropdown-item" href="#">我的任务(选做)</a>
-                   </div>
-               </li>
-                </#if>
+                        <li class="nav-item">
+                         <a class="nav-link " href="/studentManagement"  aria-disabled="true">学生管理</a>
+                         </li>
+                    </#if>
+                    <#if ((session.user.TYPE)!3)==0>
+                            <#--学生-->
+                            <li class="nav-item dropdown">
+                               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   课程管理
+                               </a>
+                               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                   <a class="dropdown-item" href="/user/selectCourse">选课</a>
+                                   <a class="dropdown-item" href="/user/myClass">我的课程</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item" href="#">我的任务(选做)</a>
+                               </div>
+                            </li>
+                    </#if>
+
+            <#--</#if>-->
         </ul>
     <#--<form class="form-inline my-2 my-lg-0">-->
     <#--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
     <#--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">查询</button>-->
     <#--</form>-->
         <ul class="navbar navbar-right" >
+
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#myMessage" aria-disabled="true">我的消息 <span id="notification_count" class="badge badge-primary badge-pill">${(session.notifications?size)!0}</span></a>
             </li>

@@ -86,14 +86,14 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 	}
 
 
-	public M setTYPE(java.lang.Boolean TYPE) {
+	public M setTYPE(java.lang.Integer TYPE) {
 		set("TYPE", TYPE);
 		return (M)this;
 	}
 
 
-	public java.lang.Boolean isTYPE() {
-		return get("TYPE");
+	public java.lang.Integer getTYPE() {
+		return getInt("TYPE");
 	}
 
 

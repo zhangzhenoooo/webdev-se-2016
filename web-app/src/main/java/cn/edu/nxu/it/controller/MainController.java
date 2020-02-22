@@ -3,10 +3,7 @@ package cn.edu.nxu.it.controller;
 import cn.edu.nxu.it.DTO.CourseDTO;
 import cn.edu.nxu.it.aop.LoginValidator;
 import cn.edu.nxu.it.aop.NeedLogin;
-import cn.edu.nxu.it.model.Course;
-import cn.edu.nxu.it.model.Notification;
-import cn.edu.nxu.it.model.User;
-import cn.edu.nxu.it.model.UserClass;
+import cn.edu.nxu.it.model.*;
 import cn.edu.nxu.it.service.CourseService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -146,6 +143,8 @@ public class MainController extends Controller {
         String sql = "SELECT DISTINCT t_course.* FROM t_course INNER JOIN t_user_class ON t_course.CLASSID = t_user_class.CLASSID WHERE t_user_class.USERID =?";
         List<Course> courses = Course.dao.find(sql, user.getUSERID());
         set("courses",courses);
+        List<History> histories = History.dao.find("SELECT * FROM t_history WHERE CREATOR =  ? ORDER BY GMT_MODIFIED ", user.getUSERID());
+       set("histories",histories);
         renderFreeMarker("myMes.ftl");
     }
     public void  updateMyMes(){

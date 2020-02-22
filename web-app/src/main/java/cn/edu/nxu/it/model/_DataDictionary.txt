@@ -173,7 +173,7 @@ Table: t_user
  PHONE      | VARCHAR(255) | YES  |     |         |         
  AGE        | INT(10)      | YES  |     |         |         
  SEX        | BIT          | YES  |     |         | 女：0，男：1 
- TYPE       | BIT          | YES  |     | 0       | 学生：0，老师 1
+ TYPE       | INT(10)      | YES  |     | 0       | 学生：0，老师 1
  HEAD       | VARCHAR(255) | YES  |     |         |         
  IS_DELETED | BIGINT(19)   | YES  |     |         |         
 ------------+--------------+------+-----+---------+---------
