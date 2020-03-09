@@ -1,11 +1,14 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.CatalogueDTO;
 import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
 import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
+import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.service.CatalogueService;
 import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -13,6 +16,7 @@ import com.jfinal.kit.Kv;
 import com.jfinal.upload.UploadFile;
 import net.sf.ehcache.search.expression.Not;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +26,7 @@ import java.util.List;
  */
 public class ClassController extends Controller {
     CommentService commentService = new CommentService();
+    CatalogueService catalogueService = new CatalogueService();
 
     @Before(NeedLogin.class)
     public void publishClass(){
@@ -64,9 +69,9 @@ public class ClassController extends Controller {
     public void  addcatalogue(){
         Integer courseId = getInt("id");
         Course course = Course.dao.findById(courseId);
-        List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE CLASSID = ?", courseId);
+        List<CatalogueDTO> catalogueDTOS = catalogueService.listCatalogByCourseId(course.getCLASSID());
         set("course",course);
-        set("catalogues",catalogues) ;
+        set("catalogueDTOS",catalogueDTOS) ;
         renderFreeMarker("add_catalogue.ftl");
 
     }
@@ -77,10 +82,16 @@ public class ClassController extends Controller {
         UploadFile  file = getFile("catalogueUrl","/class");
         Long courseID = getLong("classId");
         String title = get("catalogueTitle");
+        String description = get("DESCRIPTION");
+        Long parent = getLong("PARENT");
         Catalogue catalogue = new Catalogue();
         catalogue.setCLASSID(courseID);
         catalogue.setTITLE(title);
-        catalogue.setURL(file.getFileName());
+        catalogue.setDESCRIPTION(description);
+        if (null != file ) {
+            catalogue.setURL(file.getFileName());
+        }
+       catalogue.setPARENTID(parent);
         List<Course>  dbCourses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",courseID);
         Kv result = Kv.create();
         if (dbCourses.size() == 0){
@@ -114,7 +125,7 @@ public class ClassController extends Controller {
                         //当没有消息的时候写入，避免重复消息
                         notification.save();
                     }
-                    notification.save();
+
                 }
 
             }else {
@@ -167,12 +178,12 @@ public class ClassController extends Controller {
         Long id = getLong("id");
         Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",id);
         String sql = "SELECT * FROM t_catalogue WHERE CLASSID = ? ORDER BY GMT_CREATED DESC";
-        List<Catalogue> catalogues = Catalogue.dao.find(sql,course.getCLASSID());
+        List<CatalogueDTO> catalogueDTOS = catalogueService.listCatalogByCourseId(course.getCLASSID());
         String sqlTest = "SELECT DISTINCT t_catalogue.* FROM t_catalogue INNER JOIN t_test ON t_catalogue.CATALOUGEID = t_test.CATALOGUEID  WHERE t_catalogue.CLASSID =?";
         List<Catalogue> tests = Catalogue.dao.find(sqlTest,course.getCLASSID());
         List<CommentDTO> comments = commentService.initComment(id,CommentTypeEnum.COMMENT_CLASS.getType());
         set("course", course);
-        set("catalogues", catalogues);
+        set("catalogueDTOS", catalogueDTOS);
         set("CataloguetTests",tests);
         set("comments",comments);
         renderFreeMarker("class_mes.ftl");
@@ -194,6 +205,27 @@ public class ClassController extends Controller {
         set("course",course);
         set("catalogue",catalogue);
         set("comments",commentDTOS);
+
+        //        装载试题
+        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId, TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
+
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+
         renderFreeMarker("class_catalogue.ftl");
 
 
@@ -203,8 +235,15 @@ public class ClassController extends Controller {
         Long catalogueId = getLong("id");
         Catalogue catalogue = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE  CATALOUGEID =  ?", catalogueId);
        String oldFileName = catalogue.getURL();
-        String type = oldFileName.substring( oldFileName.lastIndexOf("."));
-        String newFileName = catalogue.getTITLE()+type;
+       String type;
+        String newFileName="";
+       if ("".equals(oldFileName) || null == oldFileName){
+
+       }else {
+            type = oldFileName.substring( oldFileName.lastIndexOf("."));
+            newFileName = catalogue.getTITLE()+type;
+       }
+
         renderFile(catalogue.getURL(),newFileName);
         User user = (User) getSession().getAttribute("user");
         //添加浏览历史
@@ -219,6 +258,98 @@ public class ClassController extends Controller {
         history.save();
         renderFile("class/"+catalogue.getURL());
 
+    }
+
+    /**
+     * 更新章节检测
+     */
+    public void  updateTest(){
+        Long catalogueId = getLong("CATALOGUEID");
+        set("id",catalogueId);
+        int type = getInt("TYPE");
+        Long testId = getLong("TESTID");
+
+        Test test  = Test.dao.findFirst("SELECT * FROM t_test WHERE TESTID = ?",testId) ;
+        if (type ==TestTypeEnum.SINGLE_CHOICE.getType()){
+            //选择题:2
+            String description = get("2_DESCRIPTION");
+            String answer = get("2_ANSWER");
+            int score = getInt("2_SCORE");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
+            test.setANSWER(answer);
+            test.setSCORE(score);
+            test.update();
+
+            List<Testline> testlines = Testline.dao.find("SELECT * FROM t_testline  WHERE TESTID = ?", testId);
+            List<String> descriptions = new ArrayList<>();
+            descriptions.add(get("a"));
+            descriptions.add(get("b"));
+            descriptions.add(get("c"));
+            descriptions.add(get("d"));
+            int i = 0;
+            for (Testline testline :testlines){
+                testline.setDESCRIPTION(descriptions.get(i));
+                testline.setANSWER(answer);
+                testline.update();
+                i++;
+            }
+        }
+        if (type == TestTypeEnum.TRUE_OR_FALSE.getType()){
+//            判断题:3
+            String description = get("3_DESCRIPTION");
+            String answer = get("3_ANSWER");
+            int score = getInt("3_SCORE");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
+
+            test.setANSWER(answer);
+            test.setSCORE(score);
+
+            test.update();
+
+        }
+        if (type == TestTypeEnum.SUBJECTIVE.getType()){
+            //主观题:1
+            String description = get("1_DESCRIPTION");
+            String answer = get("1_ANSWER");
+            int score = getInt("2_SCORE");
+            test.setDESCRPTION(description);
+            test.setTYPE(TestTypeEnum.SUBJECTIVE.getType());
+            test.setANSWER(answer);
+            test.setSCORE(score);
+            test.update();
+        }
+
+        Catalogue catalogue = Catalogue.dao.findById(catalogueId);
+        Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
+
+        List<CommentDTO> commentDTOS = commentService.initComment(catalogueId, CommentTypeEnum.COMMENT_CLASS.getType());
+        set("course",course);
+        set("catalogue",catalogue);
+        set("comments",commentDTOS);
+
+        //        装载试题
+        List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId, TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
+
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+
+        renderFreeMarker("class_catalogue.ftl");
     }
 
 

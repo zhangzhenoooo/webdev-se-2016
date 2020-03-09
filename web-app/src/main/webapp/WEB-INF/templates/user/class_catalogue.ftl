@@ -32,7 +32,7 @@
                                        <#--课程名称-->
                                        <h5 class="card-title">${(catalogue.TITLE)!'还没想好题目'}</h5>
                                        <p>简介：</p>
-                                       <p class="card-text">${(catalogue.DESCRIPTION)!'老师还没有更新题目'}</p>
+                                       <p class="card-text">${(catalogue.DESCRIPTION)!''}</p>
                                            <#assign dlong = (catalogue.GMT_CTRATED)!0?number * 1000 />
                                        <p class="card-text"><small class="text-muted">更新时间：<span>${dlong?number_to_datetime} </span></small></p>
                                    </div>
@@ -45,7 +45,7 @@
                 <#--bottom-->
                     <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 "  >
                         <div class="card-header">
-                            <a class="float-right ml-5" href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}">课后测试</a>
+                            <a class="float-right ml-5" href="/user/test?id=${(catalogue.CATALOUGEID)!'/'}">课后测试</a>
                             <a class="float-right ml-5"  href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" >课件下载</a>
 
                         </div>

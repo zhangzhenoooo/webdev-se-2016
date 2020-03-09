@@ -23,9 +23,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">选择题</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">填空题</a>
-                </li>
+                <#--<li class="nav-item">-->
+                    <#--<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">填空题</a>-->
+                <#--</li>-->
                 <li class="nav-item">
                     <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">判断题</a>
                 </li>
@@ -48,12 +48,27 @@
                                 <label for="TYPE"></label>
                                 <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
                             </div>
-                            <div class="form-group">
-                                <label for="2_DESCRIPTION">请输入问题描述：</label>
-                                <input type="text" class="form-control" id="2_DESCRIPTION" name="2_DESCRIPTION" >
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <div class="form-group ">
+                                <label for="2_SCORE">选项分值：</label>
+                                <select class="form-control " id="2_SCORE" name="2_SCORE">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option selected>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
                             </div>
-                            <div class="form-group">
+                                <div class="form-group ">
+                                    <label for="2_DESCRIPTION">请输入问题描述：</label>
+                                    <input type="text" class="form-control" id="2_DESCRIPTION" name="2_DESCRIPTION" >
+                                </div>
+
+                            <div class="form-group ">
                                 <label for="a">选项A:</label>
                                 <input type="text" class="form-control" id="a" name="a">
                             </div>
@@ -70,8 +85,13 @@
                                 <input type="text" class="form-control" id="d" name="d">
                             </div>
                             <div class="form-group">
-                                <label for="2_ANSWER">答案(大写):</label>
-                                <input type="text" class="form-control" id="2_ANSWER" name="2_ANSWER">
+                                <label for="2_ANSWER">选择正确答案:</label>
+                                <select class="form-control " id="2_ANSWER" name="2_ANSWER">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">保存</button>
                             <button type="reset" class="btn btn-primary">重置</button>
@@ -79,27 +99,28 @@
                     </div>
                 </div>
             <#--2-->
-                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="content"  aria-labelledby="btn_gap-filling" id="gap-filling">
+                <#--<div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">-->
+                    <#--<div class="content"  aria-labelledby="btn_gap-filling" id="gap-filling">-->
 
-                        <form id="form_gap-filling">
-                            <div class="form-group">
-                                <label for="CATALOGUEID"></label>
-                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="TYPE"></label>
-                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="0">
-                            </div>
-                            <div class="form-group">
-                                <label for="0_DESCRIPTION">请将你的问题填入下列区域中：</label>
-                                <textarea class="form-control" id="0_DESCRIPTION" name="0_DESCRIPTION" ></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">保存</button>
-                            <button type="reset" class="btn btn-primary">重置</button>
-                        </form>
-                    </div>
-                </div>
+                        <#--<form id="form_gap-filling">-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="CATALOGUEID"></label>-->
+                                <#--<input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">-->
+                            <#--</div>-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="TYPE"></label>-->
+                                <#--<input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="0">-->
+                            <#--</div>-->
+
+                            <#--<div class="form-group">-->
+                                <#--<label for="0_DESCRIPTION">请将你的问题填入下列区域中：</label>-->
+                                <#--<textarea class="form-control" id="0_DESCRIPTION" name="0_DESCRIPTION" ></textarea>-->
+                            <#--</div>-->
+                            <#--<button type="submit" class="btn btn-primary">保存</button>-->
+                            <#--<button type="reset" class="btn btn-primary">重置</button>-->
+                        <#--</form>-->
+                    <#--</div>-->
+                <#--</div>-->
             <#--3-->
                 <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                     <div class="content"  aria-labelledby="btn_gap-filling" id="gap-true_or_false" id="true_or_false">
@@ -112,6 +133,21 @@
                             <div class="form-group">
                                 <label for="TYPE"></label>
                                 <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="3">
+                            </div>
+                            <div class="form-group ">
+                                <label for="3_SCORE">选项分值：</label>
+                                <select class="form-control " id="3_SCORE" name="3_SCORE">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option selected>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="3_DESCRIPTION">请将你的问题填入下列区域中：</label>
@@ -144,6 +180,21 @@
                             <div class="form-group">
                                 <label for="TYPE"></label>
                                 <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
+                            </div>
+                            <div class="form-group ">
+                                <label for="1_SCORE">选项分值：</label>
+                                <select class="form-control " id="1_SCORE" name="1_SCORE">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option selected>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>

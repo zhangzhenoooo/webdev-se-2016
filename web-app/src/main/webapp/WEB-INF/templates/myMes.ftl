@@ -18,7 +18,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h3 class="shadow-sm p-3 mb-5 bg-white rounded">个人主页</h3>
             <hr >
-            <form class="shadow p-3 mb-5 bg-white rounded" method="post" action="" >
+            <form class="shadow p-3 mb-5 bg-white rounded" method="post" action="updateMyMes" >
                 <div class="form-group">
                     <label for="user.EMAIL">绑定的邮箱:</label>
                     <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" disabled>
@@ -28,24 +28,24 @@
                     <label for="user.PHONE">联系方式:</label>
                     <input type="tel" class="form-control" name="user.PHONE" id="user.PHONE" value="${(user.getPHONE())!''}">
                 </div>
+                <#--<div class="form-group">-->
+                    <#--<label for="user.SEX">性别:</label>-->
+                    <#--<select class="form-control" name="user.SEX" id="user.SEX">-->
+                        <#--<option value="1" <#if user.isSEX()>-->
+                            <#--class="selected"-->
+                        <#-->男-->
+                        <#--</#if>-->
+                        <#--</option>-->
+                        <#--<option value="=0" <#if !user.isSEX() >-->
+                        <#--class="selected"-->
+                            <#-->女-->
+                        <#--</#if></option>-->
+                    <#--</select>-->
+                <#--</div>-->
                 <div class="form-group">
-                    <label for="user.SEX">性别:</label>
-                    <select class="form-control" name="user.SEX" id="user.SEX">
-                        <option value="1" <#if user.isSEX()>
-                            class="selected"
-                        >男
-                        </#if>
-                        </option>
-                        <option value="=0" <#if !user.isSEX() >
-                        class="selected"
-                            >女
-                        </#if></option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="user.AGE">年龄:</label>
-                    <input type="number" class="form-control"name="user.AGE" id="user.AGE" value="${(user.getAGE())!0}">
-                </div>
+                <label for="user.INTRODUCTION">个人介绍:</label>
+                <input type="text" class="form-control"name="user.INTRODUCTION" id="user.INTRODUCTION" value="${(user.INTRODUCTION)!'这个人很懒，还没有留下个性签名'}">
+            </div>
                 <button type="submit" class="btn btn-primary ">修改</button>
                 <button type="reset" class="btn btn-primary">取消</button>
 
@@ -85,20 +85,35 @@
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="card" style="width: 18rem;">
-                <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img-top" alt="...">
+                <#if  user.HEAD ==''  >
+                <form enctype="multipart/form-data" method="post" action="addHead">
+                    <div class="form-group">
+
+                        <input type="hidden" class="form-control-file" id="USERID" name="USERID" value="${(user.getUSERID())!''}">
+                    </div>
+                    <div class="form-group">
+                        <label for="HEAD">上传头像</label>
+                        <input type="file" class="form-control-file" id="HEAD" name="HEAD">
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                    <#else >
+                  <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img-top" alt="...">
+                </#if>
+
                 <div class="card-body">
                     <h5 class="card-title">${(user.getNAME())!'匿名用户'}</h5>
-                    <p class="card-text">在帅的道路上越走越远...</p>
+                    <p class="card-text">${(user.getINTRODUCTION())!''}</p>
                 </div>
             </div>
         <#--浏览历史记录-->
             <br>
-            <h3>History：</h3>
+            <h4>History：</h4>
             <ul class="list-group list-group-flush">
                 <#if histories?? && (histories?size >0)>
                     <#list histories as historie>
                         <#assign dlong = (historie.GMT_MODIFIED)!0?number * 1000 />
-                                    <li class="list-group-item"><span>${dlong?number_to_datetime} </span>:&nbsp;
+                                    <li class="list-group-item" style="font-size: 16px;"><span>${dlong?number_to_datetime} </span>:&nbsp;
                                         <#if historie.TYPE == 1>学习了课程章节：</#if>
                                         <#if historie.TYPE == 2>参加了课程测试：</#if>
                                         <#if historie.TYPE == 3>浏览了课程：</#if>

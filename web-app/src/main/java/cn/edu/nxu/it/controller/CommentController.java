@@ -22,10 +22,10 @@ public class CommentController extends Controller {
 
         Integer type = getInt("type");
 
-        System.out.println("classId = "+classId);
-        System.out.println("parentId = "+parentId);
-        System.out.println("content = "+content);
-        System.out.println("type = "+type);
+//        System.out.println("classId = "+classId);
+//        System.out.println("parentId = "+parentId);
+//        System.out.println("content = "+content);
+//        System.out.println("type = "+type);
         User user = (User) getSession().getAttribute("user");
         if (user == null) {
             set("message","用户未登录");
@@ -94,6 +94,44 @@ public class CommentController extends Controller {
                 result.set("success",true);
                 Db.update("UPDATE t_comment SET COMMENT_COUNT = COMMENT_COUNT +1  WHERE COMMENTID =?",parentId);//评论的评论数加一
             }
+        }
+        if (type.equals(CommentTypeEnum.COMMNET_CATALOGUE.getType())||type == CommentTypeEnum.COMMNET_CATALOGUE.getType()){
+            //评论或者提问课程:3
+            Catalogue dbCatalogue = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE CATALOUGEID = ?",parentId);
+            if (dbCatalogue ==null){
+                result.set("message","该章节内容已被删除！");
+                result.set("success",false);
+            }else {
+                Course dbCourse = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",dbCatalogue.getCLASSID());
+                if (dbCourse ==null){
+                    result.set("message","该课程内容已被删除！");
+                    result.set("success",false);
+                }else {
+                    Comment comment = new Comment();
+                    comment.setCOMMENTATOR(user.getUSERID());
+                    comment.setCLASSID(classId);
+                    comment.setPARENTID(parentId);
+                    comment.setTYPE(CommentTypeEnum.COMMENT_CLASS.getType());
+                    comment.setCONTENT(content);
+                    comment.setGmtCtrated(System.currentTimeMillis());
+                    comment.setGmtModified(System.currentTimeMillis());
+                    comment.setCommentCount(0);
+                    comment.save();
+                    //添加通知
+                    Notification notification = new Notification();
+                    notification.setNOTIFER(user.getUSERID());
+                    notification.setNotiferName(user.getNAME());
+                    notification.setOUTERID(dbCourse.getCLASSID());
+                    notification.setOuterTitle(dbCourse.getTITLE());
+                    notification.setRECEIVER(dbCourse.getCREATOR());
+                    notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
+                    notification.setGmtCreated(System.currentTimeMillis());
+                    notification.save();
+
+                    result.set("success",true);
+                }
+            }
+
         }
         renderJson(result);
     }

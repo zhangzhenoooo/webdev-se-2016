@@ -15,7 +15,7 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2>课程题目：</h2>
+            <h2>课程题目：${(course.TITLE)!''}</h2>
             <div class="card">
                 <div class="card-header">
                     添加章节以及教学资源
@@ -26,8 +26,25 @@
                             <input type="hidden" id="classId" name="classId" VALUE="${(course.CLASSID)!''}" >
                         </div>
                         <div class="form-group">
-                            <label for="catalogueTitle" class="col-form-label">添加标题</label>
+                            <label for="PARENT" class="col-form-label">选择章节：</label>
+                            <select class="form-control" id="PARENT" name="PARENT">
+                                <option value="">请选择</option>
+                                 <#assign  n=1>
+                                <#list catalogueDTOS! as catalogueDTO >
+                                <option value="${(catalogueDTO. CATALOUGEID)!''}">第${n}章&nbsp;&nbsp;${(catalogueDTO.TITLE)!''}</option>
+                                    <#assign  n=1+n>
+                                </#list>
+
+                            </select>
+                            <small style="color: red;">如果不选择章节，则为添加章节目录</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="catalogueTitle" class="col-form-label">添加标题：</label>
                             <input type="text" class="form-control" name="catalogueTitle" id="catalogueTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="DESCRIPTION" class="col-form-label">章节描述：</label>
+                            <input type="text" class="form-control" name="DESCRIPTION" id="DESCRIPTION">
                         </div>
                         <div class="form-group">
                             <label for="catalogueUrl" class="col-form-label">添加教学资源：</label>
@@ -42,12 +59,22 @@
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>章节目录</h3>
-            <ul class="list-group list-group-flush">
-                <#list catalogues as catalogue>
-                    <li class="list-group-item">
-                        <span>${(catalogue.TITLE)!''}</span>
-                    </li>
-                </#list>
+
+            <ul class="list-group list-group-flush ">
+                                <#assign  x=1>
+                                        <#list catalogueDTOS as catalogueDTO>
+                                            <li class="list-group-item">
+                                                <a href="catalogue?id=${(catalogueDTO. CATALOUGEID)!''}">第<span>${x}</span>章：${(catalogueDTO.TITLE)!'未命名'}</a>
+                                            </li>
+                                            <#assign  y=1>
+                                            <#list catalogueDTO.catalogueList as catalogue>
+                                                      <li class="list pl-5" >
+                                                          <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">第<span>${y}</span>节：${(catalogue.TITLE)!'未命名'}</a>
+                                                      </li>
+                                                <#assign  y=y+1>
+                                            </#list>
+                                            <#assign  x=x+1>
+                                        </#list>
 
             </ul>
         </div>

@@ -13,6 +13,15 @@ function post() {
     comment2target(courseId,questionId, 1, content);
 }
 
+function post2() {
+    //评论课程章节
+    var courseId = $("#classId").val();
+    var questionId = $("#classId").val();
+    var content = $("#comment_content").val();
+    alert(courseId+content+questionId);
+    comment2target(courseId,questionId, 3, content);
+}
+
 function comment2target(courseId,targetId, type, content) {
     if (!content) {
         alert("不能回复空内容~~~");
@@ -40,7 +49,6 @@ function comment2target(courseId,targetId, type, content) {
 function comment(e) {
     var commentId = e.getAttribute("data-id");
     var content = $("#input-" + commentId).val();
-    alert("commentid = "+commentId + "content ==== "+content);
     comment2target(0,commentId, 2, content);
 }
 

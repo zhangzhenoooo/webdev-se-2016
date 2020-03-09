@@ -34,6 +34,7 @@
                                 <p>简介：</p>
                                 <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
                                 <p class="card-text"><small class="text-muted">开始时间：<span>${(course.GMT_CREATED*1000)?number_to_datetime?string('yyyy-MM-dd ')} </span></small></p>
+
                             </div>
                         </div>
                     </div>
@@ -45,44 +46,54 @@
                 <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
                     <div class="card-header">
                         章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                            <a class="btn-publish" href="/class/addcatalogue?id=${(course.CLASSID)!}">更新课件</a>
                     </div>
                     <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
                         <blockquote class="blockquote mb-0">
                         <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
                         <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                            <ul class="list-group list-group-flush overflow-hidden" style="max-height: 600px;min-height: 300px;">
-                                        <#list catalogues as catalogue>
-                                            <li class="list-group-item">
-                                                <a href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
-                                                &nbsp; <button type="button" class="btn btn-primary float-right">
-                                                <a href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课后测试</a>
-                                            </button>
-                                                &nbsp;<button type="button" class="btn btn-primary float-right">
-                                                <a href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课件下载</a>
-                                            </button>
-                                                &nbsp;   <button type="button" class="btn btn-primary float-right">
-                                                <a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>
-                                            </button>&nbsp;
+                            <ul class="list-group list-group-flush overflow-hidden" >
+                                <#assign  x=1>
+                                        <#list catalogueDTOS as catalogueDTO>
+                                            <li class="list-group-item" style="font-size: 16px;"  >
+                                                <p >第<span>${x}</span>章：${(catalogueDTO.TITLE)!'未命名'}</p>
                                             </li>
+                                            <#assign  y=1>
+                                             <#list catalogueDTO.catalogueList as catalogue>
+                                                      <p class="list pl-5" >
+                                                          <a style="font-size: 16px; color: gray"  href="catalogue?id=${(catalogue. CATALOUGEID)!''}">第<span>${y}</span>节：${(catalogue.TITLE)!'未命名'}</a>
+                                                          <#--&nbsp; <button type="button" class="btn btn-primary float-right">-->
+                                                          <#--<a href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课后测试</a>-->
+                                                      <#--</button>-->
+                                                          <#--&nbsp;<button type="button" class="btn btn-primary float-right">-->
+                                                          <#--<a href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课件下载</a>-->
+                                                      <#--</button>-->
+                                                          <#--&nbsp;   <button type="button" class="btn btn-primary float-right">-->
+                                                          <#--<a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>-->
+                                                      <#--</button>&nbsp;-->
+                                                    </p>
+                                                 <#assign  y=y+1>
+                                                </#list>
+                                            <#assign  x=x+1>
                                         </#list>
 
                             </ul>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <#--<nav aria-label="Page navigation example">-->
+                                <#--<ul class="pagination justify-content-end">-->
+                                    <#--<li class="page-item disabled">-->
+                                        <#--<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+                                    <#--</li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+                                    <#--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                                    <#--<li class="page-item">-->
+                                        <#--<a class="page-link" href="#">Next</a>-->
+                                    <#--</li>-->
+                                <#--</ul>-->
+                            <#--</nav>-->
                         </blockquote>
                     </div>
-                    <div class="card">
+                    <div class="card" >
                     <#--//评论区-->
                         <div class="card-header">
                             评论区
@@ -173,59 +184,59 @@
 
         </div>
         <!--右边-->
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 ">
-            <#--<div class="row p-2">-->
-            <#--&lt;#&ndash;最新动态&ndash;&gt;-->
-                <#--<h3>最新动态</h3>-->
-                <#--<div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                    <#--<blockquote class="blockquote mb-0">-->
-                    <#--&lt;#&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>&ndash;&gt;-->
-                    <#--&lt;#&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;-->
-                        <#--<ul class="list-group list-group-flush ">-->
-                        <#--&lt;#&ndash;10 pis&ndash;&gt;-->
-                            <#--<li class="list-group-item">第一章 ：Cras justo odio</li>-->
-                            <#--<li class="list-group-item">第二章：Dapibus ac facilisis in</li>-->
-                            <#--<li class="list-group-item">第三章：Morbi leo risus</li>-->
-                            <#--<li class="list-group-item">第四章：Porta ac consectetur ac</li>-->
-                            <#--<li class="list-group-item">第五章：Vestibulum at eros</li>-->
-                        <#--</ul>-->
-                    <#--</blockquote>-->
+        <#--<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 ">-->
+            <#--&lt;#&ndash;<div class="row p-2">&ndash;&gt;-->
+            <#--&lt;#&ndash;&lt;#&ndash;最新动态&ndash;&gt;&ndash;&gt;-->
+                <#--&lt;#&ndash;<h3>最新动态</h3>&ndash;&gt;-->
+                <#--&lt;#&ndash;<div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">&ndash;&gt;-->
+                    <#--&lt;#&ndash;<blockquote class="blockquote mb-0">&ndash;&gt;-->
+                    <#--&lt;#&ndash;&lt;#&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>&ndash;&gt;&ndash;&gt;-->
+                    <#--&lt;#&ndash;&lt;#&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;&ndash;&gt;-->
+                        <#--&lt;#&ndash;<ul class="list-group list-group-flush ">&ndash;&gt;-->
+                        <#--&lt;#&ndash;&lt;#&ndash;10 pis&ndash;&gt;&ndash;&gt;-->
+                            <#--&lt;#&ndash;<li class="list-group-item">第一章 ：Cras justo odio</li>&ndash;&gt;-->
+                            <#--&lt;#&ndash;<li class="list-group-item">第二章：Dapibus ac facilisis in</li>&ndash;&gt;-->
+                            <#--&lt;#&ndash;<li class="list-group-item">第三章：Morbi leo risus</li>&ndash;&gt;-->
+                            <#--&lt;#&ndash;<li class="list-group-item">第四章：Porta ac consectetur ac</li>&ndash;&gt;-->
+                            <#--&lt;#&ndash;<li class="list-group-item">第五章：Vestibulum at eros</li>&ndash;&gt;-->
+                        <#--&lt;#&ndash;</ul>&ndash;&gt;-->
+                    <#--&lt;#&ndash;</blockquote>&ndash;&gt;-->
+                <#--&lt;#&ndash;</div>&ndash;&gt;-->
+            <#--&lt;#&ndash;</div>&ndash;&gt;-->
+            <#--<div class="row ">-->
+                <#--<div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12" style="max-height: 600px;min-height: 400px;">-->
+                    <#--<div class="card-header">-->
+                        <#--课后习题-->
+                    <#--</div>-->
+                    <#--<div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                        <#--<blockquote class="blockquote mb-0">-->
+                        <#--&lt;#&ndash;<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>&ndash;&gt;-->
+                        <#--&lt;#&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;-->
+                            <#--<ul class="list-group list-group-flush">-->
+                                <#--<#list CataloguetTests as CataloguetTest>-->
+                                    <#--<a href="/test/test?id=${(CataloguetTest.CATALOUGEID)!''}">  <li class="list-group-item">${(CataloguetTest.TITLE)!''}&nbsp;章节测试</li></a>-->
+                                <#--</#list>-->
+
+                            <#--</ul>-->
+                            <#--&lt;#&ndash;<nav aria-label="Page navigation example">&ndash;&gt;-->
+                                <#--&lt;#&ndash;<ul class="pagination justify-content-end">&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<li class="page-item disabled">&ndash;&gt;-->
+                                        <#--&lt;#&ndash;<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;</li>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<li class="page-item"><a class="page-link" href="#">1</a></li>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<li class="page-item"><a class="page-link" href="#">2</a></li>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<li class="page-item"><a class="page-link" href="#">3</a></li>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<li class="page-item">&ndash;&gt;-->
+                                        <#--&lt;#&ndash;<a class="page-link" href="#">Next</a>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;</li>&ndash;&gt;-->
+                                <#--&lt;#&ndash;</ul>&ndash;&gt;-->
+                            <#--&lt;#&ndash;</nav>&ndash;&gt;-->
+                        <#--</blockquote>-->
+                    <#--</div>-->
                 <#--</div>-->
             <#--</div>-->
-            <div class="row ">
-                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12" style="max-height: 600px;min-height: 400px;">
-                    <div class="card-header">
-                        课后习题
-                    </div>
-                    <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <blockquote class="blockquote mb-0">
-                        <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-                        <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                            <ul class="list-group list-group-flush">
-                                <#list CataloguetTests as CataloguetTest>
-                                    <a href="/test/test?id=${(CataloguetTest.CATALOUGEID)!''}">  <li class="list-group-item">${(CataloguetTest.TITLE)!''}&nbsp;章节测试</li></a>
-                                </#list>
 
-                            </ul>
-                            <#--<nav aria-label="Page navigation example">-->
-                                <#--<ul class="pagination justify-content-end">-->
-                                    <#--<li class="page-item disabled">-->
-                                        <#--<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-                                    <#--</li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                                    <#--<li class="page-item">-->
-                                        <#--<a class="page-link" href="#">Next</a>-->
-                                    <#--</li>-->
-                                <#--</ul>-->
-                            <#--</nav>-->
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <#--</div>-->
     </div>
 </div>
 <script src="/js/jquery-3.4.1.min.js"></script>

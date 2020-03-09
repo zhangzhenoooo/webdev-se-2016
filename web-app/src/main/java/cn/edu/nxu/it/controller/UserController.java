@@ -1,13 +1,18 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.CatalogueDTO;
 import cn.edu.nxu.it.DTO.CommentDTO;
+import cn.edu.nxu.it.DTO.ResoultOfTest;
+import cn.edu.nxu.it.DTO.TestAnswerDTO;
 import cn.edu.nxu.it.Enum.CommentTypeEnum;
 import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.service.CatalogueService;
 import cn.edu.nxu.it.service.CommentService;
+import cn.edu.nxu.it.service.TestService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
@@ -21,7 +26,8 @@ import java.util.List;
 
 public class UserController  extends Controller {
 
-
+private TestService testService = new TestService();
+private CommentService commentService = new CommentService();
     /**
      *
      * @description  学生选课
@@ -49,7 +55,7 @@ public class UserController  extends Controller {
     @Before(NeedLogin.class)
     public  void doSelect(){
         Integer courseId = getInt("id");
-        System.out.println("courseId = =================="+courseId);
+//        System.out.println("courseId = =================="+courseId);
         User user = (User) getSession().getAttribute("user");
         Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",courseId);
         if (course == null){
@@ -109,10 +115,11 @@ public class UserController  extends Controller {
             return;
         }
         User user = User.dao.findFirst("SELECT * FROM t_user WHERE USERID = ?",course.getCREATOR());
-        List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE CLASSID = ?",courseId);
+        CatalogueService catalogueService = new CatalogueService();
+        List<CatalogueDTO> catalogueDTOS = catalogueService.listCatalogByCourseId(course.getCLASSID());
         set("course",course);
         set("user",user);
-        set("catalogues",catalogues);
+        set("catalogueDTOS",catalogueDTOS);
         //添加浏览历史
         History history = new History();
         history.setCREATOR(user.getUSERID());
@@ -149,10 +156,12 @@ public class UserController  extends Controller {
         Long notificationId = getLong("NOTIFICATIONID");
         User user = (User) getSession().getAttribute("user");
         Kv reslut = Kv.create();
-        if (notificationId ==0){
+        if (notificationId ==0L){
+            //delete all notification
             Db.delete("DELETE FROM   t_notification WHERE   RECEIVER =?",user.getUSERID());
             reslut.set("success",true);
         }else {
+            //delete by id
             Db.delete("DELETE FROM   t_notification WHERE RECEIVER  =? AND NOTIFICATIONID=?",user.getUSERID(),notificationId);
             reslut.set("success",true);
         }
@@ -196,9 +205,49 @@ public class UserController  extends Controller {
      * z章节检测
      */
     public void test(){
+        User user = (User) getSession().getAttribute("user");
         Integer catalogueId = getInt("id");
         keepPara("id");
         String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+
+        //        装载试题
+        List<TestAnswerDTO> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<TestAnswerDTO> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<TestAnswerDTO> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<TestAnswerDTO> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+
+        tests_SINGLE_CHOICE = testService.listByCatalogueIdAndUserId(catalogueId,user.getUSERID(),TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = testService.listByCatalogueIdAndUserId(catalogueId,user.getUSERID(),TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = testService.listByCatalogueIdAndUserId(catalogueId,user.getUSERID(),TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = testService.listByCatalogueIdAndUserId(catalogueId,user.getUSERID(),TestTypeEnum.SUBJECTIVE.getType());
+
+//获取总分数
+        ResoultOfTest resoultOfTest = testService.getScoreBytester(user.getUSERID(),catalogueId);
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+        set("resoultOfTest",resoultOfTest);
+        renderFreeMarker("test.ftl");
+    }
+
+    /**
+     * 具体章节界面
+     */
+    @Before(NeedLogin.class)
+    public void  catalogue(){
+        Long catalogueId = getLong("id");
+        Catalogue catalogue = Catalogue.dao.findById(catalogueId);
+        Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
+
+        List<CommentDTO> commentDTOS = commentService.initComment(catalogueId,CommentTypeEnum.COMMENT_CLASS.getType());
+        set("course",course);
+        set("catalogue",catalogue);
+        set("comments",commentDTOS);
 
         //        装载试题
         List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
@@ -206,8 +255,8 @@ public class UserController  extends Controller {
         List<Test> tests_GAP_FILLING = new ArrayList<>(); //填空题
         List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
         List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
-
-        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
+        tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId, TestTypeEnum.SINGLE_CHOICE.getType());
         testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
         tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
         tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
@@ -219,10 +268,11 @@ public class UserController  extends Controller {
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("subjectives",tests_SUBJECTIVE);
-        renderFreeMarker("test.ftl");
+
+        renderFreeMarker("class_catalogue.ftl");
+
+
     }
-
-
 
 
 }

@@ -37,12 +37,18 @@ public class MainController extends Controller {
 //        Page<Movie> page = Movie.dao.paginate(p, 5,
 //                "SELECT *", "FROM t_movie");
 //        setAttr("page",page);
-        List<Course> allCourses = Course.dao.find("SELECT * FROM t_course WHERE IS_DELETE IS NULL ORDER BY GMT_CREATED DESC");
-        String hotSql = "SELECT\n" + "a.*\n" + "FROM\n" + "t_course as  a\n" + "INNER JOIN \n" + "(\n" + "SELECT * ,COUNT(THINGID) AS  COUNT FROM t_history  GROUP BY THINGID\n" + ") b\n" + "ON a.CLASSID = b.THINGID AND a.IS_DELETE IS NULL \n" + "ORDER BY b.COUNT  DESC  LIMIT 10";
-        List<Course> hotCourses = Course.dao.find(hotSql);
-        set("hotCourses",hotCourses);
-        set("allCourses",allCourses);
-        renderFreeMarker("index.ftl");
+//        List<Course> allCourses = Course.dao.find("SELECT * FROM t_course WHERE IS_DELETE IS NULL ORDER BY GMT_CREATED DESC");
+//        String hotSql = "SELECT\n" + "a.*\n" + "FROM\n" + "t_course as  a\n" + "INNER JOIN \n" + "(\n" + "SELECT * ,COUNT(THINGID) AS  COUNT FROM t_history  GROUP BY THINGID\n" + ") b\n" + "ON a.CLASSID = b.THINGID AND a.IS_DELETE IS NULL \n" + "ORDER BY b.COUNT  DESC  LIMIT 10";
+//        List<Course> hotCourses = Course.dao.find(hotSql);
+//        set("hotCourses",hotCourses);
+//        set("allCourses",allCourses);
+//        renderFreeMarker("index.ftl");
+        User user = (User) getSession().getAttribute("user");
+        if (user != null && user.getTYPE()==1){
+            redirect("/class/classMes?id=39");
+        }else {
+            redirect("/user/classMes?id=39");
+        }
     }
 
     //退出登录
@@ -85,6 +91,15 @@ public class MainController extends Controller {
         try {
             user.save();
             success=true;
+            //给用户添加课程
+            Course course = Course.dao.findById(39);
+            UserClass userClass = new UserClass();
+            userClass.setCLASSID(course.getCLASSID().intValue());
+            userClass.setCLASSNAME(course.getTITLE());
+            userClass.setUSERID(user.getUSERID());
+            userClass.setUSERNAME(user.getNAME());
+            userClass.setGmtCreated(System.currentTimeMillis());
+
         }catch (ActiveRecordException e){
             LogKit.error("用户注册失败，原因："+ e.getMessage());
             e.printStackTrace();
@@ -104,7 +119,7 @@ public class MainController extends Controller {
     public void loginCheck() {
         String username = getPara("username");
         String password = getPara("password");
-        String redirectUrl = getPara("redirectUrl", "/");
+        String redirectUrl = getPara("redirectUrl", "/class/classMes?id=39");
         Kv result = Kv.create();
         boolean success = false;
         String message = "用户名或密码错误";
@@ -190,6 +205,7 @@ public class MainController extends Controller {
                 setAttr("message","邮箱："+user.getEMAIL()+" 已经被注册过了");
                 renderFreeMarker("register.ftl");
             }else {
+                user.setTYPE(0);
                 user.save();
                 set("email",user.getEMAIL()) ;
             redirect("/login");
@@ -253,6 +269,25 @@ public class MainController extends Controller {
         Long classId = getLong("classId");
         Db.delete("DELETE FROM t_user_class WHERE CLASSID = ? AND USERID =?",classId,userId);
         studentManagement();
+    }
+
+    public void addHead(){
+        UploadFile  file = getFile("HEAD","/user/head");
+        Long userId = getLong("USERID");
+        String head = "";
+        if (file != null){
+            head = file.getFileName();
+        }
+         Db.update("UPDATE t_user SET HEAD = ? WHERE USERID = ?", head, userId);
+
+        User user = (User) getSession().getAttribute("user");
+        setAttr("user",user);
+        String sql = "SELECT DISTINCT t_course.* FROM t_course INNER JOIN t_user_class ON t_course.CLASSID = t_user_class.CLASSID WHERE t_user_class.USERID =?";
+        List<Course> courses = Course.dao.find(sql, user.getUSERID());
+        set("courses",courses);
+        List<History> histories = History.dao.find("SELECT * FROM t_history WHERE CREATOR =  ? ORDER BY GMT_MODIFIED ", user.getUSERID());
+        set("histories",histories);
+        renderFreeMarker("myMes.ftl");
     }
 
 

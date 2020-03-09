@@ -3,6 +3,7 @@ package cn.edu.nxu.it.Enum;
 public enum CommentTypeEnum {
     COMMENT_CLASS(1), //回复或者评论课程
     COMMNET_COMMENT(2),//回复问题或者评论
+    COMMNET_CATALOGUE(3),//回复问题或者评论
     ;
     private Integer type;
 

@@ -119,4 +119,15 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 	}
 
 
+	public M setINTRODUCTION(java.lang.String INTRODUCTION) {
+		set("INTRODUCTION", INTRODUCTION);
+		return (M)this;
+	}
+
+
+	public java.lang.String getINTRODUCTION() {
+		return getStr("INTRODUCTION");
+	}
+
+
 }

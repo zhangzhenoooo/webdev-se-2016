@@ -1,11 +1,13 @@
 package cn.edu.nxu.it.controller;
 
+import cn.edu.nxu.it.DTO.ResoultOfTest;
 import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.service.TestService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestController extends Controller {
+
+    TestService testService = new TestService();
     /**
      * z章节检测
      */
@@ -22,7 +26,7 @@ public class TestController extends Controller {
         Integer catalogueId = getInt("id");
         keepPara("id");
         String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
-
+        User user  = (User) getSession().getAttribute("user");
         //        装载试题
         List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
         List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
@@ -30,18 +34,22 @@ public class TestController extends Controller {
         List<Test> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
         List<Test> tests_SUBJECTIVE = new ArrayList<>(); //主观题
 
+
         tests_SINGLE_CHOICE = Test.dao.find(sql,catalogueId,TestTypeEnum.SINGLE_CHOICE.getType());
         testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
         tests_GAP_FILLING = Test.dao.find(sql,catalogueId,TestTypeEnum.GAPFILLING.getType());
         tests_TURE_OR_FALSE = Test.dao.find(sql,catalogueId,TestTypeEnum.TRUE_OR_FALSE.getType());
         tests_SUBJECTIVE = Test.dao.find(sql,catalogueId,TestTypeEnum.SUBJECTIVE.getType());
 
+        //获取总分数
+        ResoultOfTest  resoultOfTest = testService.getScoreBytester(user.getUSERID(),catalogueId);
 
         set("singleChoices",tests_SINGLE_CHOICE);
         set("singleChoicelines",testLines_SINGLE_CHOICE);
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("subjectives",tests_SUBJECTIVE);
+        set("resoultOfTest",resoultOfTest);
         renderFreeMarker("test.ftl");
     }
 
@@ -88,9 +96,11 @@ public class TestController extends Controller {
             //选择题:2
             String description = get("2_DESCRIPTION");
             String answer = get("2_ANSWER");
+            int score = getInt("2_SCORE");
             test.setDESCRPTION(description);
             test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
             test.setANSWER(answer);
+            test.setSCORE(score);
             test.update();
 
             List<Testline> testlines = Testline.dao.find("SELECT * FROM t_testline  WHERE TESTID = ?", testId);
@@ -111,11 +121,11 @@ public class TestController extends Controller {
 //            判断题:3
             String description = get("3_DESCRIPTION");
             String answer = get("3_ANSWER");
+            int score = getInt("3_SCORE");
             test.setDESCRPTION(description);
             test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
-
-                test.setANSWER(answer);
-
+            test.setANSWER(answer);
+            test.setSCORE(score);
             test.update();
 
         }
@@ -123,9 +133,11 @@ public class TestController extends Controller {
             //主观题:1
             String description = get("1_DESCRIPTION");
             String answer = get("1_ANSWER");
+            int score = getInt("1_SCORE");
             test.setDESCRPTION(description);
             test.setTYPE(TestTypeEnum.SUBJECTIVE.getType());
             test.setANSWER(answer);
+            test.setSCORE(score);
             test.update();
         }
         Course course = Course.dao.findById(catalogueId);//>???????????????
@@ -172,10 +184,11 @@ public class TestController extends Controller {
             test = new Test();
             String description = get("2_DESCRIPTION");
             String answer = get("2_ANSWER");
+            int score = getInt("2_SCORE");
             test.setDESCRPTION(description);
             test.setCATALOGUEID(catalogueId);
             test.setTYPE(TestTypeEnum.SINGLE_CHOICE.getType());
-            test.setSCORE(0);
+            test.setSCORE(score);
             test.setANSWER(answer);
             test.save();
 
@@ -214,10 +227,12 @@ public class TestController extends Controller {
             test = new Test();
             String description = get("3_DESCRIPTION");
             String answer = get("3_ANSWER");
+            int score = getInt("3_SCORE");
             test.setDESCRPTION(description);
             test.setCATALOGUEID(catalogueId);
             test.setTYPE(TestTypeEnum.TRUE_OR_FALSE.getType());
-            test.setSCORE(0);
+            test.setSCORE(score);
+            test.setANSWER(answer);
             if (TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer().equals(answer) || TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer() ==answer ){
                 test.setANSWER((String) TestAnswerEnum.TRUE_OR_FALSE_TRUE.getAnswer());
             }else if (TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer().equals(answer) || TestAnswerEnum.TRUE_OR_FALSE_FALSE.getAnswer() ==answer){
@@ -231,15 +246,16 @@ public class TestController extends Controller {
             test = new Test();
             String description = get("1_DESCRIPTION");
             String answer = get("1_ANSWER");
+            int score = getInt("1_SCORE");
             test.setDESCRPTION(description);
             test.setCATALOGUEID(catalogueId);
             test.setTYPE(TestTypeEnum.SUBJECTIVE.getType());
-            test.setSCORE(0);
+            test.setSCORE(score);
             test.setANSWER(answer);
             test.save();
         }
         //添加消息
-        Course course = Course.dao.findFirst("SELECT * FROM t_course WHERR CLASSID = ?",catalogueId);
+        Catalogue course = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE CATALOUGEID = ?",catalogueId);
         List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
         Notification notification ;
         for (UserClass userClass : userClasses){
@@ -254,10 +270,10 @@ public class TestController extends Controller {
             notification.setNotiferName(user.getNAME());
             notification.setNOTIFER(user.getUSERID());
             Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
-           if (dbNotification == null ){
-               //当没有消息的时候写入，避免重复消息
-               notification.save();
-           }
+            if (dbNotification == null ){
+                //当没有消息的时候写入，避免重复消息
+                notification.save();
+            }
         }
 
         List<Test> tests_SINGLE_CHOICE ; //选择题
@@ -291,8 +307,16 @@ public class TestController extends Controller {
         String answer = get("answer");
         Integer type = getInt("type");
         User user = (User) getSession().getAttribute("user");
-        Answer dbAnswer = Answer.dao.findFirst("SELECT * FROM t_answer WHERE TESTID = ? AND CREATOR = ?",testId,user.getUSERID());
         Kv result  = Kv.create();
+        Answer dbAnswer;
+        if (type == 2){
+            Testline dbtTest = Testline.dao.findFirst("select * from t_testline where TESTLINEID = ? ", testId);
+            testId = dbtTest.getTESTID();
+            dbAnswer = Answer.dao.findFirst("SELECT * FROM t_answer WHERE TESTID = ? AND CREATOR = ?",dbtTest.getTESTID(),user.getUSERID());
+        }else {
+            dbAnswer = Answer.dao.findFirst("SELECT * FROM t_answer WHERE TESTID = ? AND CREATOR = ?",testId,user.getUSERID());
+        }
+
         if (dbAnswer != null ){
             //    修改
             if (answer == null || "".equals(answer)){
@@ -323,6 +347,7 @@ public class TestController extends Controller {
                 result.set("success",false);
             }
         }
+        result.set("testId",testId);
         //添加浏览历史
         Catalogue catalogue = Catalogue.dao.findFirst("SELECT DISTINCT t_catalogue.* FROM t_catalogue INNER JOIN t_test ON t_test.CATALOGUEID = t_catalogue.CATALOUGEID WHERE t_test.TESTID = ?",testId);
         History history = new History();
@@ -399,6 +424,21 @@ public class TestController extends Controller {
         history.setTYPE(HistoryTypeEnum.HISTORY_TEST.getType());
         history.save();
         renderJson(resulet);
+    }
+
+    /**
+     *
+     * @description  提交考试
+     * @author zhangz
+     * @date 2020:03:09 09:57:43
+     * @return
+     **/
+    public void testSubmit(){
+        Long catalogueId = getLong("catalogueId");
+        System.out.println("testSubmit.catalogueId ====================="+catalogueId);
+        User user = (User) getSession().getAttribute("user");
+        int result = Db.update("UPDATE t_answer SET SIGN = 1 WHERE TESTID IN ( SELECT TESTID FROM t_test WHERE CATALOGUEID = ? ) AND CREATOR = ?",catalogueId,user.getUSERID());
+        renderJson(result);
     }
 
 }

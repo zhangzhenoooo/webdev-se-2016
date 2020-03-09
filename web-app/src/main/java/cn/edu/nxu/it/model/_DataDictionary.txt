@@ -8,6 +8,7 @@ Table: t_answer
  TESTID      | BIGINT(19)   | YES  |     |         |         
  GMT_CREATED | BIGINT(19)   | YES  |     |         |         
  TYPE        | INT(10)      | YES  |     |         |         
+ SIGN        | INT(10)      | NO   |     | 0       | 1:已经提交的；0还未提交
 -------------+--------------+------+-----+---------+---------
 
 Table: t_catalogue
@@ -23,6 +24,9 @@ Table: t_catalogue
  VIEW_COUNT   | BIGINT(19)   | YES  |     | 0       |         
  IS_DELETED   | BIGINT(19)   | YES  |     |         |         
  URL          | VARCHAR(255) | YES  |     |         |         
+ FIRST        | VARCHAR(255) | YES  |     |         |         
+ SECOND       | VARCHAR(255) | YES  |     |         |         
+ DESCRIPTION  | VARCHAR(255) | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 
 Table: t_catalogueline
@@ -163,20 +167,21 @@ Table: t_testline
 -------------+--------------+------+-----+---------+---------
 
 Table: t_user
-------------+--------------+------+-----+---------+---------
- Field      | Type         | Null | Key | Default | Remarks 
-------------+--------------+------+-----+---------+---------
- USERID     | BIGINT(19)   | NO   | PRI |         |         
- EMAIL      | VARCHAR(255) | YES  |     |         |         
- PASSWORD   | VARCHAR(255) | YES  |     |         |         
- NAME       | VARCHAR(100) | NO   |     |         |         
- PHONE      | VARCHAR(255) | YES  |     |         |         
- AGE        | INT(10)      | YES  |     |         |         
- SEX        | BIT          | YES  |     |         | 女：0，男：1 
- TYPE       | INT(10)      | YES  |     | 0       | 学生：0，老师 1
- HEAD       | VARCHAR(255) | YES  |     |         |         
- IS_DELETED | BIGINT(19)   | YES  |     |         |         
-------------+--------------+------+-----+---------+---------
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ USERID       | BIGINT(19)   | NO   | PRI |         |         
+ EMAIL        | VARCHAR(255) | YES  |     |         |         
+ PASSWORD     | VARCHAR(255) | YES  |     |         |         
+ NAME         | VARCHAR(100) | NO   |     |         |         
+ PHONE        | VARCHAR(255) | YES  |     |         |         
+ AGE          | INT(10)      | YES  |     |         |         
+ SEX          | BIT          | YES  |     |         | 女：0，男：1 
+ TYPE         | INT(10)      | YES  |     | 0       | 学生：0，老师 1
+ HEAD         | VARCHAR(255) | YES  |     |         |         
+ IS_DELETED   | BIGINT(19)   | YES  |     |         |         
+ INTRODUCTION | VARCHAR(255) | YES  |     |         | 个人介绍    
+--------------+--------------+------+-----+---------+---------
 
 Table: t_user_class
 --------------+--------------+------+-----+---------+---------

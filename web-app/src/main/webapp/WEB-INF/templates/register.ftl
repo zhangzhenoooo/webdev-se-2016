@@ -16,6 +16,7 @@
         <!--左边-->
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="padding-left: 20%;padding-right: 20%;padding-top: 10px">
             <h3 class="text-center">注册</h3>
+            <p class="float-right"> 已有账号，<a href="/login">去登录</a> </p>
             <br>
             <#--表单的错误提示-->
             <small  style="color: red;" class="form-text text-muted ">${(message)!''}</small>
@@ -34,16 +35,16 @@
                        请输入姓名
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="user.TYPE">请选择你的身份：</label>
-                    <select class="form-control" id="user.TYPE" name="user.TYPE" required>
-                        <option value="0"> 学生</option>
-                        <option value="1"> 老师</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        请选择身份
-                    </div>
-                </div>
+                <#--<div class="form-group">-->
+                    <#--<label for="user.TYPE">请选择你的身份：</label>-->
+                    <#--<select class="form-control" id="user.TYPE" name="user.TYPE" required>-->
+                        <#--<option value="0"> 学生</option>-->
+                        <#--<option value="1"> 老师</option>-->
+                    <#--</select>-->
+                    <#--<div class="invalid-feedback">-->
+                        <#--请选择身份-->
+                    <#--</div>-->
+                <#--</div>-->
                 <div class="form-group">
                     <label for="user.PASSWORD">请输入密码：</label>
                     <input type="password" class="form-control"name="user.PASSWORD" id="user.PASSWORD" required>
@@ -65,18 +66,18 @@
                         请输入你的联系方式
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="user.AGE">请输入您的年龄：</label>
-                    <input type="number" class="form-control" name="user.AGE" id="user.AGE" required>
-                    <div class="invalid-feedback">
-                        请输入你的年龄
-                    </div>
-                </div>
+                <#--<div class="form-group">-->
+                    <#--<label for="user.AGE">请输入您的年龄：</label>-->
+                    <#--<input type="number" class="form-control" name="user.AGE" id="user.AGE" required>-->
+                    <#--<div class="invalid-feedback">-->
+                        <#--请输入你的年龄-->
+                    <#--</div>-->
+                <#--</div>-->
                 <div class="form-group">
                     <label for="user.SEX">请选择性别：</label>
                     <select class="form-control" id="user.SEX" name="user.SEX" required>
-                        <option value="0"> 女</option>
                         <option value="1"> 男</option>
+                        <option value="0"> 女</option>
                     </select>
                     <div class="invalid-feedback">
                         请选择性别

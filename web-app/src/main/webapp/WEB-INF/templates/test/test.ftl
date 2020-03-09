@@ -12,9 +12,11 @@
  <#include "../navigation.ftl">
 </div>
 <div class="container-fluid main">
+    <a  class="ml-5  mr-5" href="/test/addTest?id=${(id)!''}" >添加课后测试</a>
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
         <#--选择题-->
             <div class="card">
                 <div class="card-header">
@@ -33,7 +35,8 @@
                                     <#if singleChoice.TESTID == singleChoiceline.TESTID  >
                                     <#--选项：-->
                                   <p class="card-text ml-3">
-                                      <input  type="radio" class="form-check-input" onclick="answerSingleChoice(this)"  name="testline-${(singleChoice.TESTID)!}" data-id="${(singleChoice.TESTID)!}" id="testline-${(singleChoice.TESTID)!}" value="${(string[i])}">
+                                      <input  type="radio" class="form-check-input" onclick="answerSingleChoice(this)"  name="testline-${(singleChoice.TESTID)!}" data-id="${(singleChoice.TESTID)!}" id="testline-${(singleChoice.TESTID)!}" value="${(string[i])}"
+                                       <#if string[i] == singleChoice.ANSWER >checked</#if>>
                                       <span> ${(string[i])}.&nbsp;&nbsp;</span>${(singleChoiceline.DESCRIPTION)!''}</p>
                                         <#assign  i = i+1>
                                     </#if>
@@ -68,8 +71,8 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col" width="10%">（100分）</th>
-                            <th scope="col" width="70%">请选择对错</th>
+                            <th scope="col" width="15%">（100分）</th>
+                            <th scope="col" width="65%">请选择对错</th>
                             <th scope="col" width="20%">每题/5分</th>
 
                         </tr>
@@ -85,13 +88,16 @@
                                      <td>
 
                                          <div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="1">
+                                             <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="1"
+                                               <#if '1' == trueOrFalse.ANSWER >checked</#if>>
                                              <label class="form-check-label" for="inlineRadio1">对</label>
                                          </div>
                                          <div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="0">
+                                             <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="0"
+                                               <#if '0' == trueOrFalse.ANSWER >checked</#if>>
                                              <label class="form-check-label" for="inlineRadio2">错</label>
                                          </div>
+                                         <br>
                                          <a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-delete-${(trueOrFalse.TESTID)!''}">删除</a>
                                          <a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-modify-${(trueOrFalse.TESTID)!''}">修改</a>
 
@@ -134,6 +140,8 @@
         </div>
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 p-5">
+            <h3>答题板</h3>
+            <hr>
             选择题：
             <br>
             <div class="btn-group" role="group">
@@ -189,21 +197,36 @@
                 <#--选择题-->
                     <form id="form_single_choice" method="post" action="updateTest">
                         <div class="form-group">
-                            <label for="CATALOGUEID2"></label>
-                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID2"  value="${(id)!''}">
+
+                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID2"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
-                            <label for="TESTID2"></label>
-                            <input type="text" class="form-control" name="TESTID" id="TESTID2"  >
+
+                            <input type="hidden" class="form-control" name="TESTID" id="TESTID2"  >
                         </div>
                         <div class="form-group">
-                            <label for="TYPE"></label>
-                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="2">
+
+                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
                         </div>
                         <div class="form-group">
                             <label for="2_DESCRIPTION">请输入问题描述：</label>
                             <input type="text" class="form-control" id="2_DESCRIPTION" name="2_DESCRIPTION" >
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group ">
+                            <label for="2_SCORE">选项分值：</label>
+                            <select class="form-control " id="2_SCORE" name="2_SCORE">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option selected>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="a">选项A:</label>
@@ -222,8 +245,15 @@
                             <input type="text" class="form-control" id="d" name="d">
                         </div>
                         <div class="form-group">
-                            <label for="2_ANSWER">答案(大写):</label>
-                            <input type="text" class="form-control" id="2_ANSWER" name="2_ANSWER">
+                            <div class="form-group">
+                                <label for="2_ANSWER">选择正确答案:</label>
+                                <select class="form-control " id="2_ANSWER" name="2_ANSWER">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">保存</button>
                         <button type="reset" class="btn btn-primary">重置</button>
@@ -231,20 +261,35 @@
                 <#--判断题-->
                     <form id="form_true_or_false" method="post" action="updateTest">
                         <div class="form-group">
-                            <label for="CATALOGUEID3"></label>
-                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID3"  value="${(id)!''}">
+
+                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID3"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
-                            <label for="TESTID3"></label>
-                            <input type="text" class="form-control" name="TESTID" id="TESTID3"  >
+
+                            <input type="hidden" class="form-control" name="TESTID" id="TESTID3"  >
                         </div>
                         <div class="form-group">
-                            <label for="TYPE"></label>
-                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="3">
+
+                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="3">
                         </div>
                         <div class="form-group">
                             <label for="3_DESCRIPTION">请将你的问题填入下列区域中：</label>
                             <textarea class="form-control" id="3_DESCRIPTION" name="3_DESCRIPTION" ></textarea>
+                        </div>
+                        <div class="form-group ">
+                            <label for="3_SCORE">选项分值：</label>
+                            <select class="form-control " id="3_SCORE" name="3_SCORE">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option selected>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
                         </div>
                         <p>请选择正确答案：</p>
                         <div class="form-check form-check-inline  ml-5">
@@ -260,18 +305,33 @@
                         <button type="reset" class="btn btn-primary float-right mr-3">重置</button>
                     </form>
                 <#--主观题-->
-                    <form id="form_subjective">
+                    <form id="form_subjective" method="post" action="updateTest">
                         <div class="form-group">
-                            <label for="CATALOGUEID1"></label>
-                            <input type="text" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">
+
+                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">
                         </div>
                         <div class="form-group">
-                            <label for="TESTID"></label>
-                            <input type="text" class="form-control" name="TESTID" id="TESTID1"  >
+
+                            <input type="hidden" class="form-control" name="TESTID" id="TESTID1"  >
                         </div>
                         <div class="form-group">
-                            <label for="TYPE"></label>
-                            <input type="text" class="form-control" name="TYPE" id="TYPE"  value="1">
+
+                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
+                        </div>
+                        <div class="form-group ">
+                            <label for="1_SCORE">选项分值：</label>
+                            <select class="form-control " id="1_SCORE" name="1_SCORE">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
@@ -285,10 +345,10 @@
                         <button type="reset" class="btn btn-primary">重置</button>
                     </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
+            <#--<div class="modal-footer">-->
+                <#--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                <#--<button type="button" class="btn btn-primary">Send message</button>-->
+            <#--</div>-->
         </div>
     </div>
 </div>
@@ -354,6 +414,8 @@
                       answer.attr("value",data.answer);
                       $("#TESTID2").val(data.testId);
                       $("#CATALOGUEID2").val(data.catalogueId);
+                      $("#2_SCORE").find("option[text=data.SCORE]").attr("selected",true);
+                      $("#2_ANSWER").find("option[text=data.answer]").attr("selected",true);
 
                   } else if (type == 3){
                       // 判断
@@ -370,6 +432,7 @@
                           a_false.prop("checked",'checked');
                       }
                       $("#TESTID3").val(data.testId);
+                      $("#3_SCORE").find("option[text=data.SCORE]").attr("selected",true);
 
 
                   } else if (type ==1) {
@@ -380,6 +443,7 @@
                       answer.val(data.answer);
                       $("#TESTID1").val(data.testId);
                       $("#CATALOGUEID1").val(data.catalogueId);
+                      $("#1_SCORE").find("option[text=data.SCORE]").attr("selected",true);
 
                   }
               }else {
