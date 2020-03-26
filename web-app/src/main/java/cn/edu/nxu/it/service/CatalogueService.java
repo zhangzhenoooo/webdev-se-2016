@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class CatalogueService {
 
-  public static List<CatalogueDTO> listCatalogByCourseId(Long courseId){
+  public  List<CatalogueDTO> listCatalogByCourseId(Long courseId){
 
        List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE PARENTID IS NULL AND CLASSID = ?", courseId);
        if (catalogues.size() == 0) {

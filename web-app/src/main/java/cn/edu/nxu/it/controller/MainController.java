@@ -207,6 +207,15 @@ public class MainController extends Controller {
             }else {
                 user.setTYPE(0);
                 user.save();
+                //给学生添加课程
+                Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",39);
+                UserClass userClass = new UserClass();
+                userClass.setCLASSID(39);
+                userClass.setCLASSNAME(course.getTITLE());
+                userClass.setUSERID(user.getUSERID());
+                userClass.setUSERNAME(user.getNAME());
+                userClass.setGmtCreated(System.currentTimeMillis());
+                userClass.save();
                 set("email",user.getEMAIL()) ;
             redirect("/login");
             }
