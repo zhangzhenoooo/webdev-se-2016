@@ -121,15 +121,15 @@ private CommentService commentService = new CommentService();
         set("user",user);
         set("catalogueDTOS",catalogueDTOS);
         //添加浏览历史
-        History history = new History();
-        history.setCREATOR(user.getUSERID());
-        history.setCreatorName(user.getNAME());
-        history.setGmtCreated(System.currentTimeMillis());
-        history.setGmtModified(System.currentTimeMillis());
-        history.setTHINGID(course.getCLASSID());
-        history.setThingName(course.getTITLE()) ;
-        history.setTYPE(HistoryTypeEnum.HISTORY_COURSE.getType());
-        history.save();
+//        History history = new History();
+//        history.setCREATOR(user.getUSERID());
+//        history.setCreatorName(user.getNAME());
+//        history.setGmtCreated(System.currentTimeMillis());
+//        history.setGmtModified(System.currentTimeMillis());
+//        history.setTHINGID(course.getCLASSID());
+//        history.setThingName(course.getTITLE()) ;
+//        history.setTYPE(HistoryTypeEnum.HISTORY_COURSE.getType());
+//        history.save();
         renderFreeMarker("class_mes.ftl");
     }
 
