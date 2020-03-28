@@ -20,10 +20,10 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                <div class="row">
                    <#--top-->
-                       <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
+                       <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " >
                            <div class="row no-gutters">
                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                   <img src="/upload/class/${(course.HEAD)!}" class="card-img" alt="...">
+                                   <img  height="200px" src="/upload/class/${(course.HEAD)!}" class="card-img" alt="...">
                                <#--//保存课程章节的id-->
                                    <input type="hidden" id="classId" value="${(catalogue. CATALOUGEID)!''}">
                                </div>
@@ -34,7 +34,7 @@
                                        <p>简介：</p>
                                        <p class="card-text">${(catalogue.DESCRIPTION)!'老师还没有更新题目'}</p>
                                            <#assign dlong = (catalogue.GMT_CTRATED)!0?number * 1000 />
-                                       <p class="card-text"><small class="text-muted">更新时间：<span>${dlong?number_to_datetime} </span></small></p>
+                                       <p class="card-text"><small class="text-muted">更新时间：<span>${(catalogue.GMT_CREATED?number?number_to_datetime?string("yyyy-MM-dd"))!}</span></small></p>
                                    </div>
                                </div>
                            </div>
@@ -47,6 +47,7 @@
                         <div class="card-header">
                             <a class="float-right ml-5" href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}">课后测试</a>
                             <a class="float-right ml-5"  href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" >课件下载</a>
+                            <a href="#" class="float-right ml-5" data-toggle="modal" data-target="#exampleModal" >浏览课件</a>
 
                         </div>
                         <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 "  >
@@ -318,170 +319,16 @@
 
     </div>
 </div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "../footer.ftl">
+</div>
 <#--//弹出框-->
 
+<#--//弹出框-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">修改考题</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <#--选择题-->
-                <form id="form_single_choice" method="post" action="updateTest">
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID2"  value="${(id)!''}">
-                    </div>
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="TESTID" id="TESTID2"  >
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="2">
-                    </div>
-                    <div class="form-group">
-                        <label for="2_DESCRIPTION">请输入问题描述：</label>
-                        <input type="text" class="form-control" id="2_DESCRIPTION" name="2_DESCRIPTION" >
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
-                    <div class="form-group ">
-                        <label for="2_SCORE">选项分值：</label>
-                        <select class="form-control " id="2_SCORE" name="2_SCORE">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option selected>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="a">选项A:</label>
-                        <input type="text" class="form-control" id="a" name="a">
-                    </div>
-                    <div class="form-group">
-                        <label for="b">选项B:</label>
-                        <input type="text" class="form-control" id="b" name="b">
-                    </div>
-                    <div class="form-group">
-                        <label for="c">选项C:</label>
-                        <input type="text" class="form-control" id="c" name="c">
-                    </div>
-                    <div class="form-group">
-                        <label for="d">选项D:</label>
-                        <input type="text" class="form-control" id="d" name="d">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label for="2_ANSWER">选择正确答案:</label>
-                            <select class="form-control " id="2_ANSWER" name="2_ANSWER">
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="D">D</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">保存</button>
-                    <button type="reset" class="btn btn-primary">重置</button>
-                </form>
-            <#--判断题-->
-                <form id="form_true_or_false" method="post" action="updateTest">
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID3"  value="${(id)!''}">
-                    </div>
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="TESTID" id="TESTID3"  >
-                    </div>
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="3">
-                    </div>
-                    <div class="form-group">
-                        <label for="3_DESCRIPTION">请将你的问题填入下列区域中：</label>
-                        <textarea class="form-control" id="3_DESCRIPTION" name="3_DESCRIPTION" ></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label for="3_SCORE">选项分值：</label>
-                        <select class="form-control " id="3_SCORE" name="3_SCORE">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option selected>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                    <p>请选择正确答案：</p>
-                    <div class="form-check form-check-inline  ml-5">
-                        <input class="form-check-input " type="radio" name="3_ANSWER" id="inlineRadio1_true" value="1">
-                        <label class="form-check-label" for="inlineRadio1_true">对</label>
-                    </div>
-                    <div class="form-check form-check-inline ">
-                        <input class="form-check-input" type="radio" name="3_ANSWER" id="inlineRadio_false" value="0">
-                        <label class="form-check-label" for="inlineRadio_false">错</label>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary float-right mr-3">保存</button>
-                    <button type="reset" class="btn btn-primary float-right mr-3">重置</button>
-                </form>
-            <#--主观题-->
-                <form id="form_subjective" method="post" action="updateTest">
-                    <div class="form-group">
-
-                        <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" name="TESTID" id="TESTID1"  >
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
-                    </div>
-                    <div class="form-group ">
-                        <label for="1_SCORE">选项分值：</label>
-                        <select class="form-control " id="1_SCORE" name="1_SCORE">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
-                        <textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>
-                        <textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">保存</button>
-                    <button type="reset" class="btn btn-primary">重置</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
+            <iframe src="/upload/class/${(catalogue.URL)!''}" style="width: 120%;height: 600px;"></iframe>
         </div>
     </div>
 </div>

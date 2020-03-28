@@ -269,6 +269,18 @@ private CommentService commentService = new CommentService();
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("subjectives",tests_SUBJECTIVE);
 
+        //添加浏览历史
+        User user = (User) getSession().getAttribute("user");
+        History history = new History();
+        history.setCREATOR(user.getUSERID());
+        history.setCreatorName(user.getNAME());
+        history.setGmtCreated(System.currentTimeMillis());
+        history.setGmtModified(System.currentTimeMillis());
+        history.setTHINGID(catalogue.getCATALOUGEID());
+        history.setThingName(catalogue.getTITLE()) ;
+        history.setTYPE(HistoryTypeEnum.HISTORY_COURSE.getType());
+        history.save();
+
         renderFreeMarker("class_catalogue.ftl");
 
 

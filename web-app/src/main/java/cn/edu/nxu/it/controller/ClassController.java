@@ -13,6 +13,7 @@ import cn.edu.nxu.it.service.CommentService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 import net.sf.ehcache.search.expression.Not;
 
@@ -81,9 +82,10 @@ public class ClassController extends Controller {
     public  void  addCatalogue(){
         UploadFile  file = getFile("catalogueUrl","/class");
         Long courseID = getLong("classId");
-        String title = get("catalogueTitle");
+        String title = get("TITLE");
         String description = get("DESCRIPTION");
-        Long parent = getLong("PARENT");
+        Long section = getLong("PARENT");
+        Long  node   = getLong("NODE");
         Catalogue catalogue = new Catalogue();
         catalogue.setCLASSID(courseID);
         catalogue.setTITLE(title);
@@ -91,7 +93,8 @@ public class ClassController extends Controller {
         if (null != file ) {
             catalogue.setURL(file.getFileName());
         }
-       catalogue.setPARENTID(parent);
+        catalogue.setPARENTID(section);
+        catalogue.setNODE(node);
         List<Course>  dbCourses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",courseID);
         Kv result = Kv.create();
         if (dbCourses.size() == 0){
@@ -100,37 +103,116 @@ public class ClassController extends Controller {
             set("success",false);
         }
         else {
-            catalogue.setGmtCreated(System.currentTimeMillis());
-            catalogue.setGmtModified(System.currentTimeMillis());
-            boolean affectedRow = catalogue.save();
-            if (affectedRow){
-                set("message","添加成功");
-                set("success",true);
-                //添加消息
-                Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
-                List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
-                Notification notification ;
-                for (UserClass userClass : userClasses){
-                    notification = new Notification();
-                    notification.setOUTERID(course.getCLASSID());
-                    notification.setGmtCreated(System.currentTimeMillis());
-                    notification.setTYPE(NotifyTypeEnum.NOTIFY_CATALOGUE.getType());
-                    notification.setRECEIVER(userClass.getUSERID());
-                    notification.setOuterTitle(course.getTITLE());
-                    User user = (User) getSession().getAttribute("user");
-                    notification.setNotiferName(user.getNAME());
-                    notification.setNOTIFER(user.getUSERID());
-                    Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
-                    if (dbNotification == null ){
-                        //当没有消息的时候写入，避免重复消息
-                        notification.save();
+                catalogue.setGmtCreated(System.currentTimeMillis());
+                catalogue.setGmtModified(System.currentTimeMillis());
+                boolean affectedRow = catalogue.save();
+                if (affectedRow){
+                    set("message","添加成功");
+                    set("success",true);
+                    //添加消息
+                    Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
+                    List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
+                    Notification notification ;
+                    for (UserClass userClass : userClasses){
+                        notification = new Notification();
+                        notification.setOUTERID(course.getCLASSID());
+                        notification.setGmtCreated(System.currentTimeMillis());
+                        notification.setTYPE(NotifyTypeEnum.NOTIFY_CATALOGUE.getType());
+                        notification.setRECEIVER(userClass.getUSERID());
+                        notification.setOuterTitle(course.getTITLE());
+                        User user = (User) getSession().getAttribute("user");
+                        notification.setNotiferName(user.getNAME());
+                        notification.setNOTIFER(user.getUSERID());
+                        Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
+                        if (dbNotification == null ){
+                            //当没有消息的时候写入，避免重复消息
+                            notification.save();
+                        }
+
                     }
 
+                }else {
+                    set("message","添加失败");
+                    set("success",false);
                 }
 
+        }
+        renderJson();
+
+    }
+    /**
+     *
+     * @description 删除
+     * @author zhangz
+     * @date 2020:03:28 15:58:23
+     * @return
+     **/
+    public void deleteCatalogue(){
+        Integer catalogueId = getInt("id");
+        int delete = Db.delete("DELETE FROM t_catalogue WHERE CATALOUGEID = ?", catalogueId);
+        if (delete > 0){
+            set("success",true);
+        }else {
+            set("success",false);
+        }
+        renderJson();
+    }
+/**
+ *
+ * @description 跳转到修改章节
+ * @author zhangz
+ * @date 2020:03:27 20:55:51
+ * @return
+ **/
+    public void  modifyCatalogue(){
+        Integer catalogueId = getInt("id");
+        Catalogue catalogue = Catalogue.dao.findById(catalogueId);
+        Course course = Course.dao.findById(catalogue.getCLASSID());
+        List<CatalogueDTO> catalogueDTOS = catalogueService.listCatalogByCourseId(course.getCLASSID());
+        set("course",course);
+        set("catalogue",catalogue);
+        set("catalogueDTOS",catalogueDTOS) ;
+        renderFreeMarker("modify_catalogue.ftl");
+    }
+
+    /**
+     * 修改章节信息
+     */
+    public  void  doModifyCatalogue(){
+        UploadFile  file = getFile("catalogueUrl","/class");
+        Long courseID = getLong("classId");
+        Long catalogueId = getLong("catalogueId");
+        String title = get("TITLE");
+        String description = get("DESCRIPTION");
+        Long section = getLong("PARENT");
+        Long  node   = getLong("NODE");
+        Catalogue catalogue = new Catalogue();
+        catalogue.setCATALOUGEID(catalogueId);
+        catalogue.setCLASSID(courseID);
+        catalogue.setTITLE(title);
+        catalogue.setDESCRIPTION(description);
+        if (null != file ) {
+            catalogue.setURL(file.getFileName());
+        }
+        catalogue.setPARENTID(section);
+        catalogue.setNODE(node);
+        List<Course>  dbCourses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",courseID);
+        Kv result = Kv.create();
+        if (dbCourses.size() == 0){
+            //课程信息未保存
+            set("message","没有对应的课程信息，请先保存或者新建课程信息");
+            set("success",false);
+        }
+        else {
+            List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE CATALOUGEID = ?", catalogueId);
+            if (catalogues.size() > 0 ){
+                catalogue.setGmtModified(System.currentTimeMillis());
+                catalogue.update();
+                set("message","更新成功");
+                set("success",true);
             }else {
-                set("message","添加失败");
-                set("success",false);
+                    set("message","修改失败");
+                    set("success",false);
             }
         }
         renderJson();

@@ -21,7 +21,7 @@ public class CatalogueService {
 
   public  List<CatalogueDTO> listCatalogByCourseId(Long courseId){
 
-       List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE PARENTID IS NULL AND CLASSID = ?", courseId);
+       List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE NODE IS NULL AND CLASSID = ?", courseId);
        if (catalogues.size() == 0) {
            return new ArrayList<>();
        }
@@ -40,7 +40,7 @@ public class CatalogueService {
            catalogueDTO.setURL(catalogue.getURL());
            catalogueDTO.setVIEW_COUNT(catalogue.getViewCount());
 
-           List<Catalogue> secondCatalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE PARENTID  = ?", catalogue.getCATALOUGEID());
+           List<Catalogue> secondCatalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE NODE IS NOT NULL AND PARENTID  = ? ORDER BY NODE", catalogue.getPARENTID());
            catalogueDTO.setCatalogueList(secondCatalogues);
            return catalogueDTO;
 

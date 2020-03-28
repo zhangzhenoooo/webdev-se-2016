@@ -33,7 +33,7 @@
                                 <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
                                 <p>简介：</p>
                                 <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
-                                <p class="card-text"><small class="text-muted">开始时间：<span>${(course.GMT_CREATED*1000)?number_to_datetime?string('yyyy-MM-dd ')} </span></small></p>
+                                <p class="card-text"><small class="text-muted">开始时间：<span> ${(course.GMT_CREATED?number?number_to_datetime?string("yyyy-MM-dd"))!}</span></small></p>
 
                             </div>
                         </div>
@@ -56,21 +56,17 @@
                                 <#assign  x=1>
                                         <#list catalogueDTOS as catalogueDTO>
                                             <li class="list-group-item" style="font-size: 16px;"  >
-                                                <p >第<span>${x}</span>章：${(catalogueDTO.TITLE)!'未命名'}</p>
+                                                <p >第<span>${(catalogueDTO.PARENTID)!''}</span>章：${(catalogueDTO.TITLE)!'未命名'}
+                                                    <a href="modifyCatalogue?id=${(catalogueDTO. CATALOUGEID)!''}">编辑</a>
+                                                    <a  style="color: red;" href="#" data-id="${(catalogueDTO. CATALOUGEID)!''}"  onclick="deleteCatalogue(this)" >删除</a>
+                                                </p>
                                             </li>
                                             <#assign  y=1>
                                              <#list catalogueDTO.catalogueList as catalogue>
                                                       <p class="list pl-5" >
-                                                          <a style="font-size: 16px; color: gray"  href="catalogue?id=${(catalogue. CATALOUGEID)!''}">第<span>${y}</span>节：${(catalogue.TITLE)!'未命名'}</a>
-                                                          <#--&nbsp; <button type="button" class="btn btn-primary float-right">-->
-                                                          <#--<a href="/test/test?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课后测试</a>-->
-                                                      <#--</button>-->
-                                                          <#--&nbsp;<button type="button" class="btn btn-primary float-right">-->
-                                                          <#--<a href="/class/downLoadFile?id=${(catalogue.CATALOUGEID)!'/'}" style="color: white;">课件下载</a>-->
-                                                      <#--</button>-->
-                                                          <#--&nbsp;   <button type="button" class="btn btn-primary float-right">-->
-                                                          <#--<a href="/test/addTest?id=${(catalogue. CATALOUGEID)!''}" style="color: white;">添加课后测试</a>-->
-                                                      <#--</button>&nbsp;-->
+                                                          <a style="font-size: 16px; color: gray"  href="catalogue?id=${(catalogue. CATALOUGEID)!''}">第<span>${(catalogue.NODE)!''}</span>节：${(catalogue.TITLE)!'未命名'}</a>
+                                                          &nbsp;<a style="font-size: 16px;" href="modifyCatalogue?id=${(catalogue. CATALOUGEID)!''}">编辑</a>
+                                                          <a style="color: red;font-size: 16px;" href="#" data-id="${(catalogue. CATALOUGEID)!''}"  onclick="deleteCatalogue(this)" >删除</a>
                                                     </p>
                                                  <#assign  y=y+1>
                                                 </#list>
@@ -78,19 +74,6 @@
                                         </#list>
 
                             </ul>
-                            <#--<nav aria-label="Page navigation example">-->
-                                <#--<ul class="pagination justify-content-end">-->
-                                    <#--<li class="page-item disabled">-->
-                                        <#--<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-                                    <#--</li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
-                                    <#--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                                    <#--<li class="page-item">-->
-                                        <#--<a class="page-link" href="#">Next</a>-->
-                                    <#--</li>-->
-                                <#--</ul>-->
-                            <#--</nav>-->
                         </blockquote>
                     </div>
                     <div class="card" >
@@ -239,6 +222,9 @@
         <#--</div>-->
     </div>
 </div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "../footer.ftl">
+</div>
 <script src="/js/jquery-3.4.1.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -249,5 +235,28 @@
 <script src="/js/moment.js" type="application/javascript"></script>
 <script src="/js/lib/marked.min.js"></script>
 <script src="/js/lib/prettify.min.js"></script>
+<script>
+    function  deleteCatalogue(e) {
+        var id = e.getAttribute("data-id");
+        $.ajax({
+            url:'/class/deleteCatalogue',
+            type:'post',
+            data:{id:id},
+            success:function (respose) {
+                if (respose.success){
+                    window.location.reload();
+                }else {
+                    alert("删除失败");
+                }
+
+            },
+            error:function (error) {
+
+            }
+
+        })
+
+    }
+</script>
 </body>
 </html>

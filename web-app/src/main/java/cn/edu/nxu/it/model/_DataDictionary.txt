@@ -17,6 +17,7 @@ Table: t_catalogue
 --------------+--------------+------+-----+---------+---------
  CATALOUGEID  | BIGINT(19)   | NO   | PRI |         |         
  PARENTID     | BIGINT(19)   | YES  |     |         | 父目录id   
+ NODE         | BIGINT(19)   | YES  |     |         | 节点：章的小节 
  CLASSID      | BIGINT(19)   | YES  |     |         |         
  TITLE        | VARCHAR(255) | YES  |     |         |         
  GMT_CREATED  | BIGINT(19)   | YES  |     |         |         

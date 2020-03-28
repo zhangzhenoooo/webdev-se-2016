@@ -18,30 +18,23 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h3 class="shadow-sm p-3 mb-5 bg-white rounded">个人主页</h3>
             <hr >
-            <form class="shadow p-3 mb-5 bg-white rounded" method="post" action="updateMyMes" >
+            <form class="shadow p-3 mb-5 bg-white rounded" method="post" action="/updateMyMes" >
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="user.USERID" id="user.USERID" value="${(user.getUSERID())!''}" >
+                </div>
                 <div class="form-group">
                     <label for="user.EMAIL">绑定的邮箱:</label>
-                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" disabled>
+                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" readonly>
                     <small id="emailHelp" class="form-text text-muted">邮箱是登录账号哦，保存着个人信息。请不要随意更改哦</small>
+                </div>
+                <div class="form-group">
+                    <label for="user.NAME">名字:</label>
+                    <input type="text" class="form-control" name="user.NAME" id="user.NAME" value="${(user.getNAME())!''}">
                 </div>
                 <div class="form-group">
                     <label for="user.PHONE">联系方式:</label>
                     <input type="tel" class="form-control" name="user.PHONE" id="user.PHONE" value="${(user.getPHONE())!''}">
                 </div>
-                <#--<div class="form-group">-->
-                    <#--<label for="user.SEX">性别:</label>-->
-                    <#--<select class="form-control" name="user.SEX" id="user.SEX">-->
-                        <#--<option value="1" <#if user.isSEX()>-->
-                            <#--class="selected"-->
-                        <#-->男-->
-                        <#--</#if>-->
-                        <#--</option>-->
-                        <#--<option value="=0" <#if !user.isSEX() >-->
-                        <#--class="selected"-->
-                            <#-->女-->
-                        <#--</#if></option>-->
-                    <#--</select>-->
-                <#--</div>-->
                 <div class="form-group">
                 <label for="user.INTRODUCTION">个人介绍:</label>
                 <input type="text" class="form-control"name="user.INTRODUCTION" id="user.INTRODUCTION" value="${(user.INTRODUCTION)!'这个人很懒，还没有留下个性签名'}">
@@ -59,7 +52,7 @@
 
                                   <div class="col-sm-3">
                                       <div class="card" style="width: 18rem;">
-                                          <img src="/upload/class/${(course.HEAD)!''}" class="card-img-top" height="200px" alt="${(course.TITLE)!''}">
+                                          <img src="/upload/class/${(course.HEAD)!''}" class="card-img-top" height="150px" alt="${(course.TITLE)!''}">
                                           <div class="card-body"  style="height: 150px;">
                                               <p class="card-text"><span></span>
                                                   <a href="/user/classMes?id=${(course.CLASSID)!''}">${(course.TITLE)!''}</a>
@@ -85,7 +78,7 @@
         <!--右边-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="card" style="width: 18rem;">
-                <#if  user.HEAD ==''  >
+                <#if (((user.HEAD)!'') == '' )>
                 <form enctype="multipart/form-data" method="post" action="addHead">
                     <div class="form-group">
 
@@ -98,7 +91,7 @@
                     <button type="submit" class="btn btn-primary">保存</button>
                 </form>
                     <#else >
-                  <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img-top" alt="...">
+                  <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" style="height: 250px;" class="card-img-top" alt="...">
                 </#if>
 
                 <div class="card-body">
@@ -121,13 +114,12 @@
 
                     </#list>
                 </#if>
-                <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
-                <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
-                <li class="list-group-item"><span>2012-12-12</span>:&nbsp; <span>Dapibus ac facilisis</span></li>
-
             </ul>
         </div>
     </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "navigation.ftl">
 </div>
 <script src="/js/jquery-2.1.4.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->

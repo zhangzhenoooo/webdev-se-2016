@@ -33,8 +33,7 @@
                                        <h5 class="card-title">${(catalogue.TITLE)!'还没想好题目'}</h5>
                                        <p>简介：</p>
                                        <p class="card-text">${(catalogue.DESCRIPTION)!''}</p>
-                                           <#assign dlong = (catalogue.GMT_CTRATED)!0?number * 1000 />
-                                       <p class="card-text"><small class="text-muted">更新时间：<span>${dlong?number_to_datetime} </span></small></p>
+                                       <p class="card-text"><small class="text-muted">更新时间：<span>   ${(course.catalogue.GMT_CTRATED?number?number_to_datetime?string("yyyy-MM-dd"))!}</span></small></p>
                                    </div>
                                </div>
                            </div>
@@ -62,169 +61,6 @@
 
                             </ul>
                             <div class="tab-content" id="myTabContent">
-                                <#--<div class="tab-pane fade show active row" id="home" role="tabpanel" aria-labelledby="home-tab">-->
-                                    <#--&lt;#&ndash;测试&ndash;&gt;-->
-                                        <#--<div class="row">-->
-                                            <#--&lt;#&ndash;left&ndash;&gt;-->
-                                            <#--<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">-->
-
-                                            <#--&lt;#&ndash;选择题&ndash;&gt;-->
-                                                <#--<div class="card">-->
-                                                    <#--<div class="card-header">-->
-                                                        <#--选择题-->
-                                                    <#--</div>-->
-                                                    <#--<div class="card-body">-->
-                    <#--<#assign  string = "ABCDEFGH">-->
-                     <#--<#assign  x=1>-->
-                    <#--<#if singleChoices?? && (singleChoices?size >0)>-->
-                        <#--<#list  singleChoices as singleChoice>-->
-                        <#--&lt;#&ndash;题目描述&ndash;&gt;-->
-                             <#--<h5 class="card-title"><span>${(x)}.</span>${(singleChoice.DESCRPTION)!''}<span class="float-right">(5分)</span></h5>-->
-                            <#--<#if singleChoicelines?? &&(singleChoicelines?size >0) >-->
-                                <#--<#assign  i = 0>-->
-                                <#--<#list singleChoicelines as singleChoiceline>-->
-                                    <#--<#if singleChoice.TESTID == singleChoiceline.TESTID  >-->
-                                    <#--&lt;#&ndash;选项：&ndash;&gt;-->
-                                  <#--<p class="card-text ml-3">-->
-                                      <#--<input  type="radio" class="form-check-input" onclick="answerSingleChoice(this)"  name="testline-${(singleChoice.TESTID)!}" data-id="${(singleChoice.TESTID)!}" id="testline-${(singleChoice.TESTID)!}" value="${(string[i])}">-->
-                                      <#--<span> ${(string[i])}.&nbsp;&nbsp;</span>${(singleChoiceline.DESCRIPTION)!''}</p>-->
-                                        <#--<#assign  i = i+1>-->
-                                    <#--</#if>-->
-                                <#--</#list>-->
-                            <#--</#if>-->
-                            <#--<#assign x = x +1>-->
-                             <#--<a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-delete-${(singleChoice.TESTID)!''}">删除</a>-->
-                             <#--<a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-modify-${(singleChoice.TESTID)!''}">修改</a>-->
-
-                           <#--<hr>-->
-                        <#--</#list>-->
-                    <#--</#if>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
-                                            <#--&lt;#&ndash;填空题&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<div class="card">&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<div class="card-header">&ndash;&gt;-->
-                                            <#--&lt;#&ndash;填空题&ndash;&gt;-->
-                                            <#--&lt;#&ndash;</div>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<div class="card-body">&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<h5 class="card-title">！富文本实现</h5>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;</div>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;</div>&ndash;&gt;-->
-                                            <#--&lt;#&ndash;判断题&ndash;&gt;-->
-                                                <#--<div class="card">-->
-                                                    <#--<div class="card-header">-->
-                                                        <#--判断题-->
-                                                    <#--</div>-->
-                                                    <#--<div class="card-body">-->
-                                                        <#--<table class="table">-->
-                                                            <#--<thead>-->
-                                                            <#--<tr>-->
-                                                                <#--<th scope="col" width="15%">（100分）</th>-->
-                                                                <#--<th scope="col" width="65%">请选择对错</th>-->
-                                                                <#--<th scope="col" width="20%">每题/5分</th>-->
-
-                                                            <#--</tr>-->
-                                                            <#--</thead>-->
-                                                            <#--<tbody>-->
-                        <#--<#if trueOrFalses??>-->
-                        <#--<#assign i = 0>-->
-                            <#--<#list trueOrFalses as trueOrFalse>-->
-                                <#--<#assign i = i+1>-->
-                                 <#--<tr>-->
-                                     <#--<th scope="row">${i}</th>-->
-                                     <#--<td>${(trueOrFalse.DESCRPTION)!''}</td>-->
-                                     <#--<td>-->
-
-                                         <#--<div class="form-check form-check-inline">-->
-                                             <#--<input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="1">-->
-                                             <#--<label class="form-check-label" for="inlineRadio1">对</label>-->
-                                         <#--</div>-->
-                                         <#--<div class="form-check form-check-inline">-->
-                                             <#--<input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="0">-->
-                                             <#--<label class="form-check-label" for="inlineRadio2">错</label>-->
-                                         <#--</div>-->
-                                         <#--<a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-delete-${(trueOrFalse.TESTID)!''}">删除</a>-->
-                                         <#--<a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-modify-${(trueOrFalse.TESTID)!''}">修改</a>-->
-
-                                     <#--</td>-->
-                                 <#--</tr>-->
-
-
-                            <#--</#list>-->
-                        <#--</#if>-->
-
-                                                            <#--</tbody>-->
-                                                        <#--</table>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
-                                            <#--&lt;#&ndash;主观题&ndash;&gt;-->
-                                                <#--<div class="card">-->
-                                                    <#--<div class="card-header">-->
-                                                        <#--主观题-->
-                                                    <#--</div>-->
-                                                    <#--<div class="card-body">-->
-                                                        <#--<form>-->
-                        <#--<#assign i=0>-->
-                        <#--<#if subjectives??>-->
-                            <#--<#list subjectives as subjective >-->
-                                <#--<#assign i=i+1>-->
-                                <#--<div class="form-group">-->
-                                    <#--<label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span>${(subjective.DESCRPTION)!''}</label>-->
-                                    <#--<textarea type="text" class="form-control" onblur="answerSubjective(this)" data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}" >${(subjective.ANSWER)!''}</textarea>-->
-                                    <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>-->
-                                    <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>-->
-
-                                <#--</div>-->
-                            <#--</#list>-->
-                        <#--</#if>-->
-                                                            <#--<br>-->
-                                                        <#--</form>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
-
-                                            <#--</div>-->
-                                            <#--&lt;#&ndash;right&ndash;&gt;-->
-                                                <#--<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 p-5">-->
-                                                    <#--选择题：-->
-                                                    <#--<br>-->
-                                                    <#--<div class="btn-group" role="group">-->
-                <#--<#if singleChoices?? &&(singleChoices?size >0) >-->
-                    <#--<#assign i=   1>-->
-                    <#--<#list singleChoices as singleChoice>-->
-                        <#--<button onclick="getFocus(this)" id="btn-${(singleChoice.TESTID)!}" data-id="${(singleChoice.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i}</span></button>-->
-                        <#--<#assign i= i+  1>-->
-                    <#--</#list>-->
-                <#--</#if>-->
-
-                                                    <#--</div>-->
-                                                    <#--<br>判断题：-->
-                                                    <#--<br>-->
-                                                    <#--<div class="btn-group" role="group" aria-label="First group">-->
-                  <#--<#if trueOrFalses?? && (trueOrFalses?size >0)>-->
-                         <#--<#assign i=  1>-->
-                    <#--<#list trueOrFalses as trueOrFalse>-->
-                        <#--<button onclick="getFocus(this)" id="btn-${(trueOrFalse.TESTID)!}" data-id="${(trueOrFalse.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i}</span></button>-->
-                        <#--<#assign i= i+  1>-->
-                    <#--</#list>-->
-                  <#--</#if>-->
-                                                    <#--</div>-->
-                                                    <#--<br>主观题：-->
-                                                    <#--<br>-->
-                                                    <#--<div class="btn-group" role="group" aria-label="First group">-->
-              <#--<#if subjectives?? && (subjectives?size >0) >-->
-                       <#--<#assign i=   1>-->
-                    <#--<#list subjectives as subjective>-->
-                        <#--<button onclick="getFocus(this)" id="btn-${(subjective.TESTID)!}" data-id="${(subjective.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i} </span></button>-->
-                        <#--<#assign i= i+  1>-->
-                    <#--</#list>-->
-              <#--</#if>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
-                                        <#--</div>-->
-
-                                <#--</div>-->
                                 <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                    <#--评论区-->
                                     <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -319,6 +155,9 @@
         </div>
 
     </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "../footer.ftl">
 </div>
 <#--//弹出框-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

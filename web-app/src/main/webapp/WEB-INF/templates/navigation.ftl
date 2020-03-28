@@ -62,22 +62,29 @@
     <#--</form>-->
         <ul class="navbar navbar-right" >
 
-            <li class="nav-item">
+            <li class="nav-item" style="list-style-type:none;">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#myMessage" aria-disabled="true">我的消息 <span id="notification_count" class="badge badge-primary badge-pill">${(session.notifications?size)!0}</span></a>
             </li>
-            <li class="nav-item dropdown">
+            <#if (session.user)??>
+                 <li class="nav-item dropdown" style="list-style-type:none;">
 
-                <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                ${(session.user.NAME)!'未登录'}
-                </a>
+                     <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         ${(session.user.NAME)!'未登录'}
+                     </a>
 
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/myMes">个人主页</a>
-                    <a class="dropdown-item" href="/updatePassword">更改密码</a>
-                    <a class="dropdown-item" href="/logout">退出登录</a>
-                    <a class="dropdown-item" href="/register">注册</a>
-                </div>
-            </li>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                         <a class="dropdown-item" href="/myMes">个人主页</a>
+                         <a class="dropdown-item" href="/updatePassword">更改密码</a>
+                         <a class="dropdown-item" href="/logout">退出登录</a>
+                         <a class="dropdown-item" href="/register">注册</a>
+                     </div>
+                 </li>
+            <#else >
+             <a class="nav-link " href="/login"  >
+                 ${(session.user.NAME)!'去登录'}
+             </a>
+            </#if>
+
         </ul>
     </div>
 </nav>

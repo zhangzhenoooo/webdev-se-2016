@@ -54,6 +54,8 @@ public class MainController extends Controller {
     //退出登录
     public void logout() {
         removeSessionAttr("username");
+        removeSessionAttr("user");
+
         redirect("/login");
     }
 
@@ -154,19 +156,23 @@ public class MainController extends Controller {
     @Before(NeedLogin.class)
     public  void myMes(){
         User user = (User) getSession().getAttribute("user");
-        setAttr("user",user);
+        User dbUser = User.dao.findById(user.getUSERID());
+        setAttr("user",dbUser);
         String sql = "SELECT DISTINCT t_course.* FROM t_course INNER JOIN t_user_class ON t_course.CLASSID = t_user_class.CLASSID WHERE t_user_class.USERID =?";
         List<Course> courses = Course.dao.find(sql, user.getUSERID());
         set("courses",courses);
-        List<History> histories = History.dao.find("SELECT * FROM t_history WHERE CREATOR =  ? ORDER BY GMT_MODIFIED ", user.getUSERID());
-       set("histories",histories);
+        List<History> histories = History.dao.find("SELECT * FROM t_history WHERE CREATOR =  ? ORDER BY GMT_MODIFIED LIMIT 10", user.getUSERID());
+        set("histories",histories);
         renderFreeMarker("myMes.ftl");
     }
+
+
     public void  updateMyMes(){
         User user = getModel(User.class);
         User loginUser = (User) getSession().getAttribute("user");
-        if (loginUser.getEMAIL() == user.getEMAIL()){
-            user.update();
+        if (loginUser.getEMAIL().equals(user.getEMAIL())){
+            Db.update("UPDATE t_user SET NAME = ? ,INTRODUCTION = ? ,PHONE = ? WHERE USERID =?",user.getNAME(),user.getINTRODUCTION(),user.getPHONE(),user.getUSERID());
+//            boolean update = user.update();
         }
         myMes();
     }

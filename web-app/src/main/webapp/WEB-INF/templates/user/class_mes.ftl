@@ -33,7 +33,8 @@
                                 <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
                                 <p>简介：</p>
                                 <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
-                                <p class="card-text"><small class="text-muted">开始时间：<span>${(course.GMT_CREATED*1000)?number_to_datetime?string('yyyy-MM-dd ')} </span></small></p>
+                                <p class="card-text"><small class="text-muted">开始时间：<span>   ${(course.GMT_CREATED?number?number_to_datetime?string("yyyy-MM-dd"))!} </span></small></p>
+
                             </div>
                         </div>
                     </div>
@@ -50,11 +51,11 @@
                         <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
                             <div class="row no-gutters">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <img src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="${(user.NAME)!''}">
+                                    <img  style="height: 300px;width: 300px;" src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="${(user.NAME)!''}">
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">${(user.PHONE)!''}</h5>
+                                        <h5 class="card-title">${(user.NAME)!''}</h5>
                                         <p>简介：</p>
                                         <p class="card-text">${(user.EMAIL)!''}</p>
                                     </div>
@@ -75,12 +76,12 @@
                                 <#assign  x=1>
                                         <#list catalogueDTOS as catalogueDTO>
                                             <li class="list-group-item" >
-                                                <p style="font-size: 16px;"  >第<span>${x}</span>章：${(catalogueDTO.TITLE)!'未命名'}</p>
+                                                <p style="font-size: 16px;"  >第<span>${(catalogueDTO.PARENTID)!''}</span>章：${(catalogueDTO.TITLE)!'未命名'}</p>
                                             </li>
                                             <#assign  y=1>
                                             <#list catalogueDTO.catalogueList as catalogue>
                                                       <p class="list pl-5"  >
-                                                          第${y}讲： &nbsp;&nbsp;<a  style="font-size: 16px; color: gray;" href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
+                                                          第${(catalogue.NODE)!''}讲： &nbsp;&nbsp;<a  style="font-size: 16px; color: gray;" href="catalogue?id=${(catalogue. CATALOUGEID)!''}">${(catalogue.TITLE)!'为命名'}</a>
                                                       </p>
                                                 <#assign  y=y+1>
                                             </#list>
@@ -96,6 +97,9 @@
 
         </div>
     </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+ <#include "../footer.ftl">
 </div>
 <script src="/js/jquery-3.4.1.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
