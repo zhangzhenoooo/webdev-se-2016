@@ -1,23 +1,26 @@
 package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.CourseDTO;
+import cn.edu.nxu.it.DTO.UserClassDTO;
 import cn.edu.nxu.it.aop.LoginValidator;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
 import cn.edu.nxu.it.service.CourseService;
+import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.ActiveRecordException;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 import java.util.List;
 
 public class MainController extends Controller {
 
-//test pull
+    //test pull
     public void nav() {
         renderFreeMarker("navigation.ftl");
     }
@@ -96,7 +99,7 @@ public class MainController extends Controller {
             //给用户添加课程
             Course course = Course.dao.findById(39);
             UserClass userClass = new UserClass();
-            userClass.setCLASSID(course.getCLASSID().intValue());
+            userClass.setCLASSID(course.getCLASSID());
             userClass.setCLASSNAME(course.getTITLE());
             userClass.setUSERID(user.getUSERID());
             userClass.setUSERNAME(user.getNAME());
@@ -172,7 +175,8 @@ public class MainController extends Controller {
         User loginUser = (User) getSession().getAttribute("user");
         if (loginUser.getEMAIL().equals(user.getEMAIL())){
             Db.update("UPDATE t_user SET NAME = ? ,INTRODUCTION = ? ,PHONE = ? WHERE USERID =?",user.getNAME(),user.getINTRODUCTION(),user.getPHONE(),user.getUSERID());
-//            boolean update = user.update();
+            //更新user_class中的学生名称
+            Db.update("UPDATE t_user_class SET USERNAME = ? WHERE USERID = ?",user.getNAME(),user.getUSERID());
         }
         myMes();
     }
@@ -216,14 +220,14 @@ public class MainController extends Controller {
                 //给学生添加课程
                 Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",39);
                 UserClass userClass = new UserClass();
-                userClass.setCLASSID(39);
+                userClass.setCLASSID(39L);
                 userClass.setCLASSNAME(course.getTITLE());
                 userClass.setUSERID(user.getUSERID());
                 userClass.setUSERNAME(user.getNAME());
                 userClass.setGmtCreated(System.currentTimeMillis());
                 userClass.save();
                 set("email",user.getEMAIL()) ;
-            redirect("/login");
+                redirect("/login");
             }
         }
     }
@@ -264,10 +268,10 @@ public class MainController extends Controller {
     @Before(NeedLogin.class)
     public void studentManagement(){
         User user = (User) getSession().getAttribute("user");
-        String sql = "SELECT t_user_class.* FROM t_user_class INNER JOIN t_course ON t_user_class.CLASSID = t_course.CLASSID WHERE t_course.CREATOR =?";
-        List<UserClass> userClasses = UserClass.dao.find(sql,user.getUSERID());
+        String sql = "SELECT\n" + "t_user_class.CLASSNAME,\n" + "t_user.USERID,\n" + "t_user.EMAIL,\n" + "t_user.`PASSWORD`,\n" + "t_user.`NAME`,\n" + "t_user.PHONE,\n" + "t_user.AGE,\n" + "t_user.SEX,\n" + "t_user.TYPE,\n" + "t_user.HEAD,\n" + "t_user.IS_DELETED,\n" + "t_user.INTRODUCTION,\n" + "t_user_class.CLASSID,\n" + "t_course.GMT_CREATED\n" + "FROM\n" + "t_user\n" + "INNER JOIN t_user_class ON t_user.USERID = t_user_class.USERID\n" + "INNER JOIN t_course ON t_user_class.CLASSID = t_course.CLASSID\n" + "WHERE\n" + "t_course.CREATOR = ? AND\n" + "t_user_class.USERID != 30";
+        List<Record> userClassDTOs = Db.find(sql,user.getUSERID());
         List<Course> courses = Course.dao.find("SELECT * FROM t_course WHERE CREATOR = ?", user.getUSERID());
-        set("userClasses",userClasses) ;
+        set("userClassDTOs",userClassDTOs) ;
         set("courses",courses) ;
         renderFreeMarker("students_management.ftl");
     }
@@ -293,7 +297,7 @@ public class MainController extends Controller {
         if (file != null){
             head = file.getFileName();
         }
-         Db.update("UPDATE t_user SET HEAD = ? WHERE USERID = ?", head, userId);
+        Db.update("UPDATE t_user SET HEAD = ? WHERE USERID = ?", head, userId);
 
         User user = (User) getSession().getAttribute("user");
         setAttr("user",user);
@@ -303,6 +307,43 @@ public class MainController extends Controller {
         List<History> histories = History.dao.find("SELECT * FROM t_history WHERE CREATOR =  ? ORDER BY GMT_MODIFIED ", user.getUSERID());
         set("histories",histories);
         renderFreeMarker("myMes.ftl");
+    }
+
+    public void  studentList(){
+        String searchText = get("searchText");
+        String sql = "SELECT * FROM t_user WHERE USERID != 30 AND IS_DELETED is NULL AND UserID like  '%"+searchText+"%' or `NAME` LIKE '%"+searchText+"%'";
+        Kv result = Kv.create();
+        List<User> users = User.dao.find(sql);
+        result.set("users",users);
+        renderJson(result);
+    }
+
+    public void addUserForClass(){
+        Long userid = getLong("USERID");
+        User user = User.dao.findFirst("select * from t_user where USERID=?",userid);
+        Kv result = Kv.create();
+        if (ObjectUtil.isEmpty(user)){
+            result.set("success",false);
+            result.set("message","添加失败");
+        }else {
+            UserClass dbUserClass = UserClass.dao.findFirst("select * from t_user_class where USERID=?", user.getUSERID());
+            if (ObjectUtil.isEmpty(dbUserClass)) {
+                result.set("success",true);
+                result.set("message","添加成功");
+
+            }else {
+                UserClass userClass = new UserClass();
+                userClass.setGmtCreated(System.currentTimeMillis());
+                userClass.setUSERNAME(user.getNAME());
+                userClass.setUSERID(userid);
+                Course course = Course.dao.findFirst("select * from t_course where CLASSID = ?",39);
+                userClass.setCLASSNAME(course.getTITLE());
+                userClass.setCLASSID(course.getCLASSID());
+                userClass.save();
+            }
+
+
+        }renderJson(result);
     }
 
 

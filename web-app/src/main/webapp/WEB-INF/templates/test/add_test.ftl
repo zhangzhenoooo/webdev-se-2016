@@ -29,9 +29,9 @@
                 <li class="nav-item">
                     <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">判断题</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">主观题</a>
-                </li>
+                <#--<li class="nav-item">-->
+                    <#--<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">主观题</a>-->
+                <#--</li>-->
             </ul>
 
             <!-- Tab panes -->
@@ -168,47 +168,47 @@
                         </form>
                     </div>
                 </div>
-            <#--4-->
-                <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                    <div class="content"  aria-labelledby="btn_gap-filling" id="gap-subjectivee" id="subjective">
+            <#--&lt;#&ndash;4&ndash;&gt;主观题-->
+                <#--<div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">-->
+                    <#--<div class="content"  aria-labelledby="btn_gap-filling" id="gap-subjectivee" id="subjective">-->
 
-                        <form id="form_subjective">
-                            <div class="form-group">
-                                <label for="CATALOGUEID"></label>
-                                <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="TYPE"></label>
-                                <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
-                            </div>
-                            <div class="form-group ">
-                                <label for="1_SCORE">选项分值：</label>
-                                <select class="form-control " id="1_SCORE" name="1_SCORE">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option selected>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                    <option>10</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
-                                <textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>
-                                <textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">保存</button>
-                            <button type="reset" class="btn btn-primary">重置</button>
-                        </form>
-                    </div>
-                </div>
+                        <#--<form id="form_subjective">-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="CATALOGUEID"></label>-->
+                                <#--<input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID"  value="${(id)!''}">-->
+                            <#--</div>-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="TYPE"></label>-->
+                                <#--<input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">-->
+                            <#--</div>-->
+                            <#--<div class="form-group ">-->
+                                <#--<label for="1_SCORE">选项分值：</label>-->
+                                <#--<select class="form-control " id="1_SCORE" name="1_SCORE">-->
+                                    <#--<option>1</option>-->
+                                    <#--<option>2</option>-->
+                                    <#--<option>3</option>-->
+                                    <#--<option>4</option>-->
+                                    <#--<option selected>5</option>-->
+                                    <#--<option>6</option>-->
+                                    <#--<option>7</option>-->
+                                    <#--<option>8</option>-->
+                                    <#--<option>9</option>-->
+                                    <#--<option>10</option>-->
+                                <#--</select>-->
+                            <#--</div>-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>-->
+                                <#--<textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>-->
+                            <#--</div>-->
+                            <#--<div class="form-group">-->
+                                <#--<label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>-->
+                                <#--<textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>-->
+                            <#--</div>-->
+                            <#--<button type="submit" class="btn btn-primary">保存</button>-->
+                            <#--<button type="reset" class="btn btn-primary">重置</button>-->
+                        <#--</form>-->
+                    <#--</div>-->
+                <#--</div>-->
             </div>
         </div>
         <!--右边-->
@@ -219,18 +219,18 @@
                    选择题：
                     <span class="badge badge-primary badge-pill">${(singleChoices?size)!0}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    填空题：
-                    <span class="badge badge-primary badge-pill">${(gapFillings?size)!0}</span>
-                </li>
+                <#--<li class="list-group-item d-flex justify-content-between align-items-center">-->
+                    <#--填空题：-->
+                    <#--<span class="badge badge-primary badge-pill">${(gapFillings?size)!0}</span>-->
+                <#--</li>-->
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                   判断题：
                     <span class="badge badge-primary badge-pill">${(trueOrFalses?size)!0}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    主观题：
-                    <span class="badge badge-primary badge-pill">${(trueOrFalses?size)!0}</span>
-                </li>
+                <#--<li class="list-group-item d-flex justify-content-between align-items-center">-->
+                    <#--主观题：-->
+                    <#--<span class="badge badge-primary badge-pill">${(trueOrFalses?size)!0}</span>-->
+                <#--</li>-->
             </ul>
 
         </div>

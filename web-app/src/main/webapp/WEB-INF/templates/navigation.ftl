@@ -76,7 +76,7 @@
                          <a class="dropdown-item" href="/myMes">个人主页</a>
                          <a class="dropdown-item" href="/updatePassword">更改密码</a>
                          <a class="dropdown-item" href="/logout">退出登录</a>
-                         <a class="dropdown-item" href="/register">注册</a>
+                         <#--<a class="dropdown-item" href="/register">注册</a>-->
                      </div>
                  </li>
             <#else >

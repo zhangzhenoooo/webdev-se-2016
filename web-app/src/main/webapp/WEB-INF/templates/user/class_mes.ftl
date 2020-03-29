@@ -17,62 +17,63 @@
 <div class="container-fluid main">
     <div class="row">
         <!--左边-->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-5 pr-5" >
-            <div class="row">
-            <#--top-->
-                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
-                    <div class="row no-gutters">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <img height="200px" src="/upload/class/${(course.HEAD)!'/upload/user/default_class_picture.jpg'}" class="card-img" alt="...">
-                            <#--//保存课程的id-->
-                            <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <div class="card-body">
-                            <#--课程名称-->
-                                <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
-                                <p>简介：</p>
-                                <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
-                                <p class="card-text"><small class="text-muted">开始时间：<span>   ${(course.GMT_CREATED?number?number_to_datetime?string("yyyy-MM-dd"))!} </span></small></p>
+        <#if course?? >
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-5 pr-5" >
+               <div class="row">
+               <#--top-->
+                   <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " >
+                       <div class="row no-gutters">
+                           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                               <img src="/upload/class/${(course.HEAD)!'/upload/user/default_class_picture.jpg'}" class="card-img" alt="...">
+                           <#--//保存课程的id-->
+                               <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
+                           </div>
+                           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                               <div class="card-body">
+                               <#--课程名称-->
+                                   <h5 class="card-title">${(course.TITLE)!'还没想好题目'}</h5>
+                                   <p>简介：</p>
+                                   <p class="card-text">${(course.DESCRIPTION)!'老师还没有更新题目'}</p>
+                                   <p class="card-text"><small class="text-muted">开始时间：<span>   ${(course.GMT_CREATED?number?number_to_datetime?string("yyyy-MM-dd"))!} </span></small></p>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-            <#--bottom-->
-                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="font-size: 14px;" >
-                    <div class="card-header">
-                        主讲老师：<span>${(user.NAME)!''}</span><svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
-                    </div>
-                    <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
-                        <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
-                            <div class="row no-gutters">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                    <img  style="height: 300px;width: 300px;" src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="${(user.NAME)!''}">
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${(user.NAME)!''}</h5>
-                                        <p>简介：</p>
-                                        <p class="card-text">${(user.EMAIL)!''}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <#--章节目录-->
-                    <div class="card-header">
-                        章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
-                    </div>
-                    <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
-                        <blockquote class="blockquote mb-0">
-                        <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-                        <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <br>
+               <div class="row">
+               <#--bottom-->
+                   <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="font-size: 14px;" >
+                       <div class="card-header">
+                           主讲老师：<span>${(user.NAME)!''}</span><svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                       </div>
+                       <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                           <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
+                               <div class="row no-gutters">
+                                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                       <img  style="height: 100px;width: 100px;" src="/upload/user/head/${(user.HEAD)!'/upload/user/default-avatar.png'}" class="card-img" alt="${(user.NAME)!''}">
+                                   </div>
+                                   <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                       <div class="card-body">
+                                           <h5 class="card-title">${(user.NAME)!''}</h5>
+                                           <p>简介：</p>
+                                           <p class="card-text">${(user.EMAIL)!''}</p>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   <#--章节目录-->
+                       <div class="card-header">
+                           章节目录<svg class="bi bi-list-stark text-success" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"></svg>
+                       </div>
+                       <div class="card-body col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+                           <blockquote class="blockquote mb-0">
+                           <#--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
+                           <#--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
 
-                            <ul class="list-group list-group-flush overflow-hidden" >
+                               <ul class="list-group list-group-flush overflow-hidden" >
                                 <#assign  x=1>
                                         <#list catalogueDTOS as catalogueDTO>
                                             <li class="list-group-item" >
@@ -88,14 +89,18 @@
                                             <#assign  x=x+1>
                                         </#list>
 
-                            </ul>
-                        </blockquote>
-                    </div>
+                               </ul>
+                           </blockquote>
+                       </div>
 
-                </div>
-            </div>
+                   </div>
+               </div>
 
-        </div>
+           </div>
+            <#else >
+        <p style="padding-left: 10%;color: red;">${(message)!''}</p>
+        </#if>
+
     </div>
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >

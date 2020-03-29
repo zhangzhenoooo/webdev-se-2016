@@ -189,7 +189,7 @@ Table: t_user_class
  Field        | Type         | Null | Key | Default | Remarks 
 --------------+--------------+------+-----+---------+---------
  USER_CLASSID | BIGINT(19)   | NO   | PRI |         |         
- CLASSID      | INT(10)      | YES  |     |         |         
+ CLASSID      | BIGINT(19)   | YES  |     |         |         
  USERID       | BIGINT(19)   | YES  |     |         |         
  GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
  DELETER      | INT(10)      | YES  |     |         |         

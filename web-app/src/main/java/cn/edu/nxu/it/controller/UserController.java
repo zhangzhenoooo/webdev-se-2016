@@ -10,6 +10,7 @@ import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.model.base.BaseUser;
 import cn.edu.nxu.it.service.CatalogueService;
 import cn.edu.nxu.it.service.CommentService;
 import cn.edu.nxu.it.service.TestService;
@@ -78,7 +79,7 @@ private CommentService commentService = new CommentService();
             return;
         }else {
             UserClass userClass = new UserClass();
-            userClass.setCLASSID(courseId);
+            userClass.setCLASSID(courseId.longValue());
             userClass.setCLASSNAME(course.getTITLE());
             userClass.setUSERID(user.getUSERID());
             userClass.setUSERNAME(user.getNAME());
@@ -111,6 +112,13 @@ private CommentService commentService = new CommentService();
         Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",courseId);
         if (course == null){
             set("message","你点击的课程不见了");
+            renderFreeMarker("class_mes.ftl");
+            return;
+        }
+        User loginUser = (User) getSession().getAttribute("user");
+        UserClass userClass = UserClass.dao.findFirst("SELECT * FROM t_user_class WHERE CLASSID = ? AND USERID =?", courseId, loginUser.getUSERID());
+        if (userClass == null){
+            set("message","你没有选修该课程，请联系你的老师");
             renderFreeMarker("class_mes.ftl");
             return;
         }

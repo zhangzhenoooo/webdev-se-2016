@@ -5,6 +5,8 @@ import cn.edu.nxu.it.DTO.CommentDTO;
 import cn.edu.nxu.it.model.Catalogue;
 import cn.edu.nxu.it.model.User;
 import cn.hutool.core.bean.BeanUtil;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +51,7 @@ public class CatalogueService {
        return catalogueDTOS;
 
    }
+
+
 
 }

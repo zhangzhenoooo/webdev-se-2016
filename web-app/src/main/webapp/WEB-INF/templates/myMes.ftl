@@ -101,32 +101,29 @@
             </div>
         <#--浏览历史记录-->
             <br>
-            <h4>History：</h4>
-            <ul class="list-group list-group-flush">
-                <#if histories?? && (histories?size >0)>
-                    <#list histories as historie>
-                        <#assign dlong = (historie.GMT_MODIFIED)!0?number * 1000 />
-                                    <li class="list-group-item" style="font-size: 16px;"><span>${dlong?number_to_datetime} </span>:&nbsp;
-                                        <#if historie.TYPE == 1>学习了课程章节：</#if>
-                                        <#if historie.TYPE == 2>参加了课程测试：</#if>
-                                        <#if historie.TYPE == 3>浏览了课程：</#if>
-                                        <span><a href="/user/classMes?id=${(historie.THINGID)!}">${(historie.THING_NAME)!}</a> </span></li>
+            <#--<h4>History：</h4>-->
+            <#--<ul class="list-group list-group-flush">-->
+                <#--<#if histories?? && (histories?size >0)>-->
+                    <#--<#list histories as historie>-->
+                        <#--<#assign dlong = (historie.GMT_MODIFIED)!0?number * 1000 />-->
+                                    <#--<li class="list-group-item" style="font-size: 16px;"><span>${dlong?number_to_datetime} </span>:&nbsp;-->
+                                        <#--<#if historie.TYPE == 1>学习了课程章节：</#if>-->
+                                        <#--<#if historie.TYPE == 2>参加了课程测试：</#if>-->
+                                        <#--<#if historie.TYPE == 3>浏览了课程：</#if>-->
+                                        <#--<span><a href="/user/classMes?id=${(historie.THINGID)!}">${(historie.THING_NAME)!}</a> </span></li>-->
 
-                    </#list>
-                </#if>
-            </ul>
+                    <#--</#list>-->
+                <#--</#if>-->
+            <#--</ul>-->
         </div>
     </div>
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
- <#include "navigation.ftl">
+ <#include "footer.ftl">
 </div>
 <script src="/js/jquery-2.1.4.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
- <#include "footer.ftl">
-</div>
 </body>
 </html>

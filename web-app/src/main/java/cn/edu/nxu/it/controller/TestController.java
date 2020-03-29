@@ -7,11 +7,13 @@ import cn.edu.nxu.it.Enum.TestAnswerEnum;
 import cn.edu.nxu.it.Enum.TestTypeEnum;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
+import cn.edu.nxu.it.service.CatalogueService;
 import cn.edu.nxu.it.service.TestService;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
 public class TestController extends Controller {
 
     TestService testService = new TestService();
+    CatalogueService catalogueService = new CatalogueService();
+
     /**
      * z章节检测
      */
@@ -43,13 +47,14 @@ public class TestController extends Controller {
 
         //获取总分数
         ResoultOfTest  resoultOfTest = testService.getScoreBytester(user.getUSERID(),catalogueId);
-
+        List<Record> records = testService.listOfUserTest(catalogueId.longValue());
         set("singleChoices",tests_SINGLE_CHOICE);
         set("singleChoicelines",testLines_SINGLE_CHOICE);
         set("gapFillings",tests_GAP_FILLING);
         set("trueOrFalses",tests_TURE_OR_FALSE);
         set("subjectives",tests_SUBJECTIVE);
         set("resoultOfTest",resoultOfTest);
+        set("records",records);
         renderFreeMarker("test.ftl");
     }
 

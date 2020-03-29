@@ -144,7 +144,6 @@
                                      </td>
                                </tr>
 
-
                             </#list>
                         </tbody>
                           </table>
@@ -152,47 +151,47 @@
                 </div>
             </div>
         <#--主观题-->
-            <div class="card">
-                <div class="card-header">
-                    主观题
-                </div>
-                <div class="card-body">
-                    <form>
-                        <#assign i=0>
-                        <#if subjectives??>
-                            <#list subjectives as subjective >
-                                <#assign i=i+1>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span><span>${(subjective.SCORE)!''}</span>${(subjective.DESCRPTION)!''}</label>
-                                    <textarea type="text" class="form-control" rows="3"  data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}"
-                                      <#if  (((subjective.answer.SIGN)!0) != 1) >
-                                              onclick="answerSubjective(this)"
-                                      <#else >disabled
-                                      </#if> >
-                                        <#if (((subjective.answer.SIGN)!0) == 1)>
-                                             ${subjective.answer.ANSWER}
-                                        </#if>
-                                    </textarea>
-                                    <#--显示答案-->
-                                     <#if  ((subjective.answer.SIGN)!0) == 1  >
-                                              <p class="card-text ml-3" style="color:red;">
-                                                    <#assign  isAnswed = 1>
-                                                  参考答案： <span>${(subjective.ANSWER)!''}</span>
-                                              </p>
-                                     </#if>
-                                <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>-->
-                                    <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>-->
+            <#--<div class="card">-->
+                <#--<div class="card-header">-->
+                    <#--主观题-->
+                <#--</div>-->
+                <#--<div class="card-body">-->
+                    <#--<form>-->
+                        <#--<#assign i=0>-->
+                        <#--<#if subjectives??>-->
+                            <#--<#list subjectives as subjective >-->
+                                <#--<#assign i=i+1>-->
+                                <#--<div class="form-group">-->
+                                    <#--<label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span><span>${(subjective.SCORE)!''}</span>${(subjective.DESCRPTION)!''}</label>-->
+                                    <#--<textarea type="text" class="form-control" rows="3"  data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}"-->
+                                      <#--<#if  (((subjective.answer.SIGN)!0) != 1) >-->
+                                              <#--onclick="answerSubjective(this)"-->
+                                      <#--<#else >disabled-->
+                                      <#--</#if> >-->
+                                        <#--<#if (((subjective.answer.SIGN)!0) == 1)>-->
+                                             <#--${subjective.answer.ANSWER}-->
+                                        <#--</#if>-->
+                                    <#--</textarea>-->
+                                    <#--&lt;#&ndash;显示答案&ndash;&gt;-->
+                                     <#--<#if  ((subjective.answer.SIGN)!0) == 1  >-->
+                                              <#--<p class="card-text ml-3" style="color:red;">-->
+                                                    <#--<#assign  isAnswed = 1>-->
+                                                  <#--参考答案： <span>${(subjective.ANSWER)!''}</span>-->
+                                              <#--</p>-->
+                                     <#--</#if>-->
+                                <#--&lt;#&ndash;<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>&ndash;&gt;-->
+                                    <#--&lt;#&ndash;<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>&ndash;&gt;-->
 
-                                </div>
-                            </#list>
-                        </#if>
-                        <br>
-                                <#if isAnswed == 0 >
-                                                <button  type="button" class="btn btn-primary float-right mt-5" id="btn-test-submit" onclick="submitTest()">交卷</button>
-                                </#if>
-                    </form>
-                </div>
-            </div>
+                                <#--</div>-->
+                            <#--</#list>-->
+                        <#--</#if>-->
+                        <#--<br>-->
+                                <#--<#if isAnswed == 0 >-->
+                                                <#--<button  type="button" class="btn btn-primary float-right mt-5" id="btn-test-submit" onclick="submitTest()">交卷</button>-->
+                                <#--</#if>-->
+                    <#--</form>-->
+                <#--</div>-->
+            <#--</div>-->
 
         </div>
         <!--右边-->
@@ -220,17 +219,17 @@
                     </#list>
                   </#if>
             </div>
-            <br>主观题：
-            <br>
-            <div class="btn-group" role="group" aria-label="First group">
-              <#if subjectives?? && (subjectives?size >0) >
-                       <#assign i=   1>
-                    <#list subjectives as subjective>
-                        <button onclick="getFocus(this)" id="btn-${(subjective.TESTID)!}" data-id="${(subjective.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i} </span></button>
-                        <#assign i= i+  1>
-                    </#list>
-              </#if>
-            </div>
+            <#--<br>主观题：-->
+            <#--<br>-->
+            <#--<div class="btn-group" role="group" aria-label="First group">-->
+              <#--<#if subjectives?? && (subjectives?size >0) >-->
+                       <#--<#assign i=   1>-->
+                    <#--<#list subjectives as subjective>-->
+                        <#--<button onclick="getFocus(this)" id="btn-${(subjective.TESTID)!}" data-id="${(subjective.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i} </span></button>-->
+                        <#--<#assign i= i+  1>-->
+                    <#--</#list>-->
+              <#--</#if>-->
+            <#--</div>-->
             <hr>
             <p> 总分数：<span>${(resoultOfTest.totalPoint)!0}</span> </p>
             <#if isAnswed == 1 >

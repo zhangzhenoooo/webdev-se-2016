@@ -68,18 +68,19 @@
                     判断题
                 </div>
                 <div class="card-body">
+                    <#if trueOrFalses?? && (trueOrFalses?size >0)>
+                        <#assign i = 0>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col" width="15%">（100分）</th>
+                            <th scope="col" width="15%">（<span>${trueOrFalses?size}</span>分）</th>
                             <th scope="col" width="65%">请选择对错</th>
-                            <th scope="col" width="20%">每题/5分</th>
+                            <th scope="col" width="20%">每题/分</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        <#if trueOrFalses??>
-                        <#assign i = 0>
+
                             <#list trueOrFalses as trueOrFalse>
                                 <#assign i = i+1>
                                  <tr>
@@ -103,39 +104,37 @@
 
                                      </td>
                                </tr>
-
-
                             </#list>
-                        </#if>
 
                         </tbody>
                     </table>
+                    </#if>
                 </div>
             </div>
         <#--主观题-->
-            <div class="card">
-                <div class="card-header">
-                    主观题
-                </div>
-                <div class="card-body">
-                    <form>
-                        <#assign i=0>
-                        <#if subjectives??>
-                            <#list subjectives as subjective >
-                                <#assign i=i+1>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span>${(subjective.DESCRPTION)!''}</label>
-                                    <textarea type="text" class="form-control" onblur="answerSubjective(this)" data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}" >${(subjective.ANSWER)!''}</textarea>
-                                    <a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>
-                                    <a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>
+            <#--<div class="card">-->
+                <#--<div class="card-header">-->
+                    <#--主观题-->
+                <#--</div>-->
+                <#--<div class="card-body">-->
+                    <#--<form>-->
+                        <#--<#assign i=0>-->
+                        <#--<#if subjectives??>-->
+                            <#--<#list subjectives as subjective >-->
+                                <#--<#assign i=i+1>-->
+                                <#--<div class="form-group">-->
+                                    <#--<label for="exampleInputEmail1" style="font-size: 20px;"><span>${i}.</span>${(subjective.DESCRPTION)!''}</label>-->
+                                    <#--<textarea type="text" class="form-control" onblur="answerSubjective(this)" data-id="${(subjective.TESTID)!}"  id="test-${(subjective.TESTID)!}" >${(subjective.ANSWER)!''}</textarea>-->
+                                    <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-delete-${(subjective.TESTID)!''}">删除</a>-->
+                                    <#--<a class="btn btn-outline-info float-right" onclick="getSubjective(this)" data-id="${(subjective.TESTID)!''}" id="bottom-modify-${(subjective.TESTID)!''}">修改</a>-->
 
-                                </div>
-                            </#list>
-                        </#if>
-                        <br>
-                    </form>
-                </div>
-            </div>
+                                <#--</div>-->
+                            <#--</#list>-->
+                        <#--</#if>-->
+                        <#--<br>-->
+                    <#--</form>-->
+                <#--</div>-->
+            <#--</div>-->
 
         </div>
         <!--右边-->
@@ -165,17 +164,26 @@
                     </#list>
                   </#if>
             </div>
-            <br>主观题：
-            <br>
-            <div class="btn-group" role="group" aria-label="First group">
-              <#if subjectives?? && (subjectives?size >0) >
-                       <#assign i=   1>
-                    <#list subjectives as subjective>
-                        <button onclick="getFocus(this)" id="btn-${(subjective.TESTID)!}" data-id="${(subjective.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i} </span></button>
-                        <#assign i= i+  1>
-                    </#list>
-              </#if>
-            </div>
+            <#--<br>主观题：-->
+            <#--<br>-->
+            <#--<div class="btn-group" role="group" aria-label="First group">-->
+              <#--<#if subjectives?? && (subjectives?size >0) >-->
+                       <#--<#assign i=   1>-->
+                    <#--<#list subjectives as subjective>-->
+                        <#--<button onclick="getFocus(this)" id="btn-${(subjective.TESTID)!}" data-id="${(subjective.TESTID)!}" type="button" class="btn btn-outline-info "><span>${i} </span></button>-->
+                        <#--<#assign i= i+  1>-->
+                    <#--</#list>-->
+              <#--</#if>-->
+            <#--</div>-->
+
+        <h3>测试完成列表</h3>
+        <div>
+            <ul>
+                <#list records as record>
+                    <li>${(record.NAME)!''}</li>
+                </#list>
+            </ul>
+        </div>
         </div>
     </div>
 </div>
@@ -305,45 +313,45 @@
                         <button type="reset" class="btn btn-primary float-right mr-3">重置</button>
                     </form>
                 <#--主观题-->
-                    <form id="form_subjective" method="post" action="updateTest">
-                        <div class="form-group">
+                    <#--<form id="form_subjective" method="post" action="updateTest">-->
+                        <#--<div class="form-group">-->
 
-                            <input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">
-                        </div>
-                        <div class="form-group">
+                            <#--<input type="hidden" class="form-control" name="CATALOGUEID" id="CATALOGUEID1"  value="${(id)!''}">-->
+                        <#--</div>-->
+                        <#--<div class="form-group">-->
 
-                            <input type="hidden" class="form-control" name="TESTID" id="TESTID1"  >
-                        </div>
-                        <div class="form-group">
+                            <#--<input type="hidden" class="form-control" name="TESTID" id="TESTID1"  >-->
+                        <#--</div>-->
+                        <#--<div class="form-group">-->
 
-                            <input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">
-                        </div>
-                        <div class="form-group ">
-                            <label for="1_SCORE">选项分值：</label>
-                            <select class="form-control " id="1_SCORE" name="1_SCORE">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>
-                            <textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>
-                            <textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">保存</button>
-                        <button type="reset" class="btn btn-primary">重置</button>
-                    </form>
+                            <#--<input type="hidden" class="form-control" name="TYPE" id="TYPE"  value="1">-->
+                        <#--</div>-->
+                        <#--<div class="form-group ">-->
+                            <#--<label for="1_SCORE">选项分值：</label>-->
+                            <#--<select class="form-control " id="1_SCORE" name="1_SCORE">-->
+                                <#--<option>1</option>-->
+                                <#--<option>2</option>-->
+                                <#--<option>3</option>-->
+                                <#--<option>4</option>-->
+                                <#--<option>5</option>-->
+                                <#--<option>6</option>-->
+                                <#--<option>7</option>-->
+                                <#--<option>8</option>-->
+                                <#--<option>9</option>-->
+                                <#--<option>10</option>-->
+                            <#--</select>-->
+                        <#--</div>-->
+                        <#--<div class="form-group">-->
+                            <#--<label for="1_DESCRIPTION">请将你的问题填入下列区域中：</label>-->
+                            <#--<textarea class="form-control" id="1_DESCRIPTION" name="1_DESCRIPTION" ></textarea>-->
+                        <#--</div>-->
+                        <#--<div class="form-group">-->
+                            <#--<label for="1_ANSWER">请将你的参考答案填入下列区域中：</label>-->
+                            <#--<textarea class="form-control" id="1_ANSWER" name="1_ANSWER" ></textarea>-->
+                        <#--</div>-->
+                        <#--<button type="submit" class="btn btn-primary">保存</button>-->
+                        <#--<button type="reset" class="btn btn-primary">重置</button>-->
+                    <#--</form>-->
             </div>
             <#--<div class="modal-footer">-->
                 <#--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
@@ -352,9 +360,7 @@
         </div>
     </div>
 </div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
- <#include "../footer.ftl">
-</div>
+
 <script src="/js/jquery-2.1.4.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
