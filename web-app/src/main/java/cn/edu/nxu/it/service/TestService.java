@@ -92,7 +92,7 @@ public class TestService {
     }
 
     public List<Record> listOfUserTest(Long catalogueId){
-        List<Record> records = Db.find("SELECT\n" + "t_user.USERID,\n" + "t_user.EMAIL,\n" + "t_answer.GMT_CREATED,\n" + "t_test.TESTID,\n" + "t_test.DESCRPTION,\n" + "t_catalogue.CATALOUGEID,\n" + "t_catalogue.TITLE,\n" + "t_user.`NAME`\n" + "FROM\n" + "t_catalogue\n" + "INNER JOIN t_test ON t_test.CATALOGUEID = t_catalogue.CATALOUGEID\n" + "INNER JOIN t_answer ON t_test.TESTID = t_answer.TESTID\n" + "INNER JOIN t_user ON t_answer.CREATOR = t_user.USERID\n" + "WHERE\n" + "t_catalogue.CATALOUGEID = ?", catalogueId);
+        List<Record> records = Db.find("SELECT DISTINCT\n" + "v_user_test_answer.USERID,\n" + "v_user_test_answer.`NAME`,\n" + "v_user_test_answer.CATALOGUEID\n" + "FROM\n" + "v_user_test_answer WHERE CATALOGUEID = ?", catalogueId);
         return records;
 
     }

@@ -1,6 +1,7 @@
 package cn.edu.nxu.it.controller;
 
 import cn.edu.nxu.it.DTO.ResoultOfTest;
+import cn.edu.nxu.it.DTO.TestAnswerDTO;
 import cn.edu.nxu.it.Enum.HistoryTypeEnum;
 import cn.edu.nxu.it.Enum.NotifyTypeEnum;
 import cn.edu.nxu.it.Enum.TestAnswerEnum;
@@ -445,5 +446,7 @@ public class TestController extends Controller {
         int result = Db.update("UPDATE t_answer SET SIGN = 1 WHERE TESTID IN ( SELECT TESTID FROM t_test WHERE CATALOGUEID = ? ) AND CREATOR = ?",catalogueId,user.getUSERID());
         renderJson(result);
     }
+
+
 
 }

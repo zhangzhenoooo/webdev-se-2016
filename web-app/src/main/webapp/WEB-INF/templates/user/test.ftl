@@ -132,7 +132,9 @@
                                                      <span style="color: green">回答正确</span>
                                                      <#else >
                                                      <span style="color: red;">
-                                                         正确答案是： <span>${(trueOrFalse.ANSWER)!''}</span>
+                                                         正确答案： <span>
+                                                                        ${(((trueOrFalse.ANSWER)!'0') == '1')?string('对','错')}
+                                                                    </span>
                                                      </span>
                                                      </#if>
 
@@ -150,6 +152,9 @@
                         </#if>
                 </div>
             </div>
+        <#if isAnswed == 0 >
+        <button  type="button" class="btn btn-primary float-right mt-5" id="btn-test-submit" onclick="submitTest()">交卷</button>
+        </#if>
         <#--主观题-->
             <#--<div class="card">-->
                 <#--<div class="card-header">-->

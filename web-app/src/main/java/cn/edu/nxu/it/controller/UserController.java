@@ -294,6 +294,38 @@ private CommentService commentService = new CommentService();
 
     }
 
+    /**
+     * z章节检测
+     */
+    public void getTestByCatalogueIdAndAnswer(){
+        Long userId = getLong("userId");
+        Integer catalogueId = getInt("catalogueId");
+        keepPara("id");
+        String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
 
+        //        装载试题
+        List<TestAnswerDTO> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
+        List<TestAnswerDTO> tests_GAP_FILLING = new ArrayList<>(); //填空题
+        List<TestAnswerDTO> tests_TURE_OR_FALSE = new ArrayList<>(); //判断题
+        List<TestAnswerDTO> tests_SUBJECTIVE = new ArrayList<>(); //主观题
+
+        tests_SINGLE_CHOICE = testService.listByCatalogueIdAndUserId(catalogueId,userId,TestTypeEnum.SINGLE_CHOICE.getType());
+        testLines_SINGLE_CHOICE =Testline.dao.find("SELECT * FROM t_testline");
+        tests_GAP_FILLING = testService.listByCatalogueIdAndUserId(catalogueId,userId,TestTypeEnum.GAPFILLING.getType());
+        tests_TURE_OR_FALSE = testService.listByCatalogueIdAndUserId(catalogueId,userId,TestTypeEnum.TRUE_OR_FALSE.getType());
+        tests_SUBJECTIVE = testService.listByCatalogueIdAndUserId(catalogueId,userId,TestTypeEnum.SUBJECTIVE.getType());
+
+//获取总分数
+        ResoultOfTest resoultOfTest = testService.getScoreBytester(userId,catalogueId);
+
+        set("singleChoices",tests_SINGLE_CHOICE);
+        set("singleChoicelines",testLines_SINGLE_CHOICE);
+        set("gapFillings",tests_GAP_FILLING);
+        set("trueOrFalses",tests_TURE_OR_FALSE);
+        set("subjectives",tests_SUBJECTIVE);
+        set("resoultOfTest",resoultOfTest);
+        renderFreeMarker("test.ftl");
+    }
 }
 
