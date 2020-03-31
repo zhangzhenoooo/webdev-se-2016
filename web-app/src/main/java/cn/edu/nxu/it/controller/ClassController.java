@@ -18,6 +18,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 import net.sf.ehcache.search.expression.Not;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,14 @@ public class ClassController extends Controller {
     @Before(NeedLogin.class)
     public  void  doPublishClass(){
         UploadFile file = getFile("class.HEAD","/class");
+
+        //如果已经存在，删除原文件
+            File oldFile = new File("/class/" + file.getFileName());
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
+
+
         Course course = getModel(Course.class);
         User user = (User) getSession().getAttribute("user");
 //        System.out.println("user.userid ================= "+ user.getUSERID());
@@ -82,6 +91,7 @@ public class ClassController extends Controller {
      */
     public  void  addCatalogue(){
         UploadFile  file = getFile("catalogueUrl","/class");
+        String newFileName = "";
         Long courseID = getLong("classId");
         String title = get("TITLE");
         String description = get("DESCRIPTION");
@@ -91,9 +101,6 @@ public class ClassController extends Controller {
         catalogue.setCLASSID(courseID);
         catalogue.setTITLE(title);
         catalogue.setDESCRIPTION(description);
-        if (null != file ) {
-            catalogue.setURL(file.getFileName());
-        }
         catalogue.setPARENTID(section);
         catalogue.setNODE(node);
         List<Course>  dbCourses = Course.dao.find("SELECT * FROM t_course WHERE CLASSID = ?",courseID);
@@ -108,6 +115,23 @@ public class ClassController extends Controller {
             catalogue.setGmtModified(System.currentTimeMillis());
             boolean affectedRow = catalogue.save();
             if (affectedRow){
+                if (null != file ) {
+
+                newFileName = newFileName+catalogue.getCATALOUGEID() + catalogue.getTITLE()+file.getFileName().substring(file.getFileName().lastIndexOf("."));
+//                删除重名文件
+                if (!ObjectUtil.isEmpty(file)) {
+                    //如果已经存在，删除原文件
+                    File oldFile = new File(file.getUploadPath()+"/"+newFileName);
+                    if (oldFile.exists()) {
+                        oldFile.delete();
+                    }
+                }
+//                重命名
+                boolean b = file.getFile().renameTo(new File(file.getUploadPath()+"/"+newFileName));
+                catalogue.setURL(newFileName);
+                boolean update = catalogue.update();
+
+                }
                 set("message","添加成功");
                 set("success",true);
                 //添加消息
@@ -154,11 +178,13 @@ public class ClassController extends Controller {
         int delete = 0;
         if (ObjectUtil.isEmpty(catalogue.getNODE())){
             //删除的是章：删除章下面的所有节
-            delete = Db.delete("DELETE FROM t_catalogue WHERE PARENTID = ?", catalogueId);
-        }else {
-//            删除节信息
-            delete = Db.delete("DELETE FROM t_catalogue WHERE CATALOUGEID = ?", catalogueId);
+            int delete1 = Db.delete("DELETE FROM t_catalogue WHERE PARENTID = ?", catalogue.getPARENTID());
+            delete = delete1+delete;
         }
+//            删除节信息
+        int delete2 = Db.delete("DELETE FROM t_catalogue WHERE CATALOUGEID = ?", catalogueId);
+        delete = delete2+delete;
+
         if (delete > 0){
             set("success",true);
         }else {
@@ -188,6 +214,7 @@ public class ClassController extends Controller {
      * 修改章节信息
      */
     public  void  doModifyCatalogue(){
+        String newFileName = "";
         UploadFile  file = getFile("catalogueUrl","/class");
         Long courseID = getLong("classId");
         Long catalogueId = getLong("catalogueId");
@@ -201,7 +228,18 @@ public class ClassController extends Controller {
         catalogue.setTITLE(title);
         catalogue.setDESCRIPTION(description);
         if (null != file ) {
-            catalogue.setURL(file.getFileName());
+            newFileName = catalogue.getCATALOUGEID() + catalogue.getTITLE()+file.getFileName().substring(file.getFileName().lastIndexOf("."));
+            //                删除重名文件
+            if (!ObjectUtil.isEmpty(file)) {
+                //如果已经存在，删除原文件
+                File oldFile = new File(file.getUploadPath()+"/"+newFileName);
+                if (oldFile.exists()) {
+                    oldFile.delete();
+                }
+            }
+//                重命名
+            file.getFile().renameTo(new File(file.getUploadPath()+"/"+newFileName));
+            catalogue.setURL(newFileName);
         }
         catalogue.setPARENTID(section);
         catalogue.setNODE(node);
@@ -335,7 +373,7 @@ public class ClassController extends Controller {
             newFileName = catalogue.getTITLE()+type;
         }
 
-        renderFile(catalogue.getURL(),newFileName);
+//        renderFile(catalogue.getURL(),newFileName);
         User user = (User) getSession().getAttribute("user");
         //添加浏览历史
         History history = new History();
@@ -347,7 +385,13 @@ public class ClassController extends Controller {
         history.setThingName(catalogue.getTITLE()) ;
         history.setTYPE(HistoryTypeEnum.HISTORY_CATALOGUE.getType());
         history.save();
-        renderFile("class/"+catalogue.getURL());
+       String fleName  = "class/"+catalogue.getURL();
+       newFileName = "第"+catalogue.getPARENTID()+"章";
+       if (!ObjectUtil.isEmpty(catalogue.getNODE())){
+           newFileName = newFileName+"第"+catalogue.getNODE()+"讲";
+       }
+       newFileName = newFileName+ catalogue.getTITLE();
+        renderFile(fleName,newFileName);
 
     }
 

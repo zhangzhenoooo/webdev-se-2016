@@ -23,7 +23,7 @@ public class CatalogueService {
 
   public  List<CatalogueDTO> listCatalogByCourseId(Long courseId){
 
-       List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE NODE IS NULL AND CLASSID = ?", courseId);
+       List<Catalogue> catalogues = Catalogue.dao.find("SELECT * FROM t_catalogue WHERE NODE IS NULL AND CLASSID = ? ORDER BY PARENTID ", courseId);
        if (catalogues.size() == 0) {
            return new ArrayList<>();
        }

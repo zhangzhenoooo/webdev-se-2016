@@ -24,8 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="user.EMAIL">绑定的邮箱:</label>
-                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" readonly>
-                    <small id="emailHelp" class="form-text text-muted">邮箱是登录账号哦，保存着个人信息。请不要随意更改哦</small>
+                    <input type="email" class="form-control" name="user.EMAIL" id="user.EMAIL" value="${(user.EMAIL)!''}" aria-describedby="emailHelp" >
                 </div>
                 <div class="form-group">
                     <label for="user.NAME">名字:</label>

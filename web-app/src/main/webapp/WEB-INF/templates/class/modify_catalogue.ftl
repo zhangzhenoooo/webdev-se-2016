@@ -65,7 +65,7 @@
                         <div class="form-group">
                             <label for="catalogueUrl" class="col-form-label">教学资源：
                                 <#if (catalogue.URL)??>
-                                    <a href="#" class=" " data-toggle="modal" data-target="#exampleModal" >浏览课件:${(catalogue.URL)!''}</a>
+                                    <a href="#" class=" " data-toggle="modal" data-target="#exampleModal" >浏览课件:第<span>${(catalogue.TITLE)!''}讲</span></a>
                                 </#if>
                             <input  type="file" class="form-control-file" name="catalogueUrl" id="catalogueUrl" >
                         </div>

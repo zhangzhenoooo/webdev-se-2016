@@ -16,6 +16,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
+import java.io.File;
 import java.util.List;
 
 public class MainController extends Controller {
@@ -173,8 +174,8 @@ public class MainController extends Controller {
     public void  updateMyMes(){
         User user = getModel(User.class);
         User loginUser = (User) getSession().getAttribute("user");
-        if (loginUser.getEMAIL().equals(user.getEMAIL())){
-            Db.update("UPDATE t_user SET NAME = ? ,INTRODUCTION = ? ,PHONE = ? WHERE USERID =?",user.getNAME(),user.getINTRODUCTION(),user.getPHONE(),user.getUSERID());
+        if (loginUser.getUSERID().equals(user.getUSERID())){
+            Db.update("UPDATE t_user SET EMAIL = ?,NAME = ? ,INTRODUCTION = ? ,PHONE = ? WHERE USERID =?",user.getEMAIL(),user.getNAME(),user.getINTRODUCTION(),user.getPHONE(),user.getUSERID());
             //更新user_class中的学生名称
             Db.update("UPDATE t_user_class SET USERNAME = ? WHERE USERID = ?",user.getNAME(),user.getUSERID());
         }
@@ -292,6 +293,11 @@ public class MainController extends Controller {
 
     public void addHead(){
         UploadFile  file = getFile("HEAD","/user/head");
+        //如果已经存在，删除原文件
+            File oldFile = new File("/user/head/" + file.getFileName());
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
         Long userId = getLong("USERID");
         String head = "";
         if (file != null){
