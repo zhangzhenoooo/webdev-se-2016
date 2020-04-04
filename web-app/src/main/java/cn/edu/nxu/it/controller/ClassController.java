@@ -390,7 +390,8 @@ public class ClassController extends Controller {
        if (!ObjectUtil.isEmpty(catalogue.getNODE())){
            newFileName = newFileName+"第"+catalogue.getNODE()+"讲";
        }
-       newFileName = newFileName+ catalogue.getTITLE();
+       newFileName = newFileName+ catalogue.getTITLE()+catalogue.getURL().substring(catalogue.getURL().lastIndexOf("."));
+
         renderFile(fleName,newFileName);
 
     }
