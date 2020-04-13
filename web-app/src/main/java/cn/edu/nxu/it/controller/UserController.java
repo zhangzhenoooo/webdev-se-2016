@@ -14,6 +14,7 @@ import cn.edu.nxu.it.model.base.BaseUser;
 import cn.edu.nxu.it.service.CatalogueService;
 import cn.edu.nxu.it.service.CommentService;
 import cn.edu.nxu.it.service.TestService;
+import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Kv;
@@ -116,7 +117,10 @@ private CommentService commentService = new CommentService();
             return;
         }
         User loginUser = (User) getSession().getAttribute("user");
-        UserClass userClass = UserClass.dao.findFirst("SELECT * FROM t_user_class WHERE CLASSID = ? AND USERID =?", courseId, loginUser.getUSERID());
+        UserClass userClass = null;
+        if (!ObjectUtil.isEmpty(loginUser)){
+            userClass = UserClass.dao.findFirst("SELECT * FROM t_user_class WHERE CLASSID = ? AND USERID =?", courseId, loginUser.getUSERID());
+        }
         if (userClass == null){
             set("message","你没有选修该课程，请联系你的老师");
             renderFreeMarker("class_mes.ftl");
@@ -125,6 +129,8 @@ private CommentService commentService = new CommentService();
         User user = User.dao.findFirst("SELECT * FROM t_user WHERE USERID = ?",course.getCREATOR());
         CatalogueService catalogueService = new CatalogueService();
         List<CatalogueDTO> catalogueDTOS = catalogueService.listCatalogByCourseId(course.getCLASSID());
+        List<CommentDTO> comments = commentService.initComment(courseId,CommentTypeEnum.COMMENT_CLASS.getType());
+        set("comments",comments);
         set("course",course);
         set("user",user);
         set("catalogueDTOS",catalogueDTOS);
@@ -160,11 +166,12 @@ private CommentService commentService = new CommentService();
 
     }
 
+    @Before(NeedLogin.class)
     public void markRead(){
         Long notificationId = getLong("NOTIFICATIONID");
         User user = (User) getSession().getAttribute("user");
         Kv reslut = Kv.create();
-        if (notificationId ==0L){
+        if (notificationId == 0L){
             //delete all notification
             Db.delete("DELETE FROM   t_notification WHERE   RECEIVER =?",user.getUSERID());
             reslut.set("success",true);
@@ -301,6 +308,8 @@ private CommentService commentService = new CommentService();
         Long userId = getLong("userId");
         Integer catalogueId = getInt("catalogueId");
         keepPara("id");
+        User user = User.dao.findFirst("SELECT * FROM t_user WHERE USERID = ?", userId);
+        set("user",user);
         String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
 
         //        装载试题

@@ -127,7 +127,6 @@ public class CommentController extends Controller {
                     notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
                     notification.setGmtCreated(System.currentTimeMillis());
                     notification.save();
-
                     result.set("success",true);
                 }
             }

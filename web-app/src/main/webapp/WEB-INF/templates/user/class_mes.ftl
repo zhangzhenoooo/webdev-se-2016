@@ -24,7 +24,7 @@
                    <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " >
                        <div class="row no-gutters">
                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                               <img src="/upload/class/${(course.HEAD)!'/upload/user/default_class_picture.jpg'}" class="card-img" alt="...">
+                               <img  style="height: 80%;width: 80%;" src="/upload/class/${(course.HEAD)!'/upload/user/default_class_picture.jpg'}" class="card-img" alt="...">
                            <#--//保存课程的id-->
                                <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
                            </div>
@@ -92,7 +92,92 @@
                                </ul>
                            </blockquote>
                        </div>
+                       <div class="card" >
+                       <#--//评论区-->
+                           <div class="card-header">
+                               评论区
+                           </div>
+                           <div class="card-body">
+                               <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                                   <!--回复-->
+                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <h4>
+                                           <span >${(comments?size)!0}</span> 个回复
+                                       </h4>
+                                       <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
+                                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" >
+                                        <#list comments as comment>
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object img-rounded" src="/upload/user/head/${(comment.user.HEAD)!'/upload/user/head/default-avatar.png'}">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body" id="${'comment-body-'+comment.user.USERID}" >
+                                                    <h5 class="media-heading">
+                                                        <span >${(comment.user.NAME)!''}</span>
+                                                    </h5>
+                                                    <div >
+                                                        ${(comment.CONTENT)!''}
+                                                    </div>
+                                                    <div class="menu">
+                                                        <span class="glyphicon glyphicon-thumbs-up icon">点赞
+                                                        </span>
+                                                        <span  class="comment-icon">
+                                                            <img data-id="${comment.COMMENTID}"   onclick="collapseComments(this)" src="/images/icon/chat24.png" alt="" width="32" height="32" title="点击查看回复">
+                                                        </span>
+                                                        <span class="glyphicon glyphicon-comment"></span>
+                                                        <span >${(comment.COMMENT_COUNT)!0}</span>
+                                                        </span>
+                                                        <#assign dlong = (comment.GMT_CTRATED)!0?number * 1000 />
+                                                        <span class="float-right"> &nbsp;评论日期:${dlong?number_to_datetime}  </span>
+                                                    </div>
+                                                    <!--二级评论-->
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  collapse sub-comments"
+                                                         id="${'comment-'+(comment.COMMENTID)!}">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <input type="text" class="form-control" placeholder="评论一下……"
+                                                                   id="${'input-'+comment.COMMENTID}">
+                                                            <button type="button" class="btn btn-success pull-right" onclick="comment(this)"
+                                                                    data-id="${(comment.COMMENTID)!}">评论</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </#list>
+
+                                       </div>
+                                   </div>
+
+                                   <!--回复输入框-->
+                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <h4>
+                                           提交回复
+                                       </h4>
+                                       <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
+                                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
+                                           <div class="media">
+                                               <div class="media-left">
+                                                   <a href="#">
+                                                       <img class="media-object img-rounded" src="/upload/user/head/${(session.user.HEAD)!'default-avatar.png'}">
+                                                   </a>
+                                               </div>
+                                               <div class="media-body">
+                                                   <h5 class="media-heading">
+                                                       <span >${(session.user.NAME)!'匿名用户'}</span>
+                                                   </h5>
+                                               </div>
+                                           </div>
+                                           <input type="hidden" id="question_id" value="${(course. CLASSID)!''}" >
+                                           <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+                                           <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
+                                       </div>
+                                   </div>
+                               </div>
+
+                           </div>
+                       </div>
                    </div>
                </div>
 

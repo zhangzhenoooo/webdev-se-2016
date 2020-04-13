@@ -62,9 +62,9 @@
     <#--</form>-->
         <ul class="navbar navbar-right" >
 
-            <#--<li class="nav-item" style="list-style-type:none;">-->
-                <#--<a class="nav-link" href="#" data-toggle="modal" data-target="#myMessage" aria-disabled="true">我的消息 <span id="notification_count" class="badge badge-primary badge-pill">${(session.notifications?size)!0}</span></a>-->
-            <#--</li>-->
+            <li class="nav-item" style="list-style-type:none;">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#myMessage" aria-disabled="true">我的消息 <span id="notification_count" class="badge badge-primary badge-pill">${(session.notifications?size)!0}</span></a>
+            </li>
             <#if (session.user)??>
                  <li class="nav-item dropdown" style="list-style-type:none;">
 
@@ -107,16 +107,13 @@
                                    <span>${(notification.NOTIFER_NAME)!}</span>
                                    <span><#if notification.TYPE == 1>   发起了提问: <#else > 回复了:</#if></span>
                                    <span>${(notification.OUTER_TITLE)!''}</span>
-                                   <button type="button" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!}" id="${(notification.NOTIFICATIONID)!}" class="btn  btn-primary float-right">已读</button>
+                                   <button type="button" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!0}" id="${(notification.NOTIFICATIONID)!}" class="btn  btn-primary float-right">已读</button>
                                    <br>
                                    回复日期：<span class="text-right">${((notification.GMT_CREATED)!0)?number?number_to_datetime?string("yyyy-MM-dd")!}</span>
                                </li>
                              </#list>
                          </#if>
                     </#if>
-
-
-
                 </ul>
             </div>
             <div class="modal-footer">
@@ -141,6 +138,7 @@
             success:function f(data) {
                 if (data.success){
                     $("#notification_count").val(data.count);
+                    window.location.reload();
                 }
         }
 

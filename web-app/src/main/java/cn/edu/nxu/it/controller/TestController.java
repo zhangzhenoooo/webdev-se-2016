@@ -18,7 +18,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Before(NeedLogin.class)
 public class TestController extends Controller {
 
     TestService testService = new TestService();
@@ -27,6 +27,7 @@ public class TestController extends Controller {
     /**
      * z章节检测
      */
+    @Before(NeedLogin.class)
     public void test(){
         Integer catalogueId = getInt("id");
         keepPara("id");
@@ -65,7 +66,8 @@ public class TestController extends Controller {
         Integer catalogueId = getInt("id");
         keepPara("id");
         String sql ="SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ? ";
-
+        Catalogue catalogue = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE CATALOUGEID = ? ", catalogueId);
+        set("catalogue",catalogue);
         //        装载试题
         List<Test> tests_SINGLE_CHOICE = new ArrayList<>(); //选择题
         List<Testline> testLines_SINGLE_CHOICE = new ArrayList<>(); //选择题
@@ -447,6 +449,14 @@ public class TestController extends Controller {
         renderJson(result);
     }
 
-
+    public void deleteTestByTestId(){
+        Long testId = getLong("testId");
+        int delete = Db.delete("DELETE FROM t_test WHERE TESTID = ?", testId);
+        Db.delete("DELETE FROM t_testline WHERE TESTID = ?",testId);
+        Db.delete("DELETE FROM t_answer WHERE TESTID = ?",testId);
+        Kv result = Kv.create();
+        result.set("success",200);
+        renderJson(result);
+    }
 
 }

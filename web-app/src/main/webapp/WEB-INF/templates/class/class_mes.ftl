@@ -17,13 +17,13 @@
 <div class="container-fluid main">
     <div class="row">
         <!--左边-->
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="row">
             <#--top-->
-                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " style="max-height: 300px;min-height: 250px;">
+                <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 ">
                     <div class="row no-gutters">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <img src="/upload/class/${(course.HEAD)!'/upload/class/default_class_picture.jpg'}" class="card-img" alt="">
+                            <img  style="height: 80%;width: 80%;" src="/upload/class/${(course.HEAD)!'/upload/class/default_class_picture.jpg'}" class="card-img" alt="">
                             <#--//保存课程的id-->
                             <input type="hidden" id="classId" value="${(course. CLASSID)!''}">
                         </div>

@@ -16,7 +16,7 @@
     <div class="row">
         <!--左边-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 p-5 card">
-            <h2>课程题目：</h2>
+            <h2>${(catalogue.CATALOUGEID)!''}</h2>
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -163,8 +163,8 @@
                                 <label class="form-check-label" for="inlineRadio_false">错</label>
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary float-right mr-3">保存</button>
                             <button type="reset" class="btn btn-primary float-right mr-3">重置</button>
+                            <button type="submit" class="btn btn-primary float-right mr-3">保存</button>
                         </form>
                     </div>
                 </div>

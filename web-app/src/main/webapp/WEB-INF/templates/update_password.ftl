@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="oldPassword">请输入你的原密码</label>
                     <input type="password" class="form-control" id="oldPassword" name="oldPassword">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <small id="emailHelp" class="form-text text-muted">在修改密码的同时需要验证原密码.</small>
                 </div>
                 <div class="form-group">
                     <label for="newPassword">请输入你的新密码</label>

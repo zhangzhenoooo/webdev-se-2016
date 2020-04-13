@@ -128,7 +128,7 @@
                                             <#if  (((trueOrFalse.answer.SIGN)!0) == 1) >
                                               <p class="card-text ml-3" style="color:red;">
                                                     <#assign  isAnswed = 1>
-                                                     <#if ((trueOrFalse.ANSWER)!'0')== ((trueOrFalse.answer.ANSWER)!'1')>
+                                                     <#if ((trueOrFalse.ANSWER)!'0')== ((trueOrFalse.answer.ANSWER)!'0')>
                                                      <span style="color: green">回答正确</span>
                                                      <#else >
                                                      <span style="color: red;">
@@ -236,6 +236,7 @@
               <#--</#if>-->
             <#--</div>-->
             <hr>
+            <p>${(user.NAME)!''}</p>
             <p> 总分数：<span>${(resoultOfTest.totalPoint)!0}</span> </p>
             <#if isAnswed == 1 >
                 <#assign  point = (resoultOfTest.totalPoint * 0.6 )>
@@ -261,7 +262,7 @@
     function  answerSingleChoice(e) {
         var testId = e.getAttribute("data-id");
         var answer = $("#testline-" + testId).val();
-        alert(answer);
+     //   alert(answer);
         doAnswer(testId,2,answer);
     }
     // 判断题
@@ -319,9 +320,9 @@
         var catalogueId = $("#catalogueId").val();
         alert("确认提交吗？要不要再检查一下？");
         $.ajax({
-            url:'/test/testSubmit?catalogueId='+catalogueId,
-            type:'get',
-            data:{},
+            url:'/test/testSubmit',
+            type:'post',
+            data:{catalogueId:catalogueId},
             success:function (data) {
                 window.location.reload();
             }

@@ -92,9 +92,12 @@ public class TestService {
     }
 
     public List<Record> listOfUserTest(Long catalogueId){
-        List<Record> records = Db.find("SELECT DISTINCT\n" + "v_user_test_answer.USERID,\n" + "v_user_test_answer.`NAME`,\n" + "v_user_test_answer.CATALOGUEID\n" + "FROM\n" + "v_user_test_answer WHERE CATALOGUEID = ?", catalogueId);
-        return records;
-
+        List<Record> records = Db.find("SELECT DISTINCT\n" + "v_user_test_answer.USERID,\n" + "v_user_test_answer.`NAME`,\n" + "v_user_test_answer.CATALOGUEID\n" + "FROM\n" + "v_user_test_answer WHERE CATALOGUEID = ? AND SIGN = 1", catalogueId);
+       if (records.size() > 0){
+           return records;
+       }else {
+           return  new ArrayList<>();
+       }
     }
 
 

@@ -43,7 +43,7 @@
                                 </#list>
                             </#if>
                             <#assign x = x +1>
-                             <a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-delete-${(singleChoice.TESTID)!''}">删除</a>
+                             <a class="btn btn-outline-info float-right" onclick="deleteTestByTestId(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-delete-${(singleChoice.TESTID)!''}">删除</a>
                              <a class="btn btn-outline-info float-right" onclick="getSinglChoice(this)" data-id="${(singleChoice.TESTID)!''}" id="bottom-modify-${(singleChoice.TESTID)!''}">修改</a>
 
                            <hr>
@@ -90,16 +90,16 @@
 
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="1"
-                                               <#if '1' == trueOrFalse.ANSWER >checked</#if>>
+                                               <#if '1' == (trueOrFalse.ANSWER)!'0' >checked</#if>>
                                         <label class="form-check-label" for="inlineRadio1">对</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="test-${(trueOrFalse.TESTID)!}" onclick="answerTuerOrFalse(this)" data-id="${(trueOrFalse.TESTID)!}" id="test-${(trueOrFalse.TESTID)!}" value="0"
-                                               <#if '0' == trueOrFalse.ANSWER >checked</#if>>
+                                               <#if '0' == (trueOrFalse.ANSWER )!'1'>checked</#if>>
                                         <label class="form-check-label" for="inlineRadio2">错</label>
                                     </div>
                                     <br>
-                                    <a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-delete-${(trueOrFalse.TESTID)!''}">删除</a>
+                                    <a class="btn btn-outline-info float-right" onclick="deleteTestByTestId(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-delete-${(trueOrFalse.TESTID)!''}">删除</a>
                                     <a class="btn btn-outline-info float-right" onclick="getTrueOrFalse(this)" data-id="${(trueOrFalse.TESTID)!''}" id="bottom-modify-${(trueOrFalse.TESTID)!''}">修改</a>
 
                                 </td>
@@ -179,17 +179,19 @@
             <h3>测试完成列表</h3>
             <div>
                 <ul style="list-style-type:none;font-size: 15px;">
+                     <#if records?? && (records?size >0)>
                 <#assign  i = 1>
                 <#list records as record>
 
                     <li>
                         <a href="/user/getTestByCatalogueIdAndAnswer?userId=${(record.USERID)!''}&catalogueId=${(record.CATALOGUEID)!''}"> ${i}.&nbsp;&nbsp;
-                        <span>学生${(record.NAME)!''}</span>
-                        <span>完成了测试</span>
+                            <span>学生${(record.NAME)!''}</span>
+                            <span>完成了测试</span>
                         </a>
                     </li>
                     <#assign  i = i+1>
                 </#list>
+                     </#if>
                 </ul>
             </div>
         </div>
@@ -361,26 +363,44 @@
             <#--<button type="reset" class="btn btn-primary">重置</button>-->
             <#--</form>-->
             </div>
-        <#--<div class="modal-footer">-->
-        <#--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-        <#--<button type="button" class="btn btn-primary">Send message</button>-->
-        <#--</div>-->
         </div>
+    <#--<div class="modal-footer">-->
+    <#--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+    <#--<button type="button" class="btn btn-primary">Send message</button>-->
+    <#--</div>-->
     </div>
 </div>
+</div>
 
-<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
 <#--<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
 
+    function  deleteTestByTestId(e){
+        var  testId = e.getAttribute("data-id");
+        alert(testId);
+        $.ajax({
+            url:'/test/deleteTestByTestId',
+            type:'post',
+            data:{testId:testId},
+            success:function (data) {
+                // alert(data);
+                window.location.reload();
+            },
+            error:function () {
+                alert("删除失败，请重试！")
+            }
+        });
+
+    }
 
     function getSinglChoice(e) {
         var  testId = e.getAttribute("data-id");
         $("#form_true_or_false").hide();
-        $("#form_subjective").hide();
+        // $("#form_subjective").hide();
         $("#form_single_choice").show();
         getTest(testId,2);
     }
@@ -388,7 +408,7 @@
     function getTrueOrFalse(e) {
         var  testId = e.getAttribute("data-id");
         $("#form_single_choice").hide();
-        $("#form_subjective").hide();
+        // $("#form_subjective").hide();
         $("#form_true_or_false").show();
 
         getTest(testId,3);
@@ -397,7 +417,7 @@
     function getSubjective(e) {
         var  testId = e.getAttribute("data-id");
         $("#form_single_choice").hide();
-        $("#form_subjective").show();
+        // $("#form_subjective").show();
         $("#form_true_or_false").hide();
         getTest(testId,1);
     }

@@ -138,17 +138,21 @@ public class ClassController extends Controller {
                 Course course = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",catalogue.getCLASSID());
                 List<UserClass> userClasses = UserClass.dao.find("SELECT * FROM t_user_class WHERE  CLASSID =  ?", course.getCLASSID());
                 Notification notification ;
+                User user = (User) getSession().getAttribute("user");
+                Notification   dbNotification;
                 for (UserClass userClass : userClasses){
+                    if (userClass.getUSERID() ==  user.getUSERID() ){
+                        continue;
+                    }
                     notification = new Notification();
                     notification.setOUTERID(course.getCLASSID());
                     notification.setGmtCreated(System.currentTimeMillis());
                     notification.setTYPE(NotifyTypeEnum.NOTIFY_CATALOGUE.getType());
                     notification.setRECEIVER(userClass.getUSERID());
                     notification.setOuterTitle(course.getTITLE());
-                    User user = (User) getSession().getAttribute("user");
                     notification.setNotiferName(user.getNAME());
                     notification.setNOTIFER(user.getUSERID());
-                    Notification   dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
+                       dbNotification = Notification.dao.findFirst("SELECT * FROM t_notification WHERE RECEIVER = ? AND OUTERID = ?",userClass.getUSERID(),course.getCLASSID());
                     if (dbNotification == null ){
                         //当没有消息的时候写入，避免重复消息
                         notification.save();

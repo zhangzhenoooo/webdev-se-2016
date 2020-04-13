@@ -23,7 +23,7 @@
                        <div class="card col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 " >
                            <div class="row no-gutters">
                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                   <img  height="200px" src="/upload/class/${(course.HEAD)!}" class="card-img" alt="...">
+                                   <img style="height: 80%;width: 80%;"  src="/upload/class/${(course.HEAD)!}" class="card-img" alt="">
                                <#--//保存课程章节的id-->
                                    <input type="hidden" id="classId" value="${(catalogue. CATALOUGEID)!''}">
                                </div>
