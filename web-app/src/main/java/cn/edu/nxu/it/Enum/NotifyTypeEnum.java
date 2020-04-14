@@ -6,9 +6,12 @@ package cn.edu.nxu.it.Enum;
  * @description
  */
 public enum  NotifyTypeEnum {
-    NOTIFY_TEST(1),//老师发布了章节检测，提示学生
+
+    NOTIFY_COURSE(1),//课程
     NOTIFY_COMMENT(2),//回复了评论
     NOTIFY_CATALOGUE(3),//更新了课件
+    NOTIFY_NEWCATALOGUE(4),
+    NOTIFY_TEST(5),
 
     ;
     private Integer type;

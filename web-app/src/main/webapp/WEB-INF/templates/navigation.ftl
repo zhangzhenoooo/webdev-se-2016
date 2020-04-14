@@ -105,8 +105,22 @@
                              <#list session.notifications as notification>
                                <li class="list-group-item">
                                    <span>${(notification.NOTIFER_NAME)!}</span>
-                                   <span><#if notification.TYPE == 1>   发起了提问: <#else > 回复了:</#if></span>
-                                   <span>${(notification.OUTER_TITLE)!''}</span>
+                                   <span><#if notification.TYPE == 1>   提问或评论了课程: <#elseif  notification.TYPE == 2 > 回复了: <#elseif  notification.TYPE == 3 >提问或评论了章节：<#else > 发布了新的章节：</#if></span>
+                                   <#if session.user.TYPE == 1 >
+                                           <#if notification.TYPE == 1>
+                                                     <a href="#" onclick="showFromNotication(this,1)"  id="${(notification.OUTERID)!''}"  name="${(notification.TYPE)!''}" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!}"><span>${(notification.OUTER_TITLE)!''}</span></a>
+                                               <#else >
+                                                    <a href="#"onclick="showFromNotication(this,1)"id="${(notification.OUTERID)!''}" name="${(notification.TYPE)!''}"  onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!}"><span>${(notification.OUTER_TITLE)!''}</span></a>
+                                           </#if>
+
+                                       <#else >
+                                           <#if notification.TYPE == 1>
+                                                     <a href="#" onclick="showFromNotication(this,0)"  id="${(notification.OUTERID)!''}" name="${(notification.TYPE)!''}" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!}"><span>${(notification.OUTER_TITLE)!''}</span></a>
+                                           <#else >
+                                                    <a href="#" onclick="showFromNotication(this,0)" id="${(notification.OUTERID)!''}" name="${(notification.TYPE)!''}" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!}"><span>${(notification.OUTER_TITLE)!''}</span></a>
+                                           </#if>
+                                   </#if>
+
                                    <button type="button" onclick="markRead(this)" data-id="${(notification.NOTIFICATIONID)!0}" id="${(notification.NOTIFICATIONID)!}" class="btn  btn-primary float-right">已读</button>
                                    <br>
                                    回复日期：<span class="text-right">${((notification.GMT_CREATED)!0)?number?number_to_datetime?string("yyyy-MM-dd")!}</span>
@@ -127,6 +141,40 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
 <script>
+
+// userType:1:教师;0： 学生；notificationType：1：评论/回复课程；2：回复评论；3：回复/评论章节；4发布了新的章节
+    function showFromNotication(e,userTYpe) {
+        var notificationId = e.getAttribute("data-id");
+        var outerId = e.getAttribute("id");
+        var notificationType = e.getAttribute("name");
+        var turnUrl;
+        //判断用户类型
+        if (userTYpe == 1){
+            turnUrl = '/class'
+        } else {
+            turnUrl = '/user'
+        }
+        //消息类型
+        if (notificationType == 1){
+            turnUrl=turnUrl + '/classMes?id='+outerId;
+        }else {
+            turnUrl=turnUrl + '/catalogue?id='+outerId;
+        }
+        $.ajax({
+            type:'post',
+            url:'/user/markRead',
+            data: {
+                'NOTIFICATIONID':notificationId
+            },
+            success:function f(data) {
+                if (data.success){
+                   window.location.href=turnUrl;
+                }
+            }
+
+        });
+    }
+
     function markRead(e) {
         var notificationId = e.getAttribute("data-id");
         $.ajax({

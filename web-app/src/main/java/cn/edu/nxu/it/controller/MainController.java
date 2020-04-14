@@ -328,12 +328,12 @@ public class MainController extends Controller {
         Long userid = getLong("USERID");
         User user = User.dao.findFirst("select * from t_user where USERID=?",userid);
         Kv result = Kv.create();
-        if (ObjectUtil.isEmpty(user)){
+        if (ObjectUtil.isNull(user)){
             result.set("success",false);
             result.set("message","添加失败");
         }else {
             UserClass dbUserClass = UserClass.dao.findFirst("select * from t_user_class where USERID=?", user.getUSERID());
-            if (ObjectUtil.isEmpty(dbUserClass)) {
+            if (ObjectUtil.isNull(dbUserClass)) {
                 result.set("success",true);
                 result.set("message","添加成功");
 

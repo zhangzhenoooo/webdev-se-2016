@@ -31,8 +31,7 @@ public class CommentController extends Controller {
             set("message","用户未登录");
         }
         Kv result = Kv.create();
-
-        if (type.equals(CommentTypeEnum.COMMENT_CLASS.getType())||type == CommentTypeEnum.COMMENT_CLASS.getType()){
+        if (type == CommentTypeEnum.COMMENT_CLASS.getType()){
             //评论或者提问课程:1
             Course dbCourse = Course.dao.findFirst("SELECT * FROM t_course WHERE CLASSID = ?",parentId);
             if (dbCourse ==null){
@@ -56,7 +55,7 @@ public class CommentController extends Controller {
                 notification.setOUTERID(dbCourse.getCLASSID());
                 notification.setOuterTitle(dbCourse.getTITLE());
                 notification.setRECEIVER(dbCourse.getCREATOR());
-                notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
+                notification.setTYPE(NotifyTypeEnum.NOTIFY_COURSE.getType());
                 notification.setGmtCreated(System.currentTimeMillis());
                 notification.save();
 
@@ -95,7 +94,7 @@ public class CommentController extends Controller {
                 Db.update("UPDATE t_comment SET COMMENT_COUNT = COMMENT_COUNT +1  WHERE COMMENTID =?",parentId);//评论的评论数加一
             }
         }
-        if (type.equals(CommentTypeEnum.COMMNET_CATALOGUE.getType())||type == CommentTypeEnum.COMMNET_CATALOGUE.getType()){
+        if (type.equals(CommentTypeEnum.COMMNET_CATALOGUE.getType())){
             //评论或者提问课程:3
             Catalogue dbCatalogue = Catalogue.dao.findFirst("SELECT * FROM t_catalogue WHERE CATALOUGEID = ?",parentId);
             if (dbCatalogue ==null){
@@ -109,7 +108,7 @@ public class CommentController extends Controller {
                 }else {
                     Comment comment = new Comment();
                     comment.setCOMMENTATOR(user.getUSERID());
-                    comment.setCLASSID(classId);
+                    comment.setCLASSID(dbCourse.getCLASSID());
                     comment.setPARENTID(parentId);
                     comment.setTYPE(CommentTypeEnum.COMMENT_CLASS.getType());
                     comment.setCONTENT(content);
@@ -121,10 +120,10 @@ public class CommentController extends Controller {
                     Notification notification = new Notification();
                     notification.setNOTIFER(user.getUSERID());
                     notification.setNotiferName(user.getNAME());
-                    notification.setOUTERID(dbCourse.getCLASSID());
-                    notification.setOuterTitle(dbCourse.getTITLE());
+                    notification.setOUTERID(dbCatalogue.getCATALOUGEID());
+                    notification.setOuterTitle(dbCatalogue.getTITLE());
                     notification.setRECEIVER(dbCourse.getCREATOR());
-                    notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
+                    notification.setTYPE(NotifyTypeEnum.NOTIFY_CATALOGUE.getType());
                     notification.setGmtCreated(System.currentTimeMillis());
                     notification.save();
                     result.set("success",true);

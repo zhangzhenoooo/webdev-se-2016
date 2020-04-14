@@ -119,7 +119,7 @@ public class ClassController extends Controller {
 
                 newFileName = newFileName+catalogue.getCATALOUGEID() + catalogue.getTITLE()+file.getFileName().substring(file.getFileName().lastIndexOf("."));
 //                删除重名文件
-                if (!ObjectUtil.isEmpty(file)) {
+                if (!ObjectUtil.isNull(file)) {
                     //如果已经存在，删除原文件
                     File oldFile = new File(file.getUploadPath()+"/"+newFileName);
                     if (oldFile.exists()) {
@@ -180,7 +180,7 @@ public class ClassController extends Controller {
         Integer catalogueId = getInt("id");
         Catalogue catalogue = Catalogue.dao.findFirst("SELECT *  FROM t_catalogue WHERE CATALOUGEID = ?", catalogueId);
         int delete = 0;
-        if (ObjectUtil.isEmpty(catalogue.getNODE())){
+        if (ObjectUtil.isNull(catalogue.getNODE())){
             //删除的是章：删除章下面的所有节
             int delete1 = Db.delete("DELETE FROM t_catalogue WHERE PARENTID = ?", catalogue.getPARENTID());
             delete = delete1+delete;
@@ -234,7 +234,7 @@ public class ClassController extends Controller {
         if (null != file ) {
             newFileName = catalogue.getCATALOUGEID() + catalogue.getTITLE()+file.getFileName().substring(file.getFileName().lastIndexOf("."));
             //                删除重名文件
-            if (!ObjectUtil.isEmpty(file)) {
+            if (!ObjectUtil.isNull(file)) {
                 //如果已经存在，删除原文件
                 File oldFile = new File(file.getUploadPath()+"/"+newFileName);
                 if (oldFile.exists()) {
@@ -391,7 +391,7 @@ public class ClassController extends Controller {
         history.save();
        String fleName  = "class/"+catalogue.getURL();
        newFileName = "第"+catalogue.getPARENTID()+"章";
-       if (!ObjectUtil.isEmpty(catalogue.getNODE())){
+       if (!ObjectUtil.isNull(catalogue.getNODE())){
            newFileName = newFileName+"第"+catalogue.getNODE()+"讲";
        }
        newFileName = newFileName+ catalogue.getTITLE()+catalogue.getURL().substring(catalogue.getURL().lastIndexOf("."));

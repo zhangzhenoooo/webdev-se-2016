@@ -7,10 +7,10 @@
  */
 function post() {
     var courseId = $("#classId").val();
-    var questionId = $("#classId").val();
+    var parentId = $("#classId").val();
     var content = $("#comment_content").val();
-    alert(courseId+content+questionId);
-    comment2target(courseId,questionId, 1, content);
+    alert(courseId+content+parentId);
+    comment2target(courseId,parentId, 1, content);
 }
 
 function post2() {
@@ -22,7 +22,7 @@ function post2() {
     comment2target(courseId,questionId, 3, content);
 }
 
-function comment2target(courseId,targetId, type, content) {
+function comment2target(courseId,parentId, type, content) {
     if (!content) {
         alert("不能回复空内容~~~");
         return;
@@ -34,7 +34,7 @@ function comment2target(courseId,targetId, type, content) {
         // contentType: 'application/json',
         data: {
             "classId":courseId,
-            "parentId": targetId,
+            "parentId": parentId,
             "content": content,
             "type": type
         },

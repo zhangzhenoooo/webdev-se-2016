@@ -118,7 +118,7 @@ private CommentService commentService = new CommentService();
         }
         User loginUser = (User) getSession().getAttribute("user");
         UserClass userClass = null;
-        if (!ObjectUtil.isEmpty(loginUser)){
+        if (!ObjectUtil.isNull(loginUser)){
             userClass = UserClass.dao.findFirst("SELECT * FROM t_user_class WHERE CLASSID = ? AND USERID =?", courseId, loginUser.getUSERID());
         }
         if (userClass == null){

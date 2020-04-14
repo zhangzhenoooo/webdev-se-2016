@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     public List<CommentDTO> initComment(Long commentId, Integer type){
-        String sql  ="SELECT * FROM t_comment WHERE PARENTID = ? AND TYPE =? ";
+        String sql  ="SELECT * FROM t_comment WHERE PARENTID = ? AND TYPE =?  ORDER BY GMT_MODIFIED DESC";
         List<Comment> comments = Comment.dao.find(sql,commentId, type);
 
         if (comments.size() == 0) {

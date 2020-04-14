@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @description
  */
 public class TestService {
-    public  static  List<TestAnswerDTO> listByCatalogueIdAndUserId(Integer catalogueId,Long userId,int type){
+    public    List<TestAnswerDTO> listByCatalogueIdAndUserId(Integer catalogueId,Long userId,int type){
         List<Test> tests = Test.dao.find("SELECT * FROM t_test WHERE CATALOGUEID = ? AND TYPE = ?", catalogueId,type);
         if (tests.size() == 0) {
             return new ArrayList<>();
