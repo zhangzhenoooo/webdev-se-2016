@@ -88,10 +88,8 @@ public class MainController extends Controller {
         String email = getPara("email");
         Boolean gender = getParaToBoolean("gender");
         String captcha = getPara("captcha");
-        System.out.println(username+password+email+gender+captcha+repassword);
-
+//        System.out.println(username+password+email+gender+captcha+repassword);
         User user = new User();
-
         boolean success = false;
         String message = "注册失败";
         try {
@@ -105,7 +103,6 @@ public class MainController extends Controller {
             userClass.setUSERID(user.getUSERID());
             userClass.setUSERNAME(user.getNAME());
             userClass.setGmtCreated(System.currentTimeMillis());
-
         }catch (ActiveRecordException e){
             LogKit.error("用户注册失败，原因："+ e.getMessage());
             e.printStackTrace();
@@ -114,10 +111,10 @@ public class MainController extends Controller {
         result.set("message",message);
         result.set("success",success);
         renderJson(result);
-
-
-
     }
+
+
+
     /**
      * 登录判断
      */
@@ -132,10 +129,7 @@ public class MainController extends Controller {
         //TODO: 需要从数据库中判断用户名和密码的正确
         String sql = "select * from t_user where EMAIL = ? AND PASSWORD = ?";
         List<User> users = User.dao.find(sql,username,password);
-        System.out.println(users);
-
         if (users.size() != 0){
-
             message = "登录成功";
             success = true;
             result.set("redirectUrl", redirectUrl);
@@ -149,6 +143,11 @@ public class MainController extends Controller {
         result.set("message", message).set("success", success);
         renderJson(result);
     }
+
+
+
+
+
 
     //显示验证码
     public void captcha() {
@@ -271,6 +270,7 @@ public class MainController extends Controller {
         User user = (User) getSession().getAttribute("user");
         String sql = "SELECT\n" + "t_user_class.CLASSNAME,\n" + "t_user.USERID,\n" + "t_user.EMAIL,\n" + "t_user.`PASSWORD`,\n" + "t_user.`NAME`,\n" + "t_user.PHONE,\n" + "t_user.AGE,\n" + "t_user.SEX,\n" + "t_user.TYPE,\n" + "t_user.HEAD,\n" + "t_user.IS_DELETED,\n" + "t_user.INTRODUCTION,\n" + "t_user_class.CLASSID,\n" + "t_course.GMT_CREATED\n" + "FROM\n" + "t_user\n" + "INNER JOIN t_user_class ON t_user.USERID = t_user_class.USERID\n" + "INNER JOIN t_course ON t_user_class.CLASSID = t_course.CLASSID\n" + "WHERE\n" + "t_course.CREATOR = ? AND\n" + "t_user_class.USERID != 30";
         List<Record> userClassDTOs = Db.find(sql,user.getUSERID());
+
         List<Course> courses = Course.dao.find("SELECT * FROM t_course WHERE CREATOR = ?", user.getUSERID());
         set("userClassDTOs",userClassDTOs) ;
         set("courses",courses) ;

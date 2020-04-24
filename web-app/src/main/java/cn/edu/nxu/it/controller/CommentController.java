@@ -84,9 +84,9 @@ public class CommentController extends Controller {
                 Notification notification = new Notification();
                 notification.setNOTIFER(user.getUSERID());
                 notification.setNotiferName(user.getNAME());
-                notification.setOUTERID(dbComment.getCOMMENTATOR());
+                notification.setOUTERID(dbComment.getPARENTID());
                 notification.setOuterTitle(dbComment.getCONTENT());
-                notification.setRECEIVER(comment.getCOMMENTATOR());
+                notification.setRECEIVER(dbComment.getCOMMENTATOR());
                 notification.setTYPE(NotifyTypeEnum.NOTIFY_COMMENT.getType());
                 notification.setGmtCreated(System.currentTimeMillis());
                 notification.save();

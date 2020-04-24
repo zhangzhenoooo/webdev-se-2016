@@ -24,7 +24,7 @@
                               <div class="card-header" data-id="${(course.CLASSID)!''}" id="course-${(course.CLASSID)!''}"   onclick="collapseComments(this)">
                                   <h3><span>${x}.&nbsp;</span>${(course.TITLE)}</h3>
                               </div>
-                              <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">添加学生信息</a>
+                              <#--<a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">添加学生信息</a>-->
 
                               <div class="card-body" data-id="table-${(course.CLASSID)!''}" id="table-${(course.CLASSID)!''}">
 
