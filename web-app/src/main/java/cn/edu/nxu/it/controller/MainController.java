@@ -1,11 +1,8 @@
 package cn.edu.nxu.it.controller;
 
-import cn.edu.nxu.it.DTO.CourseDTO;
-import cn.edu.nxu.it.DTO.UserClassDTO;
 import cn.edu.nxu.it.aop.LoginValidator;
 import cn.edu.nxu.it.aop.NeedLogin;
 import cn.edu.nxu.it.model.*;
-import cn.edu.nxu.it.service.CourseService;
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;

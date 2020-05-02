@@ -30,16 +30,6 @@ Table: t_catalogue
  DESCRIPTION  | VARCHAR(255) | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
 
-Table: t_catalogueline
-----------------+--------------+------+-----+---------+---------
- Field          | Type         | Null | Key | Default | Remarks 
-----------------+--------------+------+-----+---------+---------
- CATALOUGEINEID | BIGINT(19)   | NO   | PRI |         |         
- CATALOUGEID    | BIGINT(19)   | YES  |     |         |         
- TYPE           | TINYINT(3)   | NO   |     | 0       | PDF:0;视频：1
- URL            | VARCHAR(255) | YES  |     |         | 资源地址    
-----------------+--------------+------+-----+---------+---------
-
 Table: t_comment
 ---------------+--------------+------+-----+---------+---------
  Field         | Type         | Null | Key | Default | Remarks 
@@ -70,28 +60,6 @@ Table: t_course
  IS_DELETE    | BIGINT(19)    | YES  |     |         | 删除时间    
 --------------+---------------+------+-----+---------+---------
 
-Table: t_courseline
--------------+--------------+------+-----+---------+---------
- Field       | Type         | Null | Key | Default | Remarks 
--------------+--------------+------+-----+---------+---------
- CLASSLINEID | BIGINT(19)   | NO   | PRI |         |         
- CLASSID     | BIGINT(19)   | YES  |     |         |         
- TYPE        | TINYINT(3)   | NO   |     | 0       | PDF:0;视频：1
- URL         | VARCHAR(255) | YES  |     |         | 资源地址    
--------------+--------------+------+-----+---------+---------
-
-Table: t_favorite
--------------+--------------+------+-----+---------+---------
- Field       | Type         | Null | Key | Default | Remarks 
--------------+--------------+------+-----+---------+---------
- FAVORITEID  | BIGINT(19)   | NO   | PRI |         |         
- CLASSID     | BIGINT(19)   | YES  |     |         |         
- CREATEOR    | BIGINT(19)   | YES  |     |         |         
- GMT_CREATED | VARCHAR(255) | YES  |     |         |         
- DESCRIPTION | VARCHAR(255) | YES  |     |         |         
- IS_DELETED  | BIGINT(19)   | YES  |     |         |         
--------------+--------------+------+-----+---------+---------
-
 Table: t_history
 --------------+--------------+------+-----+---------+---------
  Field        | Type         | Null | Key | Default | Remarks 
@@ -106,16 +74,6 @@ Table: t_history
  TYPE         | INT(10)      | YES  |     |         | 1:浏览课程章节/下载课件；2测试;3浏览课程
 --------------+--------------+------+-----+---------+---------
 
-Table: t_major
--------------+---------------+------+-----+---------+---------
- Field       | Type          | Null | Key | Default | Remarks 
--------------+---------------+------+-----+---------+---------
- MAJORID     | BIGINT(19)    | NO   | PRI |         |         
- NAME        | VARCHAR(255)  | YES  |     |         |         
- DESCRIPTION | VARCHAR(1000) | YES  |     |         |         
- IS_DELETED  | BIGINT(19)    | YES  |     |         |         
--------------+---------------+------+-----+---------+---------
-
 Table: t_notification
 ----------------+---------------+------+-----+---------+---------
  Field          | Type          | Null | Key | Default | Remarks 
@@ -127,20 +85,8 @@ Table: t_notification
  OUTERID        | BIGINT(19)    | NO   |     |         | 问题/回复的id
  OUTER_TITLE    | VARCHAR(1000) | YES  |     |         | 问题名称    
  GMT_CREATED    | BIGINT(19)    | NO   |     |         |         
- TYPE           | INT(10)       | NO   |     | 0       | 3为发布了课件，2为评论，1为发布了章节测
+ TYPE           | INT(10)       | NO   |     | 0       | 1：评论/回复课程；2：回复评论；3：回复/评论章节；4发布了新的章节;5:章节测试
 ----------------+---------------+------+-----+---------+---------
-
-Table: t_question
---------------+--------------+------+-----+---------+---------
- Field        | Type         | Null | Key | Default | Remarks 
---------------+--------------+------+-----+---------+---------
- QUESTIONID   | BIGINT(19)   | NO   | PRI |         |         
- DESCRIPTION  | VARCHAR(255) | YES  |     |         |         
- GMT_CREATOR  | BIGINT(19)   | YES  |     |         |         
- GMT_CREATED  | BIGINT(19)   | YES  |     |         |         
- GMT_MODIFIED | BIGINT(19)   | YES  |     |         |         
- IS_DELETED   | BIGINT(19)   | YES  |     |         |         
---------------+--------------+------+-----+---------+---------
 
 Table: t_test
 -------------+---------------+------+-----+---------+---------
